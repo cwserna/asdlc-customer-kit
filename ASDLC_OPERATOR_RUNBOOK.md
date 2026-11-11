@@ -1,5 +1,9 @@
 # 📘 A/SDLC v3.0 Operator Runbook: Installation, Project Lifecycle & User Guide
 
+> [!CAUTION]
+> **⚠️ IMPORTANT LEGAL DISCLAIMER (`NO WARRANTY` • `NOT FOR PRODUCTION` • `EXAMPLE CODE ONLY` • `USE AT YOUR OWN RISK`):**
+> All files, prompts, AI agent definitions (`agents/*.md`), skills (`skills/*/SKILL.md`), and templates referenced in this runbook are **example reference materials** provided strictly **"AS IS"** without warranty of any kind, are **NOT intended or certified for direct production use**, are **100% use at your own risk**, and are **NOT an official Google LLC or Google Cloud product or supported service**. Always require human-in-the-loop review before executing or merging AI-generated outputs, and see **[`DISCLAIMER.md`](./DISCLAIMER.md)** for full legal terms.
+
 > **Document Purpose:** Canonical step-by-step operator and adopter runbook for installing the 8-Stage Agentic SDLC (`A/SDLC v3.0`) skill and specialist subagents, launching the Flight Deck Control Center (`:8000`), configuring the **3-Pattern OpenTelemetry Sink & Always-On Cloud Outer Loop (`.sdlc/telemetry_config.json` & `--outer-loop-init`)**, creating and managing projects across CLI and Web UI surfaces, and running the 8-stage engineering lifecycle as a day-to-day user.
 > **Canonical Google Doc (Single Source of Truth):** [A/SDLC v3.0 Operator & Adopter Runbook](https://docs.google.com/document/d/1GUxKezSlJUjA8qi-KEJxUldP9SojsqIuEanDXtaq4KY/edit)
 > **Framework Version:** `v3.0.0` (8-Stage A/SDLC Lifecycle + 3-Pattern OpenTelemetry Sink & Cloud Outer Loop)
