@@ -30,7 +30,7 @@ This skill implements the **8-Stage Agentic SDLC Process (`v3.0`)**, combining S
 - **System & Infrastructure Architecture Mirror:** [`${REPO_ROOT}/ARCHITECTURE.md`](${REPO_ROOT}/ARCHITECTURE.md)
 - **Local Blueprint Mirror:** [`resources/ELEVATE_2026_AGENTIC_SDLC_BLUEPRINT.md`](./resources/ELEVATE_2026_AGENTIC_SDLC_BLUEPRINT.md)
 - **Observability Guide:** [`resources/OBSERVABILITY_USER_GUIDE.md`](./resources/OBSERVABILITY_USER_GUIDE.md)
-- **GitHub Repository:** [<your-org>/asdlc-customer-kit](https://github.com/<your-org>/asdlc-customer-kit)
+- **GitHub Repository:** [cwserna/agentic-sdlc-harness](https://github.com/cwserna/agentic-sdlc-harness)
 
 > **v3.0 Core Governance Pillars:**
 > 1. **100% Standalone Default (Zero Prebuilt Python Code or Cloud Server Required):** All 8 stages, RACI checks, and gate approvals operate natively on plain JSON and Markdown files in the project workspace (`.sdlc/state.json`, `.sdlc/raci.json`, `.sdlc/tech_stack.json`, `.sdlc/git_config.json`, `.sdlc/telemetry_config.json`, `RACI.md`, `org-standards.md`, `PRD.md`, `SPEC.md`, `AGENTS.md`) using standard AI agent tools (`read_file`, `write_file`, `edit_file`, `ask_question`, `run_command`).

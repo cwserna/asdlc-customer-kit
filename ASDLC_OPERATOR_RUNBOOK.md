@@ -287,7 +287,7 @@ flowchart TD
 ```bash
 mkdir -p ~/projects
 cd ~/projects
-git clone https://github.com/<your-org>/asdlc-customer-kit.git agentic-sdlc
+git clone https://github.com/cwserna/agentic-sdlc-harness.git agentic-sdlc
 cd ~/projects/agentic-sdlc
 
 python3 -m venv .venv

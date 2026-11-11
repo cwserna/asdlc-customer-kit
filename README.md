@@ -3,6 +3,8 @@
 
 > **Distribution Tier:** `customer-safe` (`100% Pure Markdown`, Zero Executable Scripts Required)
 > **Release Version:** `v3.0.0` ([`VERSION`](./VERSION) • [`UPGRADE.md`](./UPGRADE.md))
+> **GitHub Repository & Direct ZIP Download:** [https://github.com/cwserna/asdlc-customer-kit](https://github.com/cwserna/asdlc-customer-kit) ([1-Click Download ZIP](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip))
+> **Important Note:** This repository is the **A/SDLC Toolkit** (used only to install or upgrade the `.md` agents and skills into `~/.gemini/config/`). Keep it in a separate folder like `~/Downloads/asdlc-customer-kit` and never confuse it with the GitHub repository you use for your actual application development!
 > **Supported Harnesses:** Google Antigravity IDE/CLI, Gemini CLI, and any Markdown-compatible AI coding harness.
 
 ---
