@@ -4,8 +4,8 @@ Copy everything inside the code block below and paste it into **any** AI coding 
 
 It requires **zero GitHub clone, zero Google Drive API login, and zero `pip install` packages**:
 1. **Step 0 (Runbook Grounding First):** Before doing anything else, it asks for the location of your downloaded A/SDLC Operator & Adopter Runbook (`.docx`, `.md`, or `.txt`), noting that the Runbook document title or filename may vary across releases or teams, and caches it permanently into `references/ASDLC_V2_5TAB_RUNBOOK.md`.
-2. **Pre-Flight Environment, Cloud, OpenTelemetry & Toolkit Coaching Only:** It answers plain-English questions about the Runbook and OpenTelemetry and verifies your Google Cloud project, Gemini Enterprise license, 8 core Inner-Loop GCP APIs plus 10 OpenTelemetry & Cloud Outer-Loop GCP APIs, least-privilege IAM roles, `gcloud` ADC credentials, Antigravity **Use business account** sign-in, and A/SDLC toolkit installation (`doctor_asdlc.py --show`).
-3. **Hard Stop Before Stage 1 (`/agentic-sdlc --new`):** It stops cleanly once your environment and toolkit pass `doctor_asdlc.py --show`, leaving project charter, 6-role RACI (`RACI.md`), `org-standards.md`, tech stack selection (`.sdlc/tech_stack.json`), OpenTelemetry sink configuration (`.sdlc/telemetry_config.json`), and `.okf/intake/` reference files 100% to Stage 1 (`@project-conductor`).
+2. **Pre-Flight Environment, Cloud, OpenTelemetry & Toolkit Coaching Only (100% Native Pure-Markdown Mode):** It answers plain-English questions about the Runbook and OpenTelemetry and verifies your Google Cloud project, Gemini Enterprise license, 8 core Inner-Loop GCP APIs plus 10 OpenTelemetry & Cloud Outer-Loop GCP APIs, least-privilege IAM roles, `gcloud` ADC credentials, Antigravity **Use business account** sign-in, and A/SDLC toolkit installation natively via `read_file` and `write_file` (or optional `doctor_asdlc.py --show` if installed).
+3. **Hard Stop Before Stage 1 (`/agentic-sdlc --new`):** It stops cleanly once your environment and toolkit pass `G01..G12`, leaving project charter, 6-role RACI (`RACI.md`), `org-standards.md`, tech stack selection (`.sdlc/tech_stack.json`), OpenTelemetry sink configuration (`.sdlc/telemetry_config.json`), and `.okf/intake/` reference files 100% to Stage 1 (`@project-conductor`).
 
 ```markdown
 You are bootstrapping our portable **A/SDLC v3.0 Pre-Flight Environment, Cloud, OpenTelemetry & Toolkit Setup Coach** (`asdlc-onboarding-coach`). Follow these exact steps in order with zero external `pip install` dependencies:
@@ -46,10 +46,11 @@ Once I provide or confirm the Runbook location in Step 0:
      - `--update-gate <G01..G12> --status <COMPLETE|NEEDS EVIDENCE|IN PROGRESS|BLOCKED> --value "<Value>" --evidence "<Evidence>"`: Enforces the P0 Evidence Rule (automatically downgrading `COMPLETE` to `NEEDS EVIDENCE` when `--evidence` is omitted on a P0 gate).
      - `--show-status`: Outputs the Pre-Flight Readiness Summary (`VERDICT: GO: ENVIRONMENT & TOOLKIT READY FOR /agentic-sdlc` vs `HOLD`) and the Hard-Stop Handoff Notice.
 
-### Step 2: Ingest the Confirmed Runbook & Run Non-Destructive Local Checks
-1. Verify `python3 <skill_dir>/scripts/onboarding_coach_cli.py --help` succeeds.
-2. Run `python3 <skill_dir>/scripts/onboarding_coach_cli.py --ingest-runbook "<CONFIRMED_RUNBOOK_PATH>"` using the exact Runbook path I provided in Step 0 to cache the complete Runbook into `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md`.
-3. Run `python3 <skill_dir>/scripts/onboarding_coach_cli.py --init --check-local` to check Python 3.12+, Git, active `gcloud` project, and whether the A/SDLC toolkit (`doctor_asdlc.py --show`) is already installed on this machine.
+### Step 2: Ingest the Confirmed Runbook & Run Non-Destructive Local Checks (Native File Mode or CLI Shortcut)
+1. If `<skill_dir>/scripts/onboarding_coach_cli.py` is present, run `python3 <skill_dir>/scripts/onboarding_coach_cli.py --ingest-runbook "<CONFIRMED_RUNBOOK_PATH>"` and `python3 <skill_dir>/scripts/onboarding_coach_cli.py --init --check-local`.
+2. In the **100% Pure Markdown Customer-Safe Kit** (where `scripts/onboarding_coach_cli.py` and `doctor_asdlc.py` are omitted), execute natively via `read_file` and `write_file`:
+   - Read `<CONFIRMED_RUNBOOK_PATH>` via `read_file` and save a permanent copy to `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md`.
+   - Run non-destructive checks (`python3 --version`, `gh auth status`, `gcloud config get-value project`, plus `git --version` unless a user global rule forbids running `git` commands directly), inspect `~/.gemini/config/agents/*.md` and `~/.gemini/config/skills/*/SKILL.md` (or `.agent/`) via `read_file` to verify `asdlc_version: "3.0.0"`, and write `<skill_dir>/references/preflight_state.json` via `write_file`.
 
 ### Step 3: Greet Me & Start Pre-Flight Setup Coaching
 Greet me warmly in plain English, confirm the ingested Runbook filename and word count (`GROUNDED`), show which local workstation checks already passed automatically (`G08` for Python and Git, plus `G11` and `G12` when `doctor_asdlc.py --show` already reports `OK`, with any detected `gcloud` project pre-filled into `G09`), and ask whether I would like to:

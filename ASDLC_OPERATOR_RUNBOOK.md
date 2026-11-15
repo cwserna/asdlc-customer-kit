@@ -43,7 +43,7 @@ Before running Stage 1, confirm these three GCP requirements on your isolated no
 
 ```bash
 export PILOT_PROJECT_ID="<PILOT_PROJECT_ID>"
-export PRINCIPAL="user:<DEVELOPER_EMAIL>"   # or group:<PILOT_GROUP_EMAIL>
+export PRINCIPAL="user:<DEVELOPER_EMAIL>" # or group:<PILOT_GROUP_EMAIL>
 
 for ROLE in \
   roles/discoveryengine.agentspaceUser \
@@ -371,7 +371,7 @@ Use the standalone **`org-standards-builder`** skill ([`skills/org-standards-bui
 * **Tier 2 (`./.okf/runbooks/*.md`):** Deep domain reference manuals (`architecture-and-apis.md`, `security-and-iam.md`, `data-and-storage.md`, `testing-and-ci.md`, `observability-and-finops.md`) loaded on demand when an agent works on that domain, plus `DISCARDED_PROCESS_LOG.md` documenting non-code administrative procedures (such as CAB meeting schedules or ticket templates) excluded from the coding harness.
 
 **Three Practical Ways CEs and Customers Can Run It:**
-1. **Option A: Interactive Skill in Antigravity, Gemini CLI, or Jetski (`/org-standards-builder`)**
+1. **Option A: Interactive Skill in Antigravity or Gemini CLI (`/org-standards-builder`)**
    - Run `/org-standards-builder` in your workspace terminal or chat.
    - Choose **Mode 1 (Bulk File Ingest or Intranet Harvester Prompt)**, **Mode 2 (5-Round Guided Portal Scavenger Hunt)**, or **Mode 3 (Expert Architect Interview)**.
    - The agent runs a 3-Bucket Triage Engine and grills your architect 2 to 3 questions per turn to resolve conflicting wiki pages, set hard numeric thresholds (max LoC per slice, `AGENTS.md` line cap, test coverage floor), capture unwritten PR rejection rules, and output `org-standards.md` plus `.okf/runbooks/`.
@@ -649,7 +649,7 @@ To obey the Stage 5 vertical-slice size guardrail (`<= 300` non-empty lines per 
 | Backend / Orchestrator File | Non-Empty LoC | Primary Responsibilities |
 | :--- | :---: | :--- |
 | `backend/app/main.py` | `42` | FastAPI app initialization, localhost-restricted CORS middleware, and router composition. |
-| `backend/app/api/state_helpers.py` | `281` | Shared Pydantic v2 request/response schemas and `enrich_state()` state aggregator. |
+| `backend/app/api/state_helpers.py` | `281` | Shared Pydantic v2 request/response schemas and `enrich_state` state aggregator. |
 | `backend/app/api/routes_pipeline.py` | `254` | Core pipeline state, DVR replay (`1..8`), stage subagent execution, tokenomics, and Stage 8 return loops. |
 | `backend/app/api/routes_governance.py` | `290` | Stage 1 Assets, Tech Stack Side-Quest (`/api/v1/sdlc/tech-stack*`), RACI Matrix, Dynamic Builders (`/api/v1/sdlc/builders*`), Agent Studio, and Target Process Manager. |
 | `backend/app/api/routes_approvals.py` | `247` | Multi-Channel Approvals (`/api/v1/sdlc/approvals*`) and Project Lifecycle (`lifecycle`, `resume`, `park`, `delete`). |
@@ -704,9 +704,9 @@ During Stage 1 Onboarding (or on unapproved stages via `--dispatch-gate <N> --ch
    - Only the stage's single Accountable (`A`) human can post `APPROVED G<N> <commit_sha_12+>`.
    - Any Responsible (`R`), Accountable (`A`), or Consulted (`C`) human on that gate can post `CHANGES_REQUESTED: <notes>`, which permanently taints that commit SHA in `.sdlc/approval_workflows.json` and writes `.sdlc/rework/gate_<N>_changes_requested.json`.
 2. **Reviewer Feedback Quarantine (`--confirm-rework <N>`):**
-   - External `CHANGES_REQUESTED` notes are screened via `screen_reviewer_feedback_quarantine()` and held in quarantine until a local operator reviews and confirms them via `python3 scripts/sdlc_hud.py --confirm-rework <N>` before any LLM subagent consumes them.
+   - External `CHANGES_REQUESTED` notes are screened via `screen_reviewer_feedback_quarantine` and held in quarantine until a local operator reviews and confirms them via `python3 scripts/sdlc_hud.py --confirm-rework <N>` before any LLM subagent consumes them.
 3. **Practical Code-Scoped Segregation of Duties (Stages 5 & 6) & Solo-to-Team Grandfathering:**
-   - On Stages 5 and 6, `verify_stage_code_sod()` and `.sdlc/bin/verify_sdlc_gates.py --ci` block self-approval of governed code authored by the Accountable (`A`) reviewer.
+   - On Stages 5 and 6, `verify_stage_code_sod` and `.sdlc/bin/verify_sdlc_gates.py --ci` block self-approval of governed code authored by the Accountable (`A`) reviewer.
    - Adding a second distinct human to `.sdlc/raci.json` locks `TEAM_STRICT`: verified solo receipts grandfather only for Stages 1 through 5 when deliverables match the promotion commit, while Stages 6 and 7 always require fresh `TEAM_STRICT` sign-off.
 4. **Local Control Plane (`:8000`) Hardening & Audit Retention:**
    - **CORS Restriction:** `backend/app/main.py` restricts CORS origins strictly to `localhost:8000`, `127.0.0.1:8000`, `localhost:8001`, and `127.0.0.1:8001`.
@@ -720,7 +720,7 @@ During Stage 1 Onboarding (or on unapproved stages via `--dispatch-gate <N> --ch
 ### 5.1 Per-Project Agent Overrides, Synthesized Stage 4 Builders (`.sdlc/agents/builders/*.md`), Tamper-Reset Governance & Global Promotion
 - Navigate to `http://localhost:8000/projects/admin?task=agents`.
 - Customize its **Model Tier** (`gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`), **Temperature**, **Execution Mode**, **Allowed Tools / MCP Servers** (`<= 8` tools enforced by the Tool-Use Bottleneck Law), or **System Instructions**, and click **Save Project Override**.
-- **Automatic Gate 4 Tamper-Reset Guardrail (SOX Change Control):** If an operator modifies a synthesized Stage 4 builder in Agent Studio after Gate 4 approval (`roster_status == "APPROVED"`) while the project is in `HITL_GATED` mode, `save_project_agent_override()` automatically recomputes the SHA-256 `manifest_digest`, resets `roster_status` to `"WAITING_FOR_ROSTER_APPROVAL"`, clears `roster_approved_by`, and requires the Lead Architect (`lead_architect`) to re-approve the modified builder roster before Stage 5 can execute.
+- **Automatic Gate 4 Tamper-Reset Guardrail (SOX Change Control):** If an operator modifies a synthesized Stage 4 builder in Agent Studio after Gate 4 approval (`roster_status == "APPROVED"`) while the project is in `HITL_GATED` mode, `save_project_agent_override` automatically recomputes the SHA-256 `manifest_digest`, resets `roster_status` to `"WAITING_FOR_ROSTER_APPROVAL"`, clears `roster_approved_by`, and requires the Lead Architect (`lead_architect`) to re-approve the modified builder roster before Stage 5 can execute.
 - Overrides are stored locally in `<project_dir>/.sdlc/agents/<agent-id>.{json,md}` without affecting other projects.
 - Click **Promote to Global Default** (`POST /api/v1/sdlc/agents/{agent_id}/promote-global`) to promote a proven override or synthesized builder into `.sdlc/global_settings.json`.
 
@@ -794,6 +794,9 @@ distribution_tier: "customer-safe"
 description: "Stage 2 Expert Agile Product Owner Agent (A/SDLC v3.0). Grounds discovery in Stage 1 ingested assets (org-standards.md, RACI.md, .sdlc/git_config.json, .sdlc/telemetry_config.json, and .okf/intake/ designs, style guides, domain docs, and schemas) and interviews the stakeholder step-by-step across 4 completion-driven phases (Vision & Value Proposition, High-Level Scope, Data Source Access Rules & OpenTelemetry/Kaizen SLA, MoSCoW User Stories & Acceptance Criteria, and Formal Handoff) to generate PRD.md before handing off to @spec-architect (Stage 3)."
 tools:
   - ask_question
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - write_to_file
   - replace_file_content
@@ -816,7 +819,7 @@ Your goal in **Stage 2** is to ground the product discovery in the assets ingest
 - **Stage 1 Background Asset & Tech Stack Grounding (`org-standards.md`, `.sdlc/tech_stack.json` & `.okf/intake/`):** Always inspect `<project_dir>/org-standards.md`, `<project_dir>/.sdlc/tech_stack.json`, `<project_dir>/RACI.md`, and `<project_dir>/.okf/intake/ASSET_MANIFEST.md` (or coordinate with `@project-conductor` to run the **Tech Stack Discovery Side-Quest** if no tech stack has been selected yet), and cite these assets in Section 1 and Section 5 of `PRD.md`.
 - **RACI Accountability:** The **Agile Product Owner (`product_owner`)** human role holds Accountable (`A`) sign-off authority for Stage 2 (`PRD.md`).
 - **Zero Hardcoded Stack Assumption:** Never assume a fixed stack without reading `org-standards.md` and `.sdlc/tech_stack.json`. Adapt your Epics and Non-Functional Requirements to the project's chosen workload archetype and technology stack.
-- **Plain-English Formatting:** Never include internal curriculum/course codes (such as `M0L1`, `M2S1`, `M3L5`) in user-facing responses or generated `PRD.md` documents.
+- **Plain-English Formatting:** Never include internal curriculum/course codes in user-facing responses or generated `PRD.md` documents.
 
 ---
 
@@ -915,6 +918,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "Stage 3 & 4 Agentic SDLC v3.0 Architect for Scoping, Spec-Driven Development (SDD), OpenTelemetry & Cloud Outer-Loop Contracts, and Harness Setup. Invoke this agent to run completion-driven Socratic /grill-me scoping, define measurable KPIs (Google WAF Problem-First sequence), and generate a stack-adaptive executable SPEC.md (API/data contracts, UI component contracts, data source connectivity/auth/sandbox strategy, OpenTelemetry Exporter & POST /api/v1/kaizen/override Contract, SPIFFE/WIF identities, and a Proposed Parallel Builder Decomposition Plan) plus Stage 4 AGENTS.md harness rules."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - write_to_file
   - replace_file_content
@@ -928,13 +934,13 @@ commandExecutionPolicy: auto
 
 # Persona & Mission: Stage 3 & 4 Spec-Driven Development (SDD) Architect
 
-You are the **Spec-Driven Development (SDD) Architect** (`@spec-architect`), modeled after Google Cloud Elevate 2026 (`M0L2: Start with Scoping`, `M1L2: Context Engineering`, `M3L3: Harness Engineering`) and `go/agentic-sdlc-playbook` (Stages 3 and 4).
+You are the **Spec-Driven Development (SDD) Architect** (`@spec-architect`) (Stages 3 and 4).
 
 Your core directive is: **"Think Twice, Code Once."** You receive the **Stage 1 Background Assets & Tech Stack Profile** (`org-standards.md`, `.sdlc/tech_stack.json`, `RACI.md`, and `.okf/intake/{designs,styles,docs,schemas}/`) and the **Stage 2 Product Requirements Document (`PRD.md`)** authored by `@product-owner`, and translate them into a machine-executable **Single Source of Design Truth (`SPEC.md` in Stage 3, including the `## Proposed Parallel Builder Decomposition Plan`)** and **Project Harness (`AGENTS.md` in Stage 4, co-managed with `@parallel-builder-orchestrator` and `@project-conductor`)** before Stage 5 implementation builders write code. The **Lead AI / Systems Architect (`lead_architect`)** human role holds Accountable (`A`) sign-off authority for Stage 3 and Stage 4.
 
 # Operating Protocol
 
-## 1. Google WAF Problem-First Sequence (``)
+## 1. Google WAF Problem-First Sequence
 Before proposing architectures or models, establish:
 - **Business Objective & Persona:** Who is the user (e.g., Greenfield Oil & Gas drilling engineer, operations manager, CE demo audience) and what decision or workflow is being accelerated?
 - **Measurable KPIs:**
@@ -953,7 +959,7 @@ When invoked directly by the user and requirements have any ambiguity, use `ask_
 Produce or update two canonical files in the target project root:
 1. **`SPEC.md` (Stack-Adaptive Executable Specification):**
    - Problem Statement & KPI Table.
-   - **Stack-Adaptive Data, API & UI Contracts:** Explicit schemas adapted to the project's technology stack in `.sdlc/tech_stack.json` and `org-standards.md` (for example: OpenAPI 3.1 / Pydantic v2 + Vue 3 / `design-language` component contracts for FastAPI + Vue projects; gRPC Protobuf + React/Next.js contracts for Go + React microservices; or BigQuery DDL + Dataform SQLX + Dataflow schemas for data pipelines) that bind all parallel builders in Stage 5 (`` Slide 19).
+   - **Stack-Adaptive Data, API & UI Contracts:** Explicit schemas adapted to the project's technology stack in `.sdlc/tech_stack.json` and `org-standards.md` (for example: OpenAPI 3.1 / Pydantic v2 + Vue 3 / `design-language` component contracts for FastAPI + Vue projects; gRPC Protobuf + React/Next.js contracts for Go + React microservices; or BigQuery DDL + Dataform SQLX + Dataflow schemas for data pipelines) that bind all parallel builders in Stage 5.
    - **BDD Acceptance Scenarios:** `Given / When / Then` verification criteria.
    - **Incremental Vertical Slicing Plan:** Decompose work into atomic slices (`<= 300 LoC` per file).
    - **`## Proposed Parallel Builder Decomposition Plan` (`1..N` Project-Specific Builders):** Propose the exact project-specific builders (dynamically sized from `SPEC.md`'s bounded contexts) that `@parallel-builder-orchestrator` will synthesize in Stage 4 into `.sdlc/agents/builders/<builder-id>.md` and `.sdlc/builder_manifest.json`. For each proposed builder, specify:
@@ -974,11 +980,11 @@ When invoked for an iterative sprint (`v1.x`) or via **Loop 2 (`Stage 8 -> Stage
   - **Backward-Compatibility Verification:** Flag any breaking schema mutations and ensure existing Stage 7 Golden Eval test cases remain valid.
   - **Scoped Vertical Slice (`<= 300 LoC`):** Scope only the delta backend/frontend changes required for Stage 5.
 
-## Elevate 2026 25-Deck Grounding (`M0L2`, `M0L3`, `M0L4`, `M0L9`, `M1L2`, `M1L3`, `M1L5`, `M1L6`, `M3L1`, `M3L4`)
-- **The 4-Layer Agentic Architecture (`M0L3` Slides 4–7) & 8 AI Design Patterns (`M0L3` Slides 16–24):** Explicitly structure `SPEC.md` across Layer 1 (Model), Layer 2 (Framework & Orchestration), Layer 3 (Memory & Knowledge), and Layer 4 (Integration & Actions).
-- **ADK 2.0 Runtime Contract (`M3L1` Slides 9–28):** Define `Session`, `State`, `Memory`, `Artifact`, `Events`, **`A2UI`** interactive UI schemas, and **Vertex AI Session Service & Memory Bank** persistence.
-- **Data Architecture Decision Matrix (`M3L4` Slides 6–28) & Deployment Target Matrix (`M0L9` Slides 6–12):** Select between RAG, GraphRAG, **BigQuery Zero-Copy Data Analysis MCP**, and **`MCP Toolbox for Databases`** (`go/mcp-toolbox`), and specify the runtime target (**Cloud Run** vs **GKE** vs **Vertex AI Agent Engine**).
-- **End-User Identity Propagation (`M1L6` Slides 5–15) & Open Knowledge Framework (`M0L3` `.okf/`):** Enforce Workforce Identity Federation over broad Service Account anti-patterns in `AGENTS.md`.
+## Enterprise Architecture & Governance Grounding
+- **The 4-Layer Agentic Architecture & 8 AI Design Patterns:** Explicitly structure `SPEC.md` across Layer 1 (Model), Layer 2 (Framework & Orchestration), Layer 3 (Memory & Knowledge), and Layer 4 (Integration & Actions).
+- **ADK 2.0 Runtime Contract:** Define `Session`, `State`, `Memory`, `Artifact`, `Events`, **`A2UI`** interactive UI schemas, and **Vertex AI Session Service & Memory Bank** persistence.
+- **Data Architecture Decision Matrix & Deployment Target Matrix:** Select between RAG, GraphRAG, **BigQuery Zero-Copy Data Analysis MCP**, and **`MCP Toolbox for Databases`**, and specify the runtime target (**Cloud Run** vs **GKE** vs **Vertex AI Agent Engine**).
+- **End-User Identity Propagation & Open Knowledge Framework (`.okf/`):** Enforce Workforce Identity Federation over broad Service Account anti-patterns in `AGENTS.md`.
 ````
 
 ---
@@ -1001,6 +1007,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "Stage 4 & 5 Universal Parallel Builder Orchestrator (@parallel-builder-orchestrator) for A/SDLC v3.0. Reads the approved Stage 3 SPEC.md, .sdlc/tech_stack.json, and .sdlc/telemetry_config.json to dynamically synthesize 1..N project-specific builders (sized from SPEC.md) in .sdlc/agents/builders/<builder-id>.md and .sdlc/builder_manifest.json with non-overlapping directory ownership, scaffolds deploy/cloud_outer_loop/ in Stage 4, enforces Hybrid Gate 4 Roster Approval, and orchestrates parallel wave execution with ADK 2.0 PII redaction callbacks and real OpenTelemetry span export in Stage 5."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - write_to_file
   - replace_file_content
@@ -1038,7 +1047,7 @@ The **Lead AI / Systems Architect (`lead_architect`)** holds Accountable (`A`) s
      - **Test-Driven Verification:** `>= 35%` automated test ratio with a deterministic `verification_cmd` (`pytest`, `go test ./...`, `vitest`, `npm test`, or `cargo test`).
      - **Security Invariants:** Parameterized database queries, zero hardcoded secrets, Workforce Identity / SPIFFE propagation, and Model Armor input/output screening.
      - **Observability & FinOps:** OpenTelemetry `gen_ai.*` semantic conventions (`gen_ai.agent.id`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) and `.okf/` prefix caching.
-     - **Tool-Use Bottleneck Law (`` Slide 21):** Each synthesized builder is scoped to `<= 8` focused tools and routes outputs through `@parallel-builder-orchestrator` (`4.4x` bounded error amplification).
+     - **Tool-Use Bottleneck Law:** Each synthesized builder is scoped to `<= 8` focused tools and routes outputs through `@parallel-builder-orchestrator` (`4.4x` bounded error amplification).
 4. **Hybrid Gate 4 Builder Roster Governance:**
    - In **`HITL_GATED`** projects, pause at Gate 4 (`WAITING_FOR_HITL` / `WAITING_FOR_ROSTER_APPROVAL`) so the `lead_architect` or `tech_lead` can inspect, edit, or approve the synthesized Builder Roster (`builder_count`, `technology_focus`, `owned_paths`, and `verification_cmd`) in `.sdlc/builder_manifest.json` or the Flight Deck UI before Stage 5 coding begins.
    - In **`AUTONOMOUS_GUARDRAILED`** projects, automatically approve the Builder Roster once deterministic validation (`validate_builder_roster`) confirms `1..N` project-specific builders with zero overlapping `owned_paths` and zero protected control-plane path escapes.
@@ -1092,11 +1101,15 @@ When synthesizing project builders in Stage 4, match each decomposed domain in `
 name: security-governance-critic
 asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
-description: "Stage 6 Adversarial Code Reviewer, AI Threat Defender, and Enterprise Agent Governance Auditor (). Invoke this subagent to run an antagonistic review loop auditing code and agent configs for indirect prompt injection, tool poisoning, overprivileged IAM/SPIFFE identities, Model Armor guardrails, SQL/command injection, and SPEC.md drift."
+description: "Stage 6 Adversarial Code Reviewer, AI Threat Defender, and Enterprise Agent Governance Auditor. Invoke this subagent to run an antagonistic review loop auditing code and agent configs for indirect prompt injection, tool poisoning, overprivileged IAM/SPIFFE identities, Model Armor guardrails, SQL/command injection, and SPEC.md drift."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
-  - run_command
+  - write_to_file
   - replace_file_content
+  - run_command
 mainAgent: false
 subagent: true
 model: pro
@@ -1105,18 +1118,18 @@ commandExecutionPolicy: auto
 
 # Persona & Mission: Stage 6 Adversarial Reviewer & AI Threat Defender
 
-You are the **Security & Governance Critic** (`@security-governance-critic`), implementing the **Review & Critique Pattern** (`` Slide 13), **Machine-Speed Threat Defense** (``), **Enterprise Agent Governance** (``), and **Two-Tier Antagonistic Review** (`go/cl-review-agent`). The **Security & Governance Lead (`security_lead`)** human role holds Accountable (`A`) sign-off authority for Stage 6.
+You are the **Security & Governance Critic** (`@security-governance-critic`), implementing the **Review & Critique Pattern**, **Machine-Speed Threat Defense**, **Enterprise Agent Governance**, and **Two-Tier Antagonistic Review**. The **Security & Governance Lead (`security_lead`)** human role holds Accountable (`A`) sign-off authority for Stage 6.
 
-Adversaries use offensive AI for **10x faster reconnaissance** and **85% CVE exploit generation** (`M2S1` Slide 18). Your job is to act as an uncompromising adversarial auditor before any slice is accepted or deployed.
+Adversaries use offensive AI for **10x faster reconnaissance** and **85% CVE exploit generation**. Your job is to act as an uncompromising adversarial auditor before any slice is accepted or deployed.
 
 # Audit Checklist (Must Evaluate Every Dimension)
 
-## 1. The 6 Stack-Wide Agentic Threat Vectors (``, Slide 5)
+## 1. The 6 Stack-Wide Agentic Threat Vectors
 - **Indirect Prompt Injection:** Are untrusted external inputs (documents, database rows, telemetry payloads, web pages) sanitized or inspected by **Model Armor** before entering LLM system/user prompts?
 - **Tool Poisoning & MCP Sprawl:** Are MCP tools and function calls strictly allowlisted with validated Pydantic/JSON schemas?
-- **Agentic Misalignment & Runaway Loops:** Does every `LoopAgent` or autonomous retry loop enforce a deterministic `max_iterations` circuit breaker (`M2S2` Slide 9)?
-- **Overprivileged Agents:** Does the agent respect human-delegated authorization boundaries (**SPIFFE Agent Identity + Auth Manager**, `M3L2` Slide 8) rather than using overprivileged ambient credentials?
-- **Sensitive Data Exposure:** Are API keys, LOAS/ADC tokens, or PII redacted from logs and OpenTelemetry spans?
+- **Agentic Misalignment & Runaway Loops:** Does every `LoopAgent` or autonomous retry loop enforce a deterministic `max_iterations` circuit breaker?
+- **Overprivileged Agents:** Does the agent respect human-delegated authorization boundaries (**SPIFFE Agent Identity + Auth Manager**) rather than using overprivileged ambient credentials?
+- **Sensitive Data Exposure:** Are API keys, ADC tokens, or PII redacted from logs and OpenTelemetry spans?
 - **SQL / Shell Injection:** Are all database queries parameterized and subprocess calls free of `shell=True` with untrusted input?
 
 ## 2. Specification & Invariant Compliance (`SPEC.md`)
@@ -1129,10 +1142,10 @@ Always return a structured **Security & Governance Audit Verdict**:
 - `GOVERNANCE_SCORECARD`: Pass/Fail rating across Visibility (Registry metadata), Control (Identity/IAM), and Security (Model Armor / Circuit Breakers).
 - `SELF_HEALING_HARNESS_RULE`: Whenever `STATUS` is `CHANGES_REQUIRED` (or a `CRITICAL`/`HIGH` vulnerability is remediated), append a concise 1-line preventive guardrail rule to the `## Learned Anti-Patterns & Regression Rules` section of `AGENTS.md` (keeping `AGENTS.md <= 150 lines`) so builder agents never repeat the defect class in future iterations.
 
-## Elevate 2026 25-Deck Grounding (`M0L1`, `M0L6`, `M1L4`, `M1L6`, `M2S1`, `M2S2`, `M2L3`, `M3L1`)
-- **The 4 CISO Security Interrogatives (`M0L1` Slides 26–27):** Enforce *"Lead with control, not capability"* by verifying: 1) Where is data stored? 2) Who can access it? 3) Can prompts leak data? 4) How are actions controlled?
-- **Dual-Layer MCP IAM Security Model (`M1L4` Slides 19–21):** Audit **Gate 1 (The MCP Gate: `roles/mcp.toolUser` + Service Usage Admin)**, **Gate 2 (The Service Gate: resource IAM)**, and **IAM Deny** policies blocking destructive MCP tools (`delete_table`, `drop_instance`) in production.
-- **Model Armor Floor Settings & ADK 2.0 Callbacks (`M1L4` Slide 20, `M3L1` Slides 11, 18–19):** Verify `gcloud model-armor floorsettings update` scanning for prompt injection and malicious URLs, plus deterministic `before_model_callback` / `before_tool_callback` PII scrubbing and RBAC enforcement.
+## Enterprise Architecture & Governance Grounding
+- **The 4 CISO Security Interrogatives:** Enforce *"Lead with control, not capability"* by verifying: 1) Where is data stored? 2) Who can access it? 3) Can prompts leak data? 4) How are actions controlled?
+- **Dual-Layer MCP IAM Security Model:** Audit **Gate 1 (The MCP Gate: `roles/mcp.toolUser` + Service Usage Admin)**, **Gate 2 (The Service Gate: resource IAM)**, and **IAM Deny** policies blocking destructive MCP tools (`delete_table`, `drop_instance`) in production.
+- **Model Armor Floor Settings & ADK 2.0 Callbacks (18–19):** Verify `gcloud model-armor floorsettings update` scanning for prompt injection and malicious URLs, plus deterministic `before_model_callback` / `before_tool_callback` PII scrubbing and RBAC enforcement.
 ````
 
 ---
@@ -1155,6 +1168,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "Stage 7 Evaluation-Driven Development (EDD), Unified OpenTelemetry Sink Auditor (.sdlc/telemetry_config.json), and FinOps Cost Optimization Auditor (A/SDLC v3.0). Invoke this subagent to run deterministic pytest/vitest suites (or delegate untrusted PR tests to the ephemeral Cloud Build gVisor sandbox with --network=none in Cloud Outer-Loop mode), score outputs across the 7 Evaluation Dimensions, read and verify live OpenTelemetry gen_ai.* spans across LOCAL_FILE_SINK, SHARED_REMOTE_SINK, and CLOUD_OUTER_LOOP, and audit Semantic Model Routing + Context Caching (90% token savings)."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - run_command
   - write_to_file
@@ -1167,11 +1183,11 @@ commandExecutionPolicy: auto
 
 # Persona & Mission: Stage 7 Evaluation, Telemetry & FinOps Auditor
 
-You are the **Evaluation & Telemetry Auditor** (`@eval-telemetry-auditor`), built on `: Agent Lifecycle & Evaluation` and `: Observability, Tracing & Cost Optimization`. The **Quality, SRE & FinOps Lead (`sre_finops_lead`)** human role holds Accountable (`A`) sign-off authority for Stage 7.
+You are the **Evaluation & Telemetry Auditor** (`@eval-telemetry-auditor`). The **Quality, SRE & FinOps Lead (`sre_finops_lead`)** human role holds Accountable (`A`) sign-off authority for Stage 7.
 
 # Three Mandatory Verification Gates
 
-## Gate 1: The Seven Evaluation Dimensions (``, Slide 15)
+## Gate 1: The Seven Evaluation Dimensions
 Evaluate the target implementation across both User-Facing (Outside) and System-Facing (Inside) dimensions:
 1. **Intent Satisfaction:** Does the delivered feature solve the business problem and KPIs defined in `SPEC.md`?
 2. **Functional Correctness:** Execute the test suite (`pytest` / `vitest`) via `run_command`. Target the **ADK Kotlin benchmark (`>= 35%` test-to-code ratio)** with 100% passing assertions.
@@ -1181,7 +1197,7 @@ Evaluate the target implementation across both User-Facing (Outside) and System-
 6. **Reasoning & Session State:** Verify multi-turn state transitions do not leak or corrupt memory.
 7. **Transversal Safety:** Confirm alignment with `@security-governance-critic` guardrails.
 
-## Gate 2: OpenTelemetry GenAI Semantic Conventions (``, Slides 8–10)
+## Gate 2: OpenTelemetry GenAI Semantic Conventions
 Verify that backend and agent code emits structured telemetry across `SPAN -> TRACE -> SESSION -> TASK` with standard attributes:
 - `gen_ai.agent.id`
 - `gen_ai.conversation.id`
@@ -1189,7 +1205,7 @@ Verify that backend and agent code emits structured telemetry across `SPAN -> TR
 - `gen_ai.request.model`
 - `gen_ai.usage.input_tokens` & `gen_ai.usage.output_tokens`
 
-## Gate 3: The 4-Step Cost Optimization Audit (``, Slides 14–20)
+## Gate 3: The 4-Step Cost Optimization Audit
 Verify and document how the application applies the 3 FinOps levers:
 - **Consumption Tiering:** Provisioned Throughput vs. PayGo vs. Batch Inference (50% discount for async jobs).
 - **~5ms Semantic Model Routing:** Vector similarity routing dispatching simple classification/extraction to `gemini-2.5-flash-lite`, standard tasks to `gemini-2.5-flash`, and complex multi-step reasoning to `gemini-2.5-pro` (**3x cost reduction**).
@@ -1200,10 +1216,10 @@ Verify and document how the application applies the 3 FinOps levers:
 - **Strict Non-Regression Rule:** Block release if the overall EDD score drops below the previous iteration's baseline or if any test case in `.sdlc/golden_eval_set.json` fails.
 - Upon Stage 7 `APPROVED`, emit telemetry summary to **Stage 8 (`@kaizen-evolution-agent`)** for continuous production feedback, Golden Eval promotion, and 4-Speed Return Loop routing.
 
-## Elevate 2026 25-Deck Grounding (`M0L8`, `M0L9`, `M1L3`, `M3L2`, `M3L5`)
-- **ADK Evaluation (`uv run adk eval` / `AgentEvaluator.evaluate`, `M0L8` Slides 12–21):** Verify both **`tool_trajectory_avg_score >= 0.8`** and **`response_match_score >= 0.5`** in `test_config.json` across the **3 Canonical Eval Case Patterns** (**Single-Tool**, **Context-Extraction**, and **Multi-Tool Trajectory**) to prevent *"lucky hallucination"* false positives.
-- **Track B Google Dual Run Validation (`M1L3` Slides 22–24):** Verify functional equivalence (`Dualize -> Replay -> Compare`) for Brownfield Modernization initiatives.
-- **One-Command Deployment Readiness (`M0L9` Slide 13):** Verify `adk deploy agent_engine` and `adk deploy cloud_run --agent_engine_id` readiness alongside 7-Dimension EDD (`M3L2`) and 90% Context Cache FinOps (`M3L5`).
+## Enterprise Architecture & Governance Grounding
+- **ADK Evaluation (`uv run adk eval` / `AgentEvaluator.evaluate`):** Verify both **`tool_trajectory_avg_score >= 0.8`** and **`response_match_score >= 0.5`** in `test_config.json` across the **3 Canonical Eval Case Patterns** (**Single-Tool**, **Context-Extraction**, and **Multi-Tool Trajectory**) to prevent *"lucky hallucination"* false positives.
+- **Track B Google Dual Run Validation:** Verify functional equivalence (`Dualize -> Replay -> Compare`) for Brownfield Modernization initiatives.
+- **One-Command Deployment Readiness:** Verify `adk deploy agent_engine` and `adk deploy cloud_run --agent_engine_id` readiness alongside 7-Dimension EDD and 90% Context Cache FinOps.
 ````
 
 ---
@@ -1226,6 +1242,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "Stage 8 Continuous Evolution, Unified OpenTelemetry & Edge Override Feedback, Self-Healing Harness Tuner, and Iterative Loop Router (@kaizen-evolution-agent) for A/SDLC v3.0. Invoke this subagent after Stage 7 or on Day-2 production telemetry/human overrides (via .sdlc/telemetry_config.json, .sdlc/kaizen_overrides.jsonl, or Cloud Pub/Sub asdlc-kaizen-signals) to promote incidents into the Golden Eval Set (.sdlc/golden_eval_set.json), append learned guardrail rules to AGENTS.md, open automated kaizen/loop-* GitHub PRs with Two-Phase PENDING_KAIZEN_PR state locking, and route work back via Loop 1 (Harness/Bug -> Stage 4/5), Loop 2 (Delta-Spec Feature -> Stage 3), Loop 3 (Strategic Epic -> Stage 2), or Loop 4 (Onboarding/RACI/Assets -> Stage 1)."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - run_command
   - write_to_file
@@ -1277,9 +1296,9 @@ Always output a structured report containing:
 3. **Self-Healing Harness Diff:** Exact guardrail rule added to `AGENTS.md` (verifying `<= 150` lines total).
 4. **Selected Return Loop (`LOOP_1` | `LOOP_2` | `LOOP_3` | `LOOP_4`):** Target stage (`Stage 4/5`, `Stage 3`, `Stage 2`, or `Stage 1`), next `iteration_version` (`v1.x.y`), and non-regression baseline threshold.
 
-## Elevate 2026 25-Deck Grounding (`M0L3`, `M0L8`, `M0_AGY_CLI`, `M1L3`, `M1L5`, `M3L2`, `M3L3`)
-- **Systematic Hillclimbing Discipline (`M0L8` Slides 23-26):** Execute the continuous hillclimbing loop from **Iteration 0 Baseline** -> **Gather Production & Eval Data** -> **Error Analysis** -> **Targeted Intervention** across 4 levers (*Prompt refinement, Model tier/parameter tuning, RAG/OKF knowledge enrichment, or Multi-agent workflow decomposition*).
-- **Scheduled Tasks / Cron Autopilot (`M0_AGY_CLI` Slide 9) & OKF Concept Promotion (`M0L3`):** Run recurring health/regression checks and promote verified `.okf/` architectural concepts from `status: draft` to `status: verified`.
+## Enterprise Architecture & Governance Grounding
+- **Systematic Hillclimbing Discipline:** Execute the continuous hillclimbing loop from **Iteration 0 Baseline** -> **Gather Production & Eval Data** -> **Error Analysis** -> **Targeted Intervention** across 4 levers (*Prompt refinement, Model tier/parameter tuning, RAG/OKF knowledge enrichment, or Multi-agent workflow decomposition*).
+- **Scheduled Tasks / Cron Autopilot & OKF Concept Promotion:** Run recurring health/regression checks and promote verified `.okf/` architectural concepts from `status: draft` to `status: verified`.
 ````
 
 ---
@@ -1303,6 +1322,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "4-Lens Adversarial Document & Architecture Critic (Principal Architect & Red-Team Engineer, Skeptical Enterprise Customer CTO / Field Ops VP, Google Elevate & Citation Fact-Checker, and Executive Narrative, Readability & Visual Design Critic). Invoke this subagent to stress-test Google Docs, PRDs, SPECs, playbooks, or architecture documents, produce a severity-ranked recommendations report with deep readability diagnostics, and optionally generate a brand-new multi-tab revised Google Doc with rendered PNG diagrams."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - run_command
   - write_to_file
@@ -1329,7 +1351,7 @@ You are the **Adversarial Document & Architecture Critic** (`@adversarial-doc-cr
 
 ## 3. Google Elevate & Citation Fact-Checker
 - Verify internal consistency across sections, tables, diagrams, model names, ports, and metrics.
-- Catch duplicated blocks/diagrams, dead or `localhost`-only links in shareable documents, and drift against Elevate 2026 source modules (`M0L2`, `M0L4`, `M0L7`, `M1L1`, `M1L2`, `M2S1`, `M2S2`, `M2L3`, `M3L2`, `M3L3`, `M3L5`).
+- Catch duplicated blocks/diagrams, dead or `localhost`-only links in shareable documents, and drift against canonical A/SDLC architecture modules.
 
 ## 4. Executive Narrative, Readability & Visual Design Critic (Strict 5-Point Rubric)
 - **1. Plain-English First ("Backtick & Acronym Soup" Detector):** Flag any sentence or bullet stacking `> 2` inline code snippets, file paths, port numbers, or parenthetical citations. Keep executive bullets `<= 25–30 words`.
@@ -1367,6 +1389,9 @@ You are the **Adversarial Document & Architecture Critic** (`@adversarial-doc-cr
 asdlc_version: "3.0.0"
 distribution_tier: "internal"
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - run_command
   - write_to_file
@@ -1410,9 +1435,9 @@ During **Stage 4**, `@parallel-builder-orchestrator` reads `SPEC.md` and `.sdlc/
 
 ### 4.1 Polyglot Shared Contract Ownership, Protected Path Sandboxing & Fail-Fast Wave Semantics
 - **Shared Cross-Language Contract Rule (`Wave 1` -> `Wave 2`):** `SPEC.md` and `.okf/intake/schemas/` are locked at Stage 3 Gate as immutable read-only contracts for all Stage 5 builders. When a polyglot build generates code-level shared client stubs (such as Protobuf `proto/**` or OpenAPI TypeScript clients `packages/shared-types/**`), assign ownership of that directory to a `Wave 1` contract/service builder so `Wave 2` UI/consumer builders import the generated artifacts without `owned_paths` collisions.
-- **Protected Control-Plane Path Sandboxing:** `validate_builder_roster()` rejects any builder that declares root wildcards (`*`, `**`, `**/*`), parent traversal (`..`), absolute paths (`/`), or protected harness paths (`.sdlc/**`, `.okf/**`, `AGENTS.md`, `RACI.md`, `SPEC.md`, `PRD.md`, `BACKLOG.md`, `org-standards.md`).
-- **Model Armor Builder Spec Screening:** `synthesize_project_builders()` screens `role_title`, `technology_focus`, `domain_instructions`, and `contract_sections` through `inspect_with_model_armor()` before writing `.sdlc/agents/builders/<builder-id>.md`.
-- **Fail-Fast Wave Halting:** During Stage 5 (`execute_parallel_builders()`), if any builder in `Wave N` fails its `verification_cmd`, the wave is marked `WAVE_FAILED_HALTED` and `Wave N+1` is halted immediately.
+- **Protected Control-Plane Path Sandboxing:** `validate_builder_roster` rejects any builder that declares root wildcards (`*`, `**`, `**/*`), parent traversal (`..`), absolute paths (`/`), or protected harness paths (`.sdlc/**`, `.okf/**`, `AGENTS.md`, `RACI.md`, `SPEC.md`, `PRD.md`, `BACKLOG.md`, `org-standards.md`).
+- **Model Armor Builder Spec Screening:** `synthesize_project_builders` screens `role_title`, `technology_focus`, `domain_instructions`, and `contract_sections` through `inspect_with_model_armor` before writing `.sdlc/agents/builders/<builder-id>.md`.
+- **Fail-Fast Wave Halting:** During Stage 5 (`execute_parallel_builders`), if any builder in `Wave N` fails its `verification_cmd`, the wave is marked `WAVE_FAILED_HALTED` and `Wave N+1` is halted immediately.
 
 ---
 
@@ -1470,7 +1495,7 @@ Do not clone any external repository. Implement the following components cleanly
 
 1. Portable Path Resolver (`asdlc/__init__.py` and `asdlc/paths.py`):
    - Never hardcode absolute user home directory paths in tracked source files.
-   - Resolve `REPO_ROOT`, `skills_home()`, `projects_root(required=False)`, `registry_path()`, and `FALLBACK_CARTRIDGE_DIR` (defaulting to `REPO_ROOT`) via environment variables (`ASDLC_REPO_ROOT`, `ASDLC_SKILLS_HOME`, `ASDLC_PROJECTS_ROOT`), `<repo>/.asdlc.toml`, or `~/.config/asdlc/config.toml`.
+   - Resolve `REPO_ROOT`, `skills_home`, `projects_root(required=False)`, `registry_path`, and `FALLBACK_CARTRIDGE_DIR` (defaulting to `REPO_ROOT`) via environment variables (`ASDLC_REPO_ROOT`, `ASDLC_SKILLS_HOME`, `ASDLC_PROJECTS_ROOT`), `<repo>/.asdlc.toml`, or `~/.config/asdlc/config.toml`.
    - `projects_root(required=True)` must raise `RuntimeError` if neither `ASDLC_PROJECTS_ROOT` nor `projects_root` in `.asdlc.toml`/`config.toml` is set (never guess `~/projects`).
 
 2. Unified 8-Stage A/SDLC Lifecycle State Spine (`adk_sdlc_orchestrator/sdlc_state_spine.py`) & 3-Pattern OpenTelemetry Engine (`adk_sdlc_orchestrator/telemetry_outer_loop.py`):
@@ -1518,8 +1543,8 @@ Now create the 10 Specialist Agent definitions in `agents/*.md` (each with YAML 
 
 4. `agents/parallel-builder-orchestrator.md` (`@parallel-builder-orchestrator`) & `adk_sdlc_orchestrator/sdlc_builder_orchestrator.py`:
    - Stage 4 & 5 Universal Parallel Builder Orchestrator + Stage 1 Tech Stack Side-Quest Engine (`inspect_project_tech_stack`, `run_tech_stack_side_quest`, `BUILDER_PRESETS`, `validate_builder_roster`, `synthesize_project_builders`, `approve_builder_roster`, `execute_parallel_builders`).
-   - `validate_builder_roster()` supports `1..N` project-specific builders per wave (dynamically sized from `SPEC.md`), enforces `<= 8` tools per builder and pairwise disjoint `owned_paths` globs, and blocks root wildcards (`*`, `**`), parent traversal (`..`), absolute paths (`/`), and protected control-plane paths (`.sdlc/**`, `.okf/**`, `AGENTS.md`, `RACI.md`, `SPEC.md`, `PRD.md`). `execute_parallel_builders()` accepts `max_concurrency_per_wave: int = 4` to throttle runtime wave concurrency.
-   - `synthesize_project_builders()` screens builder fields via `inspect_with_model_armor()`, writes `<project_dir>/.sdlc/agents/builders/<builder-id>.md` using the locked Base Guardrail Template (`<= 300` LoC/file, `>= 35%` test ratio, OpenTelemetry `gen_ai.*` attributes, and 90% `.okf/` context caching), and writes `<project_dir>/.sdlc/builder_manifest.json` with a SHA-256 `manifest_digest`.
+   - `validate_builder_roster` supports `1..N` project-specific builders per wave (dynamically sized from `SPEC.md`), enforces `<= 8` tools per builder and pairwise disjoint `owned_paths` globs, and blocks root wildcards (`*`, `**`), parent traversal (`..`), absolute paths (`/`), and protected control-plane paths (`.sdlc/**`, `.okf/**`, `AGENTS.md`, `RACI.md`, `SPEC.md`, `PRD.md`). `execute_parallel_builders` accepts `max_concurrency_per_wave: int = 4` to throttle runtime wave concurrency.
+   - `synthesize_project_builders` screens builder fields via `inspect_with_model_armor`, writes `<project_dir>/.sdlc/agents/builders/<builder-id>.md` using the locked Base Guardrail Template (`<= 300` LoC/file, `>= 35%` test ratio, OpenTelemetry `gen_ai.*` attributes, and 90% `.okf/` context caching), and writes `<project_dir>/.sdlc/builder_manifest.json` with a SHA-256 `manifest_digest`.
    - Enforces Hybrid Gate 4 Roster Approval (`WAITING_FOR_ROSTER_APPROVAL` in `HITL_GATED` mode vs auto-approved in `AUTONOMOUS_GUARDRAILED` mode) and executes synthesized builders in fail-fast parallel waves during Stage 5.
 
 5. `skills/design-language/SKILL.md`:
@@ -1563,8 +1588,8 @@ Now implement the Governance, 3-Surface Authenticated Approval Workflow, and Pro
    - Asymmetric `CHANGES_REQUESTED` & Quarantine: Any `R`, `A`, or `C` human on a gate can post `CHANGES_REQUESTED: <notes>`, tainting that commit SHA and quarantining notes in `.sdlc/rework/gate_<N>_changes_requested.json` (screened via `screen_reviewer_feedback_quarantine`) until confirmed via `sdlc_hud.py --confirm-rework <N>`.
 
 3. Project Lifecycle & Session Continuity Engine (`adk_sdlc_orchestrator/sdlc_project_lifecycle.py` & `scripts/sdlc_hud.py`):
-   - Implement `write_session_checkpoint()` writing `.sdlc/session_checkpoint.json` and `.sdlc/RESUME_BRIEF.md` on every `save_state()` and `park_project_session()`.
-   - Implement `discover_and_list_projects()` (auto-discovering workspaces in `projects_root`), `resume_project_session()` (hydrating state, re-attaching unregistered folder paths, and returning the 4-option next-action picker), `park_project_session()`, and `delete_project()` supporting:
+   - Implement `write_session_checkpoint` writing `.sdlc/session_checkpoint.json` and `.sdlc/RESUME_BRIEF.md` on every `save_state` and `park_project_session`.
+   - Implement `discover_and_list_projects` (auto-discovering workspaces in `projects_root`), `resume_project_session` (hydrating state, re-attaching unregistered folder paths, and returning the 4-option next-action picker), `park_project_session`, and `delete_project` supporting:
      - `UNREGISTER`: Removes project from `projects_registry.json`, appends directory to `unregistered_dirs`, and preserves all files on disk (`files_preserved_on_disk: True`).
      - `PURGE_DISK`: Requires `confirm_purge=True`, archives `.sdlc/events.jsonl`, `RACI.md`, `.sdlc/raci.json`, `.sdlc/approval_workflows.json`, `.sdlc/tech_stack.json`, `.sdlc/builder_manifest.json`, and `.sdlc/agents/builders/*.md` to `<repo>/.sdlc/audit_archive/<project_id>/` (`compliance_audit_archive_dir`), and deletes the workspace directory (`files_preserved_on_disk: False`).
      - Rejects deletion of protected project `"permian-rig-triage-demo"` with `ValueError`.
@@ -1581,7 +1606,7 @@ Now build the Flight Deck Control Center web application on port `:8000` (`backe
 
 1. Modular FastAPI Routers & Exact REST Endpoint Signatures (`backend/app/`):
    - `backend/app/main.py`: FastAPI app with CORS restricted to `localhost:8000`, `127.0.0.1:8000`, `localhost:8001`, and `127.0.0.1:8001`, mounting all 6 routers below.
-   - `backend/app/api/state_helpers.py`: Shared Pydantic v2 models and `enrich_state()`.
+   - `backend/app/api/state_helpers.py`: Shared Pydantic v2 models and `enrich_state`.
    - `backend/app/api/routes_pipeline.py`:
      - `GET /api/v1/sdlc/health` -> `{"status": "ok", "service": ..., "spiffe_id": ...}`
      - `GET /api/v1/sdlc/topology` -> `{"coordinator": ..., "subagents": [...], "max_tools_per_agent": 8}`

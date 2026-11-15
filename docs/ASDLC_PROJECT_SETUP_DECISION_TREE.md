@@ -1,7 +1,7 @@
 # 🧭 A/SDLC v3.0: Project Setup Decision Tree & Quick-Reference Guide
 
-**Framework Version:** `A/SDLC v3.0.0` (Split-Plane Always-On Cloud Outer-Loop & Unified 3-Pattern OpenTelemetry Sink)  
-**Native Google Doc Edition:** [Open Project Setup Decision Tree in Google Docs (`1tnK79dYCH8Sg8ngZUrgX9Pq_I1ShaiuHztecXG6TPoo`)](https://docs.google.com/document/d/1tnK79dYCH8Sg8ngZUrgX9Pq_I1ShaiuHztecXG6TPoo/edit)  
+**Framework Version:** `A/SDLC v3.0.0` (Split-Plane Always-On Cloud Outer-Loop & Unified 3-Pattern OpenTelemetry Sink) 
+**Native Google Doc Edition:** [Open Project Setup Decision Tree in Google Docs (`1tnK79dYCH8Sg8ngZUrgX9Pq_I1ShaiuHztecXG6TPoo`)](https://docs.google.com/document/d/1tnK79dYCH8Sg8ngZUrgX9Pq_I1ShaiuHztecXG6TPoo/edit) 
 **Primary Skills & Entry Points:** `/asdlc-onboarding-coach`, `/org-standards-builder`, `/agentic-sdlc`, `@project-conductor`
 
 ---

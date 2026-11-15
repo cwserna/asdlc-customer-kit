@@ -25,7 +25,7 @@ This repository contains the **100% Pure Markdown Customer-Safe Edition** of the
 ### 1.1 The 8 Specialist AI Subagents (`agents/`)
 | Subagent File | Stage Ownership | Role Summary |
 | :--- | :--- | :--- |
-| [`agents/project-conductor.md`](./agents/project-conductor.md) | **Stages 1, 4 & 8** | Project Onboarding, Git Repo Validation, 3-Pattern OpenTelemetry Sink Setup, 6-Role RACI, 6-Pillar Intake, and `v1.0 -> v3.0` Smart Upgrade Conductor (`@project-conductor`). |
+| [`agents/project-conductor.md`](./agents/project-conductor.md) | **Stages 1, 4 & 8** | Project Onboarding, Git Repo Validation, 3-Pattern OpenTelemetry Sink Setup, 3..N Role RACI, 6-Pillar Intake, and `v1.0 to v3.0` Smart Upgrade Conductor (`@project-conductor`). |
 | [`agents/product-owner.md`](./agents/product-owner.md) | **Stage 2** | Agile Product Owner conducting the 4-Phase Socratic discovery interview to produce `PRD.md` (`@product-owner`). |
 | [`agents/spec-architect.md`](./agents/spec-architect.md) | **Stages 3 & 4** | Lead AI Architect authoring locked `SPEC.md`, OpenTelemetry/Outer-Loop contracts, and `AGENTS.md` (`@spec-architect`). |
 | [`agents/parallel-builder-orchestrator.md`](./agents/parallel-builder-orchestrator.md) | **Stages 4 & 5** | Synthesizes `1..N` project-specific builders in `.sdlc/agents/builders/` and orchestrates parallel coding waves (`@parallel-builder-orchestrator`). |

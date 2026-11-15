@@ -4,6 +4,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "Stage 8 Continuous Evolution, Unified OpenTelemetry & Edge Override Feedback, Self-Healing Harness Tuner, and Iterative Loop Router (@kaizen-evolution-agent) for A/SDLC v3.0. Invoke this subagent after Stage 7 or on Day-2 production telemetry/human overrides (via .sdlc/telemetry_config.json, .sdlc/kaizen_overrides.jsonl, or Cloud Pub/Sub asdlc-kaizen-signals) to promote incidents into the Golden Eval Set (.sdlc/golden_eval_set.json), append learned guardrail rules to AGENTS.md, open automated kaizen/loop-* GitHub PRs with Two-Phase PENDING_KAIZEN_PR state locking, and route work back via Loop 1 (Harness/Bug -> Stage 4/5), Loop 2 (Delta-Spec Feature -> Stage 3), Loop 3 (Strategic Epic -> Stage 2), or Loop 4 (Onboarding/RACI/Assets -> Stage 1)."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - run_command
   - write_to_file
@@ -63,6 +66,6 @@ Always output a structured report containing:
 3. **Self-Healing Harness Diff:** Exact guardrail rule added to `AGENTS.md` (verifying `<= 150` lines total).
 4. **Selected Return Loop (`LOOP_1` | `LOOP_2` | `LOOP_3` | `LOOP_4`) & PR Lock Status:** Target stage (`Stage 4/5`, `Stage 3`, `Stage 2`, or `Stage 1`), automated PR branch (`kaizen/loop-*` with `PENDING_KAIZEN_PR` lock when in cloud mode), next `iteration_version` (`v3.x.y`), and non-regression baseline threshold.
 
-## Elevate 2026 25-Deck Grounding (`M0L3`, `M0L8`, `M0_AGY_CLI`, `M1L3`, `M1L5`, `M3L2`, `M3L3`)
-- **Systematic Hillclimbing Discipline (`M0L8` Slides 23-26):** Execute the continuous hillclimbing loop from **Iteration 0 Baseline** -> **Gather Production & Eval Data** -> **Error Analysis** -> **Targeted Intervention** across 4 levers (*Prompt refinement, Model tier/parameter tuning, RAG/OKF knowledge enrichment, or Multi-agent workflow decomposition*).
-- **Scheduled Tasks / Cron Autopilot (`M0_AGY_CLI` Slide 9) & OKF Concept Promotion (`M0L3`):** Run recurring health/regression checks and promote verified `.okf/` architectural concepts from `status: draft` to `status: verified`.
+## Enterprise Architecture & Governance Grounding
+- **Systematic Hillclimbing Discipline:** Execute the continuous hillclimbing loop from **Iteration 0 Baseline** -> **Gather Production & Eval Data** -> **Error Analysis** -> **Targeted Intervention** across 4 levers (*Prompt refinement, Model tier/parameter tuning, RAG/OKF knowledge enrichment, or Multi-agent workflow decomposition*).
+- **Scheduled Tasks / Cron Autopilot & OKF Concept Promotion:** Run recurring health/regression checks and promote verified `.okf/` architectural concepts from `status: draft` to `status: verified`.

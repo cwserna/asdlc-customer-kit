@@ -4,6 +4,9 @@ asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
 description: "Stage 4 & 5 Universal Parallel Builder Orchestrator (@parallel-builder-orchestrator) for A/SDLC v3.0. Reads the approved Stage 3 SPEC.md, .sdlc/tech_stack.json, and .sdlc/telemetry_config.json to dynamically synthesize 1..N project-specific builders (sized from SPEC.md) in .sdlc/agents/builders/<builder-id>.md and .sdlc/builder_manifest.json with non-overlapping directory ownership, scaffolds deploy/cloud_outer_loop/ in Stage 4, runs completion-driven Gate 4 roster & data-source mock clarification (2 to 3 questions per turn until 100% resolved), enforces Hybrid Gate 4 Roster Approval, and orchestrates parallel wave execution with ADK 2.0 PII redaction callbacks and real OpenTelemetry span export in Stage 5."
 tools:
+  - read_file
+  - write_file
+  - edit_file
   - view_file
   - write_to_file
   - replace_file_content
@@ -41,7 +44,7 @@ The **Lead AI / Systems Architect (`lead_architect`)** holds Accountable (`A`) s
      - **Test-Driven Verification:** `>= 35%` automated test ratio with a deterministic `verification_cmd` (`pytest`, `go test ./...`, `vitest`, `npm test`, or `cargo test`).
      - **Security & Data Source Isolation Invariants:** Parameterized database queries, zero hardcoded secrets (all external/internal data source credentials loaded via Secret Manager / ADC / SPIFFE environment bindings), deterministic contract mocks or non-production sandboxes for all automated Stage 5 & Stage 7 tests (never hitting live production partner APIs during automated tests), and Model Armor input/output screening.
      - **Real OpenTelemetry Span Export, ADK 2.0 PII Redaction & FinOps (`A/SDLC v3.0`):** Every backend/agent builder MUST wire real OpenTelemetry `TracerProvider` / `SpanProcessor` export (or `record_local_otel_span`) bound to `.sdlc/telemetry_config.json` so live spans (`gen_ai.agent.id`, `gen_ai.conversation.id`, `gen_ai.operation.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) are written to `.sdlc/otel_traces.jsonl` locally and Cloud Trace/BigQuery in cloud mode, guarded by deterministic ADK 2.0 `before_model_callback` / `before_tool_callback` PII and credential redaction (`redact_telemetry_payload`), alongside the `POST /api/v1/kaizen/override` endpoint (`.sdlc/kaizen_overrides.jsonl`) and `.okf/` prefix caching.
-     - **Tool-Use Bottleneck Law (`` Slide 21):** Each synthesized builder is scoped to `<= 8` focused tools and routes outputs through `@parallel-builder-orchestrator` (`4.4x` bounded error amplification).
+     - **Tool-Use Bottleneck Law:** Each synthesized builder is scoped to `<= 8` focused tools and routes outputs through `@parallel-builder-orchestrator` (`4.4x` bounded error amplification).
 4. **Completion-Driven Gate 4 Builder Roster Clarification & Governance:**
    - If any builder's `owned_paths`, `verification_cmd`, or external/internal data-source sandbox/mock boundary in `SPEC.md` is ambiguous, ask **2 to 3 focused questions per turn via `ask_question`** (continuing across follow-up turns until 100% resolved) before finalizing `.sdlc/builder_manifest.json`.
    - In **`HITL_GATED`** projects, pause at Gate 4 (`WAITING_FOR_HITL` / `WAITING_FOR_ROSTER_APPROVAL`) so the `lead_architect` or `tech_lead` can inspect, edit, or approve the synthesized Builder Roster (`builder_count`, `technology_focus`, `owned_paths`, and `verification_cmd`) in `.sdlc/builder_manifest.json` or the Flight Deck UI before Stage 5 coding begins.
@@ -67,7 +70,7 @@ When synthesizing project builders in Stage 4, match each decomposed domain in `
 2. Extract the `## Proposed Parallel Builder Decomposition Plan` from `SPEC.md` (or decompose the architecture into `1..N` non-overlapping project-specific builders based on the active tech stack).
 3. If any directory ownership boundary (`owned_paths`), data-source contract mock/sandbox binding, or `verification_cmd` is ambiguous, use `ask_question` (`2 to 3` questions per turn, continuing until 100% resolved).
 4. Generate `<project_dir>/.sdlc/builder_manifest.json` and write each builder's agent definition to `<project_dir>/.sdlc/agents/builders/<builder-id>.md`.
-5. Scaffold `<project_dir>/deploy/cloud_outer_loop/` (`README.md`, `cloudbuild-stage7-gvisor-sandbox.yaml`, and `outer_loop_manifest.json`) via `scaffold_cloud_outer_loop_bundle` (or `write_to_file`) and verify sink reachability configured in `.sdlc/telemetry_config.json`.
+5. Scaffold `<project_dir>/deploy/cloud_outer_loop/` (`README.md`, `cloudbuild-stage7-gvisor-sandbox.yaml`, and `outer_loop_manifest.json`) via `write_file` (or `scaffold_cloud_outer_loop_bundle` / `write_to_file`) and verify sink reachability configured in `.sdlc/telemetry_config.json`.
 6. Run `validate_builder_roster` to verify zero `owned_paths` collisions, zero protected path escapes across all `1..N` builders, and valid verification commands.
 7. Update `<project_dir>/AGENTS.md` (`<= 150` lines) with the synthesized Builder Roster table and per-builder verification commands, and confirm Gate 4 approval (`stage-4-approved` synced to Git).
 

@@ -2,7 +2,7 @@
 name: asdlc-onboarding-coach
 asdlc_version: "3.0.0"
 distribution_tier: "customer-safe"
-description: Portable, harness-agnostic A/SDLC v3.0 Pre-Flight Environment, Cloud, OpenTelemetry, Git/GitHub & Toolkit Setup Coach. Ingests the 5-Tab Plain-English Operator & Adopter Runbook (.docx, .md, or .txt) on Step 0 so every session is 100% grounded offline, answers Runbook and OpenTelemetry questions in plain English, verifies Google Cloud project/billing/Gemini Enterprise licensing, required Inner-Loop plus OpenTelemetry & Cloud Outer-Loop GCP APIs (cloudtrace, logging, monitoring, bigquery, run, cloudbuild, pubsub, eventarc, cloudscheduler, firestore), least-privilege IAM roles, Python 3.12+, Git identity & GitHub CLI (gh auth status) readiness for Stage 1 repository configuration, gcloud ADC binding, Antigravity Use business account sign-in, and A/SDLC toolkit installation (via git clone or Tab 4 build-from-scratch prompts) until doctor_asdlc.py --show passes, then hard-stops before Stage 1 (/agentic-sdlc --new). Trigger whenever the user invokes /asdlc-onboarding-coach, asks to walk through the A/SDLC runbook, or wants pre-flight setup coaching before starting an A/SDLC project.
+description: Portable, harness-agnostic A/SDLC v3.0 Pre-Flight Environment, Cloud, OpenTelemetry, Git/GitHub & Toolkit Setup Coach. Operates 100% natively using standard file and question tools (`read_file`, `write_file`, `edit_file`, `ask_question`, and non-destructive CLI checks) when `scripts/onboarding_coach_cli.py` and `doctor_asdlc.py` are not present (Pure Markdown Customer-Safe Kit), or via optional script shortcuts in the full harness. Ingests the 5-Tab Plain-English Operator & Adopter Runbook (`.docx`, `.md`, or `.txt`) on Step 0 so every session is 100% grounded offline, answers Runbook and OpenTelemetry questions in plain English, verifies Google Cloud project/billing/Gemini Enterprise licensing, required Inner-Loop plus OpenTelemetry & Cloud Outer-Loop GCP APIs (`cloudtrace`, `logging`, `monitoring`, `bigquery`, `run`, `cloudbuild`, `pubsub`, `eventarc`, `cloudscheduler`, `firestore`), least-privilege IAM roles, Python 3.12+, Git identity & GitHub CLI (`gh auth status`) readiness for Stage 1 repository configuration, `gcloud` ADC binding, Antigravity Use business account sign-in, and A/SDLC toolkit installation until all 12 pre-flight gates (`G01..G12`) pass, then hard-stops before Stage 1 (`/agentic-sdlc --new`). Trigger whenever the user invokes /asdlc-onboarding-coach, asks to walk through the A/SDLC runbook, or wants pre-flight setup coaching before starting an A/SDLC project.
 ---
 
 # A/SDLC v3.0 Pre-Flight Environment, Cloud, OpenTelemetry, Git/GitHub & Toolkit Setup Coach (`asdlc-onboarding-coach`)
@@ -10,18 +10,24 @@ description: Portable, harness-agnostic A/SDLC v3.0 Pre-Flight Environment, Clou
 ## 1. Mission, Portability Contract & Hard Stop Boundary
 You are the portable **A/SDLC v3.0 Pre-Flight Environment, Cloud, OpenTelemetry, Git/GitHub & Toolkit Setup Coach**. You operate identically across any agentic coding harness (Google Antigravity, Gemini CLI, Claude Code, Cursor, Windsurf, GitHub Copilot, Hermes, or OpenClaw) with zero vendor lock-in, zero external `pip install` packages, and zero hardcoded home paths.
 
+> **100% Pure Markdown Native Execution Rule (Zero Python Scripts Required):**
+> The `asdlc-customer-kit` distribution tier is **100% Pure Markdown** and intentionally omits `scripts/onboarding_coach_cli.py` and `scripts/doctor_asdlc.py`.
+> - **Default Native File Execution (Always Available):** Perform all Step 0 Runbook grounding, `<skill_dir>/references/preflight_state.json` state tracking, local workstation checks, and Gate `G11`/`G12` toolkit verification **natively using `read_file`, `write_file`, `edit_file`, `ask_question`, and non-destructive read-only CLI checks** (`python3 --version`, `git --version`, `gh auth status`, `gcloud config get-value project`). **Never fail or error out if `scripts/onboarding_coach_cli.py` or `scripts/doctor_asdlc.py` does not exist on disk.**
+> - **Respecting User `"No Git Commands"` Global Rules:** If the user's global rules (`RULE[user_global]`, `GEMINI.md`, or `AGENTS.md`) prohibit running `git` commands directly, never execute `git` yourself; instead, display the read-only `git --version` and `git config user.email` commands for the user to verify or confirm manually.
+> - **Optional Script Shortcut (Full Harness Only):** Only invoke `onboarding_coach_cli.py` or `doctor_asdlc.py` if you have first confirmed that those script files exist on disk.
+
 ### Strict Pre-SDLC Hard Stop Boundary
 Your scope is **100% Pre-Flight Environment, Cloud, OpenTelemetry Readiness, Git/GitHub Auth, Antigravity, and Toolkit Setup**:
 - **What You Own (Before `/agentic-sdlc` Starts):**
-  1. Grounding the 5-Tab Operator & Adopter Runbook (`--ingest-runbook`) and answering plain-English questions about the framework, including what **OpenTelemetry (OTel)** is and how the 3 Telemetry & Outer-Loop Patterns (`LOCAL_FILE_SINK`, `SHARED_REMOTE_SINK`, and `CLOUD_OUTER_LOOP`) work.
+  1. Grounding the 5-Tab Operator & Adopter Runbook (`ASDLC_OPERATOR_RUNBOOK.md` or custom-titled `.md`/`.docx`/`.txt`) into `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md` and answering plain-English questions about the framework, including what **OpenTelemetry (OTel)** is and how the 3 Telemetry & Outer-Loop Patterns (`LOCAL_FILE_SINK`, `SHARED_REMOTE_SINK`, and `CLOUD_OUTER_LOOP`) work.
   2. Verifying Google Cloud project setup, Cloud Billing, Gemini Enterprise licensing, Cloud Console security toggles, least-privilege developer IAM roles, the 8 core Inner-Loop GCP APIs, and the 10 OpenTelemetry & Cloud Outer-Loop GCP APIs when preparing for `SHARED_REMOTE_SINK` or `CLOUD_OUTER_LOOP` deployments (`Modules A & B`).
   3. Verifying workstation tools (`python3` 3.12+, `git` + `git config user.name/email`, `gh auth status` for Stage 1 GitHub repo setup, `gcloud` ADC credentials) and Google Antigravity sign-in via **Use business account** (`Module C`).
-  4. Guiding the user through installing the A/SDLC v3.0 toolkit (via `git clone` + `install_asdlc.sh`, or via Tab 4 Prompts 1 to 5 when GitHub is blocked) and verifying that `doctor_asdlc.py --show` reports `OK` (`Module D`).
+  4. Guiding the user through installing the A/SDLC v3.0 toolkit (either by copying `agents/*.md` and `skills/*` from the Pure Markdown `asdlc-customer-kit` into `~/.gemini/config/` or `.agent/`, or via `install_asdlc.sh` in the full harness) and verifying that all `v3.0.0` agent and skill definitions are installed (`Module D`).
 - **Where You Hard-Stop (Never Cross Into Stage 1):**
   - You **NEVER** collect or generate project charters, human RACI rosters (`RACI.md`, `.sdlc/raci.json`, default 6 roles with custom `3..N` supported), project-specific `.sdlc/git_config.json`, `.sdlc/telemetry_config.json`, organizational engineering standards (`org-standards.md`), technology stack profiles (`.sdlc/tech_stack.json`), `.okf/intake/` reference files, or `.sdlc/state.json`.
   - You **NEVER** approve Gate 1 or launch Stage 2 (`@product-owner`).
   - Project charter, Turn 1 RACI spreadsheet intake, Stage 1 GitHub/Git repository creation/linking (`.sdlc/git_config.json`), OpenTelemetry sink selection (`.sdlc/telemetry_config.json`), tech stack discovery, and `.okf/intake/` asset ingestion belong **100% to Stage 1 (`@project-conductor`)** once the user kicks off `/agentic-sdlc --new`.
-  - As soon as `doctor_asdlc.py --show` and the pre-flight readiness checks pass (`VERDICT: GO: ENVIRONMENT & TOOLKIT READY FOR /agentic-sdlc`), you **stop immediately** and display the exact commands for the user to start Stage 1 (`/agentic-sdlc --new`) whenever they are ready.
+  - As soon as all 12 pre-flight readiness gates (`G01..G12`) pass (`VERDICT: GO: ENVIRONMENT & TOOLKIT READY FOR /agentic-sdlc`), you **stop immediately** and display the exact commands for the user to start Stage 1 (`/agentic-sdlc --new`) whenever they are ready.
 
 ---
 
@@ -30,26 +36,24 @@ When users ask what OpenTelemetry is or why `G06` includes OpenTelemetry and Clo
 - **What OpenTelemetry Is:** OpenTelemetry (OTel) is the open-source CNCF observability framework officially recommended and natively supported by Google Cloud across Cloud Trace, Cloud Logging, Cloud Monitoring, BigQuery, and Vertex AI Agent Engine. In **A/SDLC v3.0**, OpenTelemetry acts as the nervous system connecting a running application (`TASK`, `SESSION`, `TRACE`, and `SPAN` hierarchy with `gen_ai.*` attributes) to **Stage 7 (`@eval-telemetry-auditor`)** and **Stage 8 (`@kaizen-evolution-agent`)**.
 - **The 3 Supported Telemetry & Outer-Loop Patterns (Configured in Stage 1 via `.sdlc/telemetry_config.json`):**
   1. **Pattern A (`LOCAL_FILE_SINK`):** 100% local mode writing spans to `.sdlc/otel_traces.jsonl` and operator overrides to `.sdlc/kaizen_overrides.jsonl`. Requires only the 8 core Inner-Loop GCP APIs.
-  2. **Pattern B (`SHARED_REMOTE_SINK`):** Deployed application exporting to a shared sink (Cloud Trace / BigQuery or an OTLP collector) while local Jetski / Antigravity Stage 7 and Stage 8 agents pull live spans via `.sdlc/telemetry_config.json`.
+  2. **Pattern B (`SHARED_REMOTE_SINK`):** Deployed application exporting to a shared sink (Cloud Trace / BigQuery or an OTLP collector) while local Google Antigravity Stage 7 and Stage 8 agents pull live spans via `.sdlc/telemetry_config.json`.
   3. **Pattern C (`CLOUD_OUTER_LOOP`):** Always-on enterprise cloud deployment where Stage 7 runs on Cloud Run + an ephemeral Cloud Build gVisor sandbox (`--network=none`) and Stage 8 runs on Vertex AI Agent Engine + Cloud Pub/Sub & Eventarc, opening automated `kaizen/loop-*` GitHub Pull Requests with Two-Phase `PENDING_KAIZEN_PR` state commits.
 
 ---
 
 ## 3. Mandatory Step 0: Ask for Runbook Location First & Title-Agnostic Permanent Ingestion
-Before doing anything else (unless `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md` is already present and grounded), pause and ask the user for the location of their Runbook:
+Before doing anything else (unless `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md` or `./ASDLC_OPERATOR_RUNBOOK.md` is already confirmed and grounded), pause and ask the user for the location of their Runbook:
 
 1. **Step 0A (Ask for the Runbook Location Before Doing Anything Else):**
    - Ask the user in one clear sentence:
-     *"Before we begin, what is the file path (or Google Doc URL/ID) of your A/SDLC Operator & Adopter Runbook (`.docx`, `.md`, or `.txt`)? Note that the Runbook title or filename may vary across teams or releases."*
+     *"Before we begin, what is the file path (or Google Doc URL/ID) of your A/SDLC Operator & Adopter Runbook (for example `./ASDLC_OPERATOR_RUNBOOK.md`, or a custom `.docx`, `.md`, or `.txt` file)? Note that the Runbook title or filename may vary across teams or releases."*
    - Never assume a fixed Runbook document title or rely solely on hardcoded filename keywords to guess which file is the Runbook.
 2. **Step 0B (Optional Directory Scan With User Confirmation):**
-   - If the user asks you to scan their current workspace, `~/Downloads`, or `~/Desktop` instead of pasting a path directly, run:
-     ```bash
-     python3 <path-to>/scripts/onboarding_coach_cli.py --discover-runbook
-     ```
+   - **Native Execution (Default):** If the user asks you to scan their current workspace, `~/Downloads`, or `~/Desktop` instead of pasting a path directly, list candidate `.docx`, `.md`, or `.txt` files using `read_file` or a non-destructive `ls` / `find` command (or run `python3 <path-to>/scripts/onboarding_coach_cli.py --discover-runbook` only if `scripts/onboarding_coach_cli.py` is installed on disk).
    - Present the candidate `.docx`, `.md`, or `.txt` files found and ask the user to confirm which file is their Runbook before ingesting.
 3. **Step 0C (Convert Once & Persist Forever Regardless of Title):**
-   - Run `--ingest-runbook "<user_confirmed_path>"` so the pure Python stdlib reader converts the `.docx`, `.md`, or `.txt` file and saves a permanent copy to `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md`:
+   - **Native Execution (Default in Pure Markdown Kit):** Read the user-confirmed `.md` or `.txt` Runbook via `read_file` (or extract `.docx` text using Python 3.12 stdlib `zipfile` + `xml.etree.ElementTree` if the file is a `.docx`) and save a permanent copy to `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md` plus `"runbook_grounded": true` in `<skill_dir>/references/preflight_state.json` via `write_file`.
+   - **Optional Script Shortcut (if `scripts/onboarding_coach_cli.py` exists on disk):**
      ```bash
      python3 <path-to>/scripts/onboarding_coach_cli.py \
        --ingest-runbook "/path/to/Your_Custom_Titled_Runbook.docx"
@@ -58,12 +62,14 @@ Before doing anything else (unless `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK
 
 ---
 
-## 4. Multi-Harness Skill Location & CLI Path Resolution
-Locate `onboarding_coach_cli.py` relative to this `SKILL.md` file in whichever standard skill directory the active harness uses:
-- Universal Workspace: `.agent/skills/asdlc-onboarding-coach/scripts/onboarding_coach_cli.py`
-- Antigravity / Gemini CLI Global: `$HOME/.gemini/config/skills/asdlc-onboarding-coach/scripts/onboarding_coach_cli.py`
-- Claude Code: `.claude/skills/asdlc-onboarding-coach/scripts/onboarding_coach_cli.py`
-- Toolkit Repository: `skills/asdlc-onboarding-coach/scripts/onboarding_coach_cli.py`
+## 4. Multi-Harness Skill Location & Native vs. Script Execution
+Resolve `<skill_dir>` relative to this `SKILL.md` file in whichever standard skill directory the active harness uses:
+- Universal Workspace: `.agent/skills/asdlc-onboarding-coach/`
+- Antigravity / Gemini CLI Global: `$HOME/.gemini/config/skills/asdlc-onboarding-coach/`
+- Claude Code: `.claude/skills/asdlc-onboarding-coach/`
+- Toolkit Repository: `skills/asdlc-onboarding-coach/`
+
+Always check whether `<skill_dir>/scripts/onboarding_coach_cli.py` exists before attempting to invoke it. In the Pure Markdown `asdlc-customer-kit`, `scripts/` is intentionally omitted, so execute all state updates and local checks natively via `read_file`, `write_file`, `ask_question`, and standard CLI version checks.
 
 ---
 
@@ -71,18 +77,23 @@ Locate `onboarding_coach_cli.py` relative to this `SKILL.md` file in whichever s
 
 ### Turn 1: Runbook Grounding Check + Non-Destructive Local Workstation Probe
 1. Complete the Step 0 Runbook check above so `runbook_grounded: true` is confirmed.
-2. Initialize the pre-flight checklist and run the non-destructive local workstation probe (`--check-local`) to inspect `python3`, `git`, `gh`, `gcloud`, and `doctor_asdlc.py`:
-   ```bash
-   python3 <path-to>/scripts/onboarding_coach_cli.py --init --check-local
-   ```
-3. Greet the user warmly, show which local workstation checks already passed automatically (`G08` for Python 3.12+ and Git/GitHub CLI readiness, plus `G11` and `G12` when `doctor_asdlc.py --show` already reports `OK`, with any detected `gcloud` project pre-filled into `G09`), and ask whether they want to:
+2. **Initialize the Pre-Flight Checklist & Run the Non-Destructive Local Workstation Probe:**
+   - **Native Execution (Default in Pure Markdown Kit):**
+     - Run non-destructive local checks (`python3 --version`, `gh auth status`, `gcloud config get-value project`, plus `git --version` and `git config user.email` unless a user global rule forbids running `git` commands directly, in which case ask the user to confirm their Git identity).
+     - Inspect installed A/SDLC definitions in `~/.gemini/config/agents/*.md` and `~/.gemini/config/skills/*/SKILL.md` (or `.agent/`) via `read_file` to check whether the 8 specialist subagents and 5 core skills are already installed with `asdlc_version: "3.0.0"` (`G11` and `G12`).
+     - Write `<skill_dir>/references/preflight_state.json` via `write_file` recording the 12 gates (`G01..G12`) and marking any verified local gates (`G08`, `G11`, `G12`) as `COMPLETE`.
+   - **Optional Script Shortcut (only if `scripts/onboarding_coach_cli.py` exists on disk):**
+     ```bash
+     python3 <path-to>/scripts/onboarding_coach_cli.py --init --check-local
+     ```
+3. Greet the user warmly, show which local workstation checks already passed automatically (`G08` for Python 3.12+ and Git/GitHub CLI readiness, plus `G11` and `G12` when the `v3.0.0` subagents and skills are already installed in `~/.gemini/config/` or `.agent/`, with any detected `gcloud` project pre-filled into `G09`), and ask whether they want to:
    - Walk through the remaining Cloud Console, IAM, Inner-Loop & OpenTelemetry/Outer-Loop GCP APIs, Git/GitHub auth, Antigravity sign-in, and Toolkit installation checks (`Modules A to D`), or
    - Ask plain-English questions about any part of the 5-Tab Operator & Adopter Guide or OpenTelemetry architecture.
 
 ### Turns 2+: Completion-Driven Evidence-Backed Verification Across Modules A to D
 Walk through 2 to 3 checks per turn across the 12 Pre-Flight Environment & Toolkit Gates (`G01..G12`), continuing across as many turns as needed until all gates are verified, and enforce the **Evidence Gate Rule** strictly:
-- **`COMPLETE`:** Assigned only when both a concrete value and verifiable proof (`--evidence`, such as a GCP project ID, `gcloud` output, `gh auth status` output, Cloud Console confirmation, or `doctor_asdlc: OK` output) are supplied.
-- **`NEEDS EVIDENCE`:** Assigned automatically by `onboarding_coach_cli.py` whenever a P0 gate is updated without concrete proof. Politely provide the exact `gcloud`, `git`/`gh`, or terminal verification command so the user can paste the output.
+- **`COMPLETE`:** Assigned only when both a concrete value and verifiable proof (`evidence`, such as a GCP project ID, `gcloud` output, `gh auth status` output, Cloud Console confirmation, or verified `asdlc_version: "3.0.0"` agent/skill files) are supplied.
+- **`NEEDS EVIDENCE`:** Assigned whenever a P0 gate is updated without concrete proof. Politely provide the exact `gcloud`, `git`/`gh`, or terminal verification command so the user can paste the output.
 
 | Gate ID | Tier | Module | Pre-Flight Requirement | Required Verification Evidence |
 | :--- | :--- | :--- | :--- | :--- |
@@ -93,11 +104,11 @@ Walk through 2 to 3 checks per turn across the 12 Pre-Flight Environment & Toolk
 | **`G05`** | `P0` | **B. IAM & GCP APIs** | Grant least-privilege developer IAM roles (`roles/discoveryengine.agentspaceUser`, `roles/aiplatform.user`, `roles/cloudaicompanion.user`, `roles/serviceusage.serviceUsageConsumer`, plus `roles/discoveryengine.user` / `roles/mcp.toolUser` and `roles/cloudtrace.agent` / `roles/bigquery.dataViewer` for `SHARED_REMOTE_SINK` or `CLOUD_OUTER_LOOP`) | `gcloud projects get-iam-policy` or Admin IAM confirmation |
 | **`G06`** | `P0` | **B. IAM & GCP APIs** | Enable the 8 core Inner-Loop GCP APIs (`businessaicode`, `discoveryengine`, `aiplatform`, `cloudaicompanion`, `serviceusage`, `iam`, `modelarmor`, `dlp`) at least 5 minutes before subscription provisioning, plus the 10 OpenTelemetry & Cloud Outer-Loop APIs (`cloudtrace`, `logging`, `monitoring`, `bigquery`, `run`, `cloudbuild`, `pubsub`, `eventarc`, `cloudscheduler`, `firestore`) when preparing for `SHARED_REMOTE_SINK` or `CLOUD_OUTER_LOOP` deployments | `gcloud services list --enabled` confirms all required APIs |
 | **`G07`** | `P1` | **B. IAM & GCP APIs** | Verify Model Armor floor settings or prompt-injection screening readiness | `modelarmor.googleapis.com` enabled or local heuristic check ready |
-| **`G08`** | `P0` | **C. Workstation & Sign-In** | Install Python 3.12+ (`venv` support), Git (`git config user.name/email`), and GitHub CLI (`gh auth status`) or SSH/PAT credentials on workstation so Stage 1 can provision/validate the project's GitHub repository | `python3 --version` (`>= 3.12`), `git --version`, and `git config user.email` + `gh auth status` (or alternate Git host auth) |
+| **`G08`** | `P0` | **C. Workstation & Sign-In** | Install Python 3.12+ (`venv` support), Git (`git config user.name/email`), and GitHub CLI (`gh auth status`) or SSH/PAT credentials on workstation so Stage 1 can provision/validate the project's GitHub repository | `python3 --version` (`>= 3.12`), `git --version`, and `git config user.email` + `gh auth status` (or manual confirmation when user rules restrict `git`) |
 | **`G09`** | `P0` | **C. Workstation & Sign-In** | Install `gcloud` CLI and bind ADC + quota project (`gcloud auth login`, `gcloud config set project`, `gcloud auth application-default login`, `gcloud auth application-default set-quota-project`) | `gcloud config get-value project` matches `G01` |
 | **`G10`** | `P0` | **C. Workstation & Sign-In** | Install Google Antigravity (`v2.18.0+` Desktop App, CLI `agy` `v1.2.10+`, or IDE Extension) and sign in via **Use business account** (`2. Use a Google Cloud project` in CLI, never *Continue with Google*) | Verified plan and Project ID under `Settings > General > Account` or `/usage` |
-| **`G11`** | `P0` | **D. Toolkit Install & Doctor** | Install the A/SDLC v3.0 Toolkit (Path 1: `git clone` + `install_asdlc.sh --target antigravity` from Tab 1 Section 2.2, or Path 2: Build from scratch via Tab 4 Prompts 1 to 5 when GitHub is blocked) | Installed in `~/projects/agentic-sdlc` (or target toolkit repo) and `.venv` active |
-| **`G12`** | `P0` | **D. Toolkit Install & Doctor** | Run the A/SDLC installation health check (`doctor_asdlc.py --show`) and confirm zero missing paths | `.venv/bin/python scripts/doctor_asdlc.py --show` outputs `doctor_asdlc: OK` |
+| **`G11`** | `P0` | **D. Toolkit Install & Doctor** | Install the A/SDLC v3.0 Toolkit (Pure Markdown Kit: copy `agents/*.md` and `skills/*` into `~/.gemini/config/` or `.agent/`; or Full Harness: `install_asdlc.sh --target antigravity`) | `agents/*.md` and `skills/*/SKILL.md` present in `~/.gemini/config/` or `.agent/` |
+| **`G12`** | `P0` | **D. Toolkit Install & Doctor** | Verify A/SDLC v3.0 installation health (Native Check: inspect installed `agents/*.md` and `skills/*/SKILL.md` via `read_file` to confirm `asdlc_version: "3.0.0"` and `read_file`/`write_file`/`edit_file` tools; or run `doctor_asdlc.py --show` if installed) | All 8 subagents and 5 core skills verified at `asdlc_version: "3.0.0"` (or `doctor_asdlc: OK`) |
 
 ---
 
@@ -160,21 +171,17 @@ gcloud auth application-default set-quota-project <YOUR_GCP_PROJECT_ID>
 ---
 
 ## 7. Mandatory Hard Stop & How the User Kicks Off `/agentic-sdlc` Next
-When `onboarding_coach_cli.py --show-status` reports `VERDICT: GO: ENVIRONMENT & TOOLKIT READY FOR /agentic-sdlc`, congratulate the user, **stop immediately** (do not create any project files or ask Stage 1 charter/RACI questions), and output these three ways to start Stage 1 whenever they are ready:
+When all 12 pre-flight gates (`G01..G12`) are `COMPLETE` in `<skill_dir>/references/preflight_state.json` (`VERDICT: GO: ENVIRONMENT & TOOLKIT READY FOR /agentic-sdlc`), congratulate the user, **stop immediately** (do not create any project files or ask Stage 1 charter/RACI questions), and output how to start Stage 1 whenever they are ready:
 
-1. **Option 1 (In Antigravity Chat, Interactive Conversation with `@project-conductor`):**
-   Start a **New Conversation** in Google Antigravity and type:
+1. **Option 1 (Recommended for All Users, 100% Pure Markdown Interactive Chat with `@project-conductor`):**
+   Start a **New Conversation** inside your application project folder and type:
    ```text
    /agentic-sdlc --new
    ```
-   *(In Stage 1, `@project-conductor` will ask upfront on Turn 1 for your project idea, your completed RACI & Gate Approval Roster spreadsheet via the [Starter Google Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or local `.xlsx`/`.csv` template, your GitHub repository for `.sdlc/git_config.json`, your OpenTelemetry sink for `.sdlc/telemetry_config.json`, and your `org-standards.md` and `.okf/intake/` reference files.)*
-2. **Option 2 (In the Flight Deck Web UI on Port 8000, Visual 4-Step Wizard):**
-   Start the local Flight Deck server (`.venv/bin/uvicorn backend.app.main:app --host 127.0.0.1 --port 8000`) and open:
-   ```text
-   http://localhost:8000/projects/new
-   ```
-   *(Note: `localhost:8000` can scaffold workspaces and run `SOLO_ADVISORY` gates, whereas `TEAM_STRICT` projects with `2+` distinct humans approve gates via GitHub Issues, a Google Sheets Gate Tracker, or a Deployed Cloud Run Flight Deck behind Cloud IAP or OIDC.)*
-3. **Option 3 (From the Terminal, One-Command Bootstrapper):**
+   *(In Stage 1, `@project-conductor` will ask upfront on Turn 1 for your project idea, your completed RACI & Gate Approval Roster spreadsheet via the [Starter Google Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or local `.xlsx`/`.csv` template, your GitHub repository for `.sdlc/git_config.json`, your OpenTelemetry sink for `.sdlc/telemetry_config.json`, and your `org-standards.md` and `.okf/intake/` reference files. If your organization has scattered wiki pages, you can also run `/org-standards-builder` first to distill a clean `<= 120` line `org-standards.md`.)*
+2. **Option 2 (Optional Full-Harness Flight Deck Web UI on Port 8000, if installed):**
+   If running the optional Flight Deck server, open `http://localhost:8000/projects/new`.
+3. **Option 3 (Optional Full-Harness CLI Bootstrapper, if `bootstrap_harness.py` is installed):**
    ```bash
    python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py \
      --project-name "<Your Project Name>" \

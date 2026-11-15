@@ -31,7 +31,7 @@ flowchart TD
     Grill --> Output["Two-Tier Output: org-standards.md (<=120 lines) + .okf/runbooks/*.md"]
 ```
 
-### Scenario A: The Customer Uses Antigravity IDE, Gemini CLI, or Jetski (Skill Installed)
+### Scenario A: The Customer Uses Antigravity IDE or Gemini CLI (Skill Installed)
 1. Open the terminal or IDE in the project folder (or a shared standards repository).
 2. Run:
    ```text
@@ -56,7 +56,7 @@ If the customer is in a Phase 0 or Phase 1 workshop on a locked-down laptop with
 
 | File | Purpose |
 | :--- | :--- |
-| [`SKILL.md`](./SKILL.md) | Executable skill definition for Antigravity, Gemini CLI, and Jetski (`/org-standards-builder`). |
+| [`SKILL.md`](./SKILL.md) | Executable skill definition for Antigravity and Gemini CLI (`/org-standards-builder`). |
 | [`prompts/INTRANET_HARVESTER_PROMPT.md`](./prompts/INTRANET_HARVESTER_PROMPT.md) | Copy-paste prompt for Gemini Enterprise, NotebookLM, Copilot, or Glean to harvest hundreds of SSO-gated intranet pages into `RAW_STANDARDS_EXTRACT.md`. |
 | [`prompts/STANDALONE_ARCHITECT_PROMPT.md`](./prompts/STANDALONE_ARCHITECT_PROMPT.md) | Copy-paste interactive architect prompt for any browser chat UI when the skill is not installed locally. |
 | [`resources/ORG_STANDARDS_TEMPLATE.md`](./resources/ORG_STANDARDS_TEMPLATE.md) | Clean, stack-agnostic A/SDLC v3.0 `org-standards.md` template (`<= 120 lines`, Stages 1 to 8) with zero hardcoded vendor demo assumptions. |

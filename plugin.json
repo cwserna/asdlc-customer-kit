@@ -2,7 +2,7 @@
   "name": "asdlc-customer-kit",
   "displayName": "Agentic SDLC (A/SDLC v3.0)",
   "version": "3.0.0",
-  "description": "8-Stage Agentic Software Development Lifecycle (A/SDLC v3.0) with 8 specialist subagents, 5 core skills (including org-standards-builder), 6-Role RACI governance, and 3-Pattern OpenTelemetry observability.",
+  "description": "8-Stage Agentic Software Development Lifecycle (A/SDLC v3.0) with 8 specialist subagents, 5 core skills (including org-standards-builder), 3..N custom-role RACI governance, and 3-Pattern OpenTelemetry observability.",
   "repository": {
     "type": "git",
     "url": "https://github.com/cwserna/asdlc-customer-kit"
