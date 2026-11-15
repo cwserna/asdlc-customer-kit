@@ -34,9 +34,14 @@ This repository contains the **100% Pure Markdown Customer-Safe Edition** of the
 | [`agents/kaizen-evolution-agent.md`](./agents/kaizen-evolution-agent.md) | **Stage 8** | Continuous Evolution, Golden Eval Set promoter, and Loop 1 to 4 router (`@kaizen-evolution-agent`). |
 | [`agents/adversarial-doc-critic.md`](./agents/adversarial-doc-critic.md) | **Cross-Stage** | 4-Lens Adversarial Document & Architecture Critic (`@adversarial-doc-critic`). |
 
-### 1.2 The 4 Core Skills & 6 Stage Templates (`skills/`)
+### 1.2 The 5 Core Skills, Standalone Prompt Pack & Stage Templates (`skills/`)
 * [`skills/agentic-sdlc/SKILL.md`](./skills/agentic-sdlc/SKILL.md): Primary `/agentic-sdlc` workflow conductor (`--new`, `--resume`, `--status`, `--list`, `--park`, `--upgrade`, `--outer-loop-init`).
 * [`skills/asdlc-onboarding-coach/SKILL.md`](./skills/asdlc-onboarding-coach/SKILL.md): Pre-flight environment, Google Cloud, Git/GitHub, and OpenTelemetry readiness coach (`/asdlc-onboarding-coach`).
+* [`skills/org-standards-builder/SKILL.md`](./skills/org-standards-builder/SKILL.md): Standalone Enterprise Organizational Standards Builder and Intranet Distiller (`/org-standards-builder`) that turns hundreds of internal wiki pages into a clean `<= 120` line `org-standards.md` and `.okf/runbooks/` catalog.
+  * [`skills/org-standards-builder/README.md`](./skills/org-standards-builder/README.md): CE and Customer Field Guide for the 3 intake modes (Mode 1 Bulk/Intranet Harvester Ingest, Mode 2 Guided Portal Scavenger Hunt, and Mode 3 Expert Architect Interview).
+  * [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md): Copy-paste prompt for Gemini Enterprise, Vertex AI Search, NotebookLM, M365 Copilot, or Glean to harvest SSO-gated intranet standards into `RAW_STANDARDS_EXTRACT.md`.
+  * [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md): Zero-install copy-paste interactive architect prompt for any browser chat UI.
+  * [`skills/org-standards-builder/resources/`](./skills/org-standards-builder/resources/): Stack-agnostic `ORG_STANDARDS_TEMPLATE.md` (`<= 120` lines) and `RUNBOOK_INDEX_TEMPLATE.md` (`.okf/runbooks/INDEX.md`).
 * [`skills/product-owner/SKILL.md`](./skills/product-owner/SKILL.md): Stage 2 Product Owner interview skill (`/product-owner`).
 * [`skills/review-council/SKILL.md`](./skills/review-council/SKILL.md): Blind Adversarial Review Council skill (`/review-council`).
 * [`skills/agentic-sdlc/resources/`](./skills/agentic-sdlc/resources/): Standardized Markdown templates (`RACI_TEMPLATE.md`, `ASSET_MANIFEST_TEMPLATE.md`, `ORG_STANDARDS_TEMPLATE.md`, `PRD_TEMPLATE.md`, `SPEC_TEMPLATE.md`, `AGENTS_TEMPLATE.md`).
@@ -48,7 +53,8 @@ This repository contains the **100% Pure Markdown Customer-Safe Edition** of the
 ### Option A: Fresh Installation (New Users)
 Copy `agents/*.md` and `skills/*` into your AI harness configuration directory (`~/.gemini/config/` or `.agent/` inside your workspace), start a new chat session, and run:
 1. `/asdlc-onboarding-coach` to verify your Google Cloud, Git/GitHub, and OpenTelemetry readiness.
-2. `/agentic-sdlc --new` to launch Stage 1 Project Onboarding.
+2. `/org-standards-builder` (optional, before or during Stage 1) if your organization has dozens or hundreds of engineering standards on an internal website (SharePoint, Confluence, Backstage, or wiki). You can also paste [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) into Gemini Enterprise or NotebookLM to extract `RAW_STANDARDS_EXTRACT.md`, then run `/org-standards-builder` (or paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat) to generate a clean `<= 120` line `org-standards.md` and `.okf/runbooks/` catalog.
+3. `/agentic-sdlc --new` to launch Stage 1 Project Onboarding.
 
 ### Option B: Upgrading from `v1.0` or `v2.x` (Agent-Driven Smart 3-Way Merge)
 If you already have `A/SDLC v1.0` (or `v2.x`) installed, see [`UPGRADE.md`](./UPGRADE.md). You can either download the **[1-Click ZIP (`main.zip`)](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)** or run `git clone` into `~/Downloads`, open your AI chat inside that downloaded folder, and paste:

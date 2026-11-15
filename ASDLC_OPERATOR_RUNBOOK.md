@@ -224,7 +224,7 @@ Before launching Stage 1, run `/asdlc-onboarding-coach` (or paste the self-conta
 
 ## 1. Executive Overview & Core Terminology Glossary
 
-The **Agentic Software Development Lifecycle (`A/SDLC v3.0`)** replaces ad-hoc prompt coding with a deterministic, contract-first, **100% technology-stack agnostic** engineering factory. Work flows through **8 sequential, human-governed stages (`Stages 1 to 8`)** powered by **9 universal specialist AI subagents** (plus `1..N` project-specific builders dynamically synthesized from `SPEC.md` in Stage 4 inside `.sdlc/agents/builders/*.md`), governed by **6 human enterprise roles** mapped in a project-level **RACI Matrix (`RACI.md` & `.sdlc/raci.json`)**, and connected by the **3-Pattern OpenTelemetry Sink & Always-On Cloud Outer Loop (`.sdlc/telemetry_config.json`)**.
+The **Agentic Software Development Lifecycle (`A/SDLC v3.0`)** replaces ad-hoc prompt coding with a deterministic, contract-first, **100% technology-stack agnostic** engineering factory. Work flows through **8 sequential, human-governed stages (`Stages 1 to 8`)** powered by **10 specialist AI subagents** (plus `1..N` project-specific builders dynamically synthesized from `SPEC.md` in Stage 4 inside `.sdlc/agents/builders/*.md`), governed by **6 human enterprise roles** mapped in a project-level **RACI Matrix (`RACI.md` & `.sdlc/raci.json`)**, and connected by the **3-Pattern OpenTelemetry Sink & Always-On Cloud Outer Loop (`.sdlc/telemetry_config.json`)**.
 
 ### 1.1 The 8-Stage Lifecycle & RACI Ownership Matrix
 
@@ -312,8 +312,8 @@ export ASDLC_PROJECTS_ROOT="$HOME/projects"
   bash scripts/install_asdlc.sh --target antigravity
   ```
   This command performs three actions:
-  1. Copies all **9 Universal Specialist Agent definitions** into `~/.gemini/config/agents/`.
-  2. Installs all **8 Skills** and materialized CLI scripts (including `sdlc_builder_orchestrator.py`) into `~/.gemini/config/skills/`.
+  1. Copies all **10 Specialist Agent definitions** into `~/.gemini/config/agents/`.
+  2. Installs all **11 Skills** and materialized CLI scripts (including `sdlc_builder_orchestrator.py`, `telemetry_outer_loop.py`, and `state_store.py`) into `~/.gemini/config/skills/`.
   3. Writes machine-local path discovery files to `<repo>/.asdlc.toml` and `~/.config/asdlc/config.toml`.
 
 - **Option B: Per-Workspace Antigravity Installation (`.agent/` folder)**
@@ -340,12 +340,17 @@ Expected output: `doctor_asdlc: OK` with zero missing paths.
 
 ---
 
-## 3. Stage 1 Preparation: The Background Asset Intake Kit (`.okf/intake/`)
+## 3. Stage 1 Preparation: Turn 1 RACI Spreadsheet & 6-Pillar Asset Intake (`.okf/intake/`)
 
-Before kicking off a new project, gather any existing organizational or design materials across the **5 Asset Intake Pillars**:
+Before kicking off a new project, prepare your **Stage 1 Turn 1 RACI & Gate Roster Spreadsheet** and gather any existing organizational or design materials across the **6 Asset Intake Pillars**:
 
-1. **Pillar 1: Organizational Development Standards (`org-standards.md`) & Tech Stack Discovery Side-Quest (`.sdlc/tech_stack.json`)**
+0. **Upfront Stage 1 Turn 1 RACI & Gate Approval Roster Spreadsheet (`RACI.md` & `.sdlc/raci.json`)**
+   - Make a copy of the [A/SDLC v3.0 Stage 1 RACI & Gate Approval Roster Starter Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or generate local `.okf/intake/raci/RACI_STARTER_TEMPLATE.{xlsx,csv}` (`python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --generate-raci-template`).
+   - Default roster includes 6 roles (`executive_sponsor`, `product_owner`, `lead_architect`, `tech_lead`, `security_lead`, `sre_finops_lead`), and custom `3..N` enterprise role rosters are supported as long as every stage gate (`1..8`) has strictly one human Accountable (`A`) role.
+   - **Solo vs. Team Mode:** Solo builders enter their own email and GitHub `@handle` in each role row (`1` distinct human runs in `SOLO_ADVISORY` mode). Projects with `2+` distinct humans lock `TEAM_STRICT` mode across the **3 authenticated gate surfaces**: `GITHUB_ISSUES_PR` (`GITHUB_ISSUE`), `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS` Drive Comments), or `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK` behind Cloud IAP or OIDC).
+1. **Pillar 1: Organizational Development Standards (`org-standards.md`), Intranet Standards Distiller (`/org-standards-builder`) & Tech Stack Discovery Side-Quest (`.sdlc/tech_stack.json`)**
    - Tech stack policies, cloud security guardrails, testing benchmarks (`>= 35%`), and FinOps rules. **A/SDLC never assumes a pre-selected default technology stack.** If `org-standards.md` does not specify a tech stack (or you want help selecting one), `@project-conductor` launches the **Stage 1 Tech Stack Discovery Side-Quest** to evaluate your workload archetype, backend language/framework, frontend surface, and Google Cloud data/runtime target, saving the resolved profile into `.sdlc/tech_stack.json` and `org-standards.md`.
+   - If your organization has dozens or hundreds of standards scattered across SharePoint, Confluence, Backstage, or an internal portal, run the standalone **`/org-standards-builder`** skill (or its copy-paste prompt pack in [`skills/org-standards-builder/prompts/`](./skills/org-standards-builder/prompts/)) before or during Stage 1; see **Section `3.1`** below.
 2. **Pillar 2: UI/UX Designs & Wireframes (`.okf/intake/designs/`)**
    - Figma links, PNG/PDF screen mockups, user flow diagrams, or architecture topologies.
 3. **Pillar 3: Brand & Style Guides (`.okf/intake/styles/`)**
@@ -354,46 +359,70 @@ Before kicking off a new project, gather any existing organizational or design m
    - Standard operating procedures (SOPs), legacy PRDs, field operator manuals, or executive briefing decks.
 5. **Pillar 5: Data & API Schemas (`.okf/intake/schemas/`)**
    - Existing OpenAPI/Swagger specs, SQL DDL files, BigQuery/Spanner table schemas, or sample JSON telemetry payloads.
+6. **Pillar 6: External & Internal Data Sources Inventory**
+   - Partner REST/GraphQL/EDI endpoints, SaaS systems (ERP, CRM, ticketing), and internal databases or warehouses the application will read from or write to, captured for Stage 2 and Stage 3 sandbox and auth scoping.
 
-Also identify the named humans for the **6 Core Enterprise RACI Roles**:
-- `executive_sponsor` (Gate 1 & Program Overall)
-- `product_owner` (Gate 2 & Gate 8)
-- `lead_architect` (Gate 3 & Gate 4)
-- `tech_lead` (Gate 5)
-- `security_lead` (Gate 6; for production workloads, assign a distinct human from `tech_lead` to satisfy Segregation of Duties)
-- `sre_finops_lead` (Gate 7)
+### 3.1 Distilling Hundreds of Internal Website Standards into `org-standards.md` (`org-standards-builder`)
+
+Large enterprises often store 100 to 300 pages of engineering, security, and compliance standards across SharePoint, Confluence, Backstage, or an internal wiki. Dumping 300 pages into `org-standards.md` wastes tokens and causes context rot across Stages 2 through 8. Asking a human architect to recite all 300 pages from memory also fails.
+
+Use the standalone **`org-standards-builder`** skill ([`skills/org-standards-builder/SKILL.md`](./skills/org-standards-builder/SKILL.md) and [`skills/org-standards-builder/README.md`](./skills/org-standards-builder/README.md)) before or during Stage 1 to turn internal portals into a clean **Two-Tier A/SDLC v3.0 Standards Package**:
+* **Tier 1 (`./org-standards.md`, strictly `<= 120` lines):** Pinned in `.okf/manifest.yaml` for a 90% prefix context-cache discount across Stages 1 to 8. It holds only deterministic, code-enforceable rules for the customer's actual stack.
+* **Tier 2 (`./.okf/runbooks/*.md`):** Deep domain reference manuals (`architecture-and-apis.md`, `security-and-iam.md`, `data-and-storage.md`, `testing-and-ci.md`, `observability-and-finops.md`) loaded on demand when an agent works on that domain, plus `DISCARDED_PROCESS_LOG.md` documenting non-code administrative procedures (such as CAB meeting schedules or ticket templates) excluded from the coding harness.
+
+**Three Practical Ways CEs and Customers Can Run It:**
+1. **Option A: Interactive Skill in Antigravity, Gemini CLI, or Jetski (`/org-standards-builder`)**
+   - Run `/org-standards-builder` in your workspace terminal or chat.
+   - Choose **Mode 1 (Bulk File Ingest or Intranet Harvester Prompt)**, **Mode 2 (5-Round Guided Portal Scavenger Hunt)**, or **Mode 3 (Expert Architect Interview)**.
+   - The agent runs a 3-Bucket Triage Engine and grills your architect 2 to 3 questions per turn to resolve conflicting wiki pages, set hard numeric thresholds (max LoC per slice, `AGENTS.md` line cap, test coverage floor), capture unwritten PR rejection rules, and output `org-standards.md` plus `.okf/runbooks/`.
+2. **Option B: Two-Step Copy-Paste Flow for SSO-Gated Intranets (`INTRANET_HARVESTER_PROMPT.md`)**
+   - **Step 1 (Harvest):** Open [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) and paste the prompt into the enterprise AI search tool that already has SSO access to the internal portal (**Google Gemini Enterprise, Vertex AI Search, NotebookLM, Microsoft 365 Copilot, or Glean**). It scans the internal catalog, strips out non-code bureaucracy, flags contradictions, and outputs `RAW_STANDARDS_EXTRACT.md`.
+   - **Step 2 (Distill):** Feed `RAW_STANDARDS_EXTRACT.md` into `/org-standards-builder` (or paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat window) to resolve the flagged conflicts and generate the final `<= 120` line `org-standards.md` and `.okf/runbooks/` files.
+3. **Option C: Zero-Install Browser Scavenger Hunt (`STANDALONE_ARCHITECT_PROMPT.md`)**
+   - On a locked-down laptop with only a web browser open to the company intranet, paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat UI and pick **Option B (Guided Portal Scavenger Hunt)**. The agent walks the user through 5 fast domain search rounds, giving exact keywords to type into the portal search bar and cleaning up whatever raw text they paste in.
 
 ---
 
 ## 4. Creating a Project
 
-You can create a new A/SDLC v2.0 project from **three surfaces**:
+You can create a new A/SDLC v3.0 project from **three surfaces**:
 
 ### Method 1: Conversational Onboarding in Antigravity (`/agentic-sdlc --new`)
 In your Antigravity chat session, type:
 ```text
 /agentic-sdlc --new
 ```
-1. **Turn 1 (Project Charter & Asset Prompt):** `@project-conductor` asks in plain text for your application idea, target users, core problem, `org-standards.md` path/URL, and any background assets.
-2. **Turn 2 (Interactive Socratic Grill):** `@project-conductor` uses an interactive selection modal (`ask_question`) to lock in:
-   - Governance Execution Policy (`HITL_GATED` vs `AUTONOMOUS_GUARDRAILED`).
-   - 6-Role RACI Roster assignments (`RACI.md` & `.sdlc/raci.json`).
-   - Default Multi-Channel Approval Workflow (`FLIGHT_DECK_UI`, `GMAIL_THREAD`, `GOOGLE_SHEETS_TRACKER`, `GITHUB_ISSUES_PR`, or `JIRA_WEBHOOK_TICKET`) and per-gate overrides.
-   - Background Asset paths to ingest into `.okf/intake/`.
-3. **Turn 3 (Workspace Bootstrap):** `@project-conductor` runs `bootstrap_harness.py` to provision the workspace and pauses at Stage 1 Gate for sign-off before handing off to `@product-owner` (Stage 2).
+1. **Turn 1 (Project Charter, RACI Spreadsheet & Asset Prompt):** `@project-conductor` asks in plain text for your application idea, your completed RACI & Gate Approval Roster spreadsheet ([Starter Google Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or local `.xlsx`/`.csv`), your GitHub repository target, your OpenTelemetry pattern (`LOCAL_FILE_SINK`, `SHARED_REMOTE_SINK`, or `CLOUD_OUTER_LOOP`), and your `org-standards.md` and background assets.
+2. **Turn 2+ (Completion-Driven Socratic Grill):** `@project-conductor` asks 2 to 3 focused questions per turn (`ask_question`) until all 7 Stage 1 exit items are verified:
+   - Governance Execution Policy (`HITL_GATED` vs `AUTONOMOUS_GUARDRAILED`) and optional Deployed Flight Deck remote.
+   - RACI spreadsheet read-back confirmation across `3..N` custom roles (`RACI.md` & `.sdlc/raci.json`).
+   - Authenticated Gate Approval Surfaces (`GITHUB_ISSUES_PR`, `GOOGLE_SHEETS_TRACKER`, or `FLIGHT_DECK_UI`).
+   - Mandatory GitHub/Git repository access verification (`.sdlc/git_config.json`) and OpenTelemetry sink configuration (`.sdlc/telemetry_config.json`).
+   - 6-Pillar Background Asset & Data Source paths in `.okf/intake/`.
+3. **Workspace Bootstrap & Gate 1 Sign-Off:** `@project-conductor` scaffolds the workspace, dispatches Gate 1 to `executive_sponsor`, verifies sign-off, tags `stage-1-approved`, and hands off to `@product-owner` (Stage 2).
 
-### Method 2: Flight Deck Web UI 4-Step Wizard (`http://localhost:8000/projects/new`)
-1. Open `http://localhost:8000` and click **Start a New Project** (or navigate to `http://localhost:8000/projects/new`).
+### Method 2: Flight Deck Web UI 4-Step Wizard (`http://localhost:8000/projects/new` or Deployed Cloud Run Flight Deck)
+1. Open `http://localhost:8000` (for workspace scaffolding and `SOLO_ADVISORY` projects) or your Deployed Cloud Run Flight Deck URL (for `TEAM_STRICT` `2+` human projects) and click **Start a New Project**.
 2. Complete the guided 4-step wizard:
-   - **Step 1:** Project Name, Target Workspace Directory, and Target App Port (`http://localhost:8002`).
-   - **Step 2:** Governance Execution Policy and Default Gate Approval Channel.
-   - **Step 3:** 6-Role RACI Roster mapping (selecting from the Global User Directory).
+   - **Step 1:** Project Name, Target Workspace Directory, and GitHub Repository URL.
+   - **Step 2:** Governance Execution Policy, OpenTelemetry Sink Pattern, and Default Gate Approval Surface (`GITHUB_ISSUES_PR`, `GOOGLE_SHEETS_TRACKER`, or `FLIGHT_DECK_UI`).
+   - **Step 3:** RACI Roster mapping (`3..N` roles).
    - **Step 4:** Paste or load `org-standards.md` and attach initial Stage 1 background assets (`.okf/intake/`).
 3. Click **Create & Initialize Project** to provision the workspace and open the 8-Stage Status view.
 
 ### Method 3: Headless CLI Bootstrap (`bootstrap_harness.py`)
 ```bash
-python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py   --project-name "Permian Basin Pump Telemetry Console"   --target-dir "$HOME/projects/permian-pump-console"   --org-standards "$HOME/projects/agentic-sdlc/org-standards.md"   --designs-dir "$HOME/Downloads/pump-wireframes"   --style-guide "$HOME/Downloads/brand-tokens.css"   --policy HITL_GATED   --start-flight-deck
+python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py \
+  --project-name "Permian Basin Pump Telemetry Console" \
+  --target-dir "$HOME/projects/permian-pump-console" \
+  --raci-file "$HOME/Downloads/completed_raci.xlsx" \
+  --org-standards "$HOME/projects/agentic-sdlc/org-standards.md" \
+  --github-repo "owner/permian-pump-console" \
+  --repo-mode create \
+  --telemetry-pattern LOCAL_FILE_SINK \
+  --designs-dir "$HOME/Downloads/pump-wireframes" \
+  --style-guide "$HOME/Downloads/brand-tokens.css" \
+  --policy HITL_GATED
 ```
 
 ---
@@ -479,7 +508,7 @@ python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --delete my-app
 
 ## 7. End-to-End Worked Walkthrough ("First 15 Minutes: Zero to Stage 8")
 
-Every command in this 15-minute recipe is 100% copy-paste executable from your terminal:
+Every command in this 15-minute recipe is 100% copy-paste executable from your terminal (shown below in `SOLO_ADVISORY` 1-human mode; for `2+` human `TEAM_STRICT` teams, replace `--approve <N>` with `--dispatch-gate <N>` and `--sync-gate <N>` across GitHub Issues, Google Sheets Gate Tracker, or Deployed Cloud Run Flight Deck):
 
 ```bash
 # Minute 0-2: Verify installation & launch the Flight Deck Control Center on :8000
@@ -488,16 +517,21 @@ cd ~/projects/agentic-sdlc
 .venv/bin/uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 &
 
 # Minute 2-4: Bootstrap a new project workspace via CLI
-python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py   --project-name "Field Wellhead Pressure Monitor"   --target-dir "$HOME/projects/wellhead-monitor"   --org-standards "$HOME/projects/agentic-sdlc/org-standards.md"   --policy HITL_GATED
+python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py \
+  --project-name "Field Wellhead Pressure Monitor" \
+  --target-dir "$HOME/projects/wellhead-monitor" \
+  --org-standards "$HOME/projects/agentic-sdlc/org-standards.md" \
+  --telemetry-pattern LOCAL_FILE_SINK \
+  --policy HITL_GATED
 
-# Minute 4-6: Resume the new project, run the Stage 1 Tech Stack Side-Quest, and approve Gate 1
+# Minute 4-6: Resume the new project, run the Stage 1 Tech Stack Side-Quest, and approve Gate 1 (Solo Advisory)
 python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --resume wellhead-monitor
 python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --tech-stack go_htmx_postgres --note "Selected Go + Cloud Run stack"
-python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve 1 --approver "@executive_sponsor" --note "Executive Sponsor approved RACI, intake, and Tech Stack profile"
+python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve 1 --approver "@executive_sponsor" --note "Solo charter approved"
 
 # Minute 6-9: Execute and approve Stages 2 and 3 (PRD.md and stack-adaptive SPEC.md)
 for STAGE_ID in 2 3; do
-  curl -sS --fail -X POST "http://127.0.0.1:8000/api/v1/sdlc/stage/${STAGE_ID}/execute"     -H "Content-Type: application/json"     -d '{"prompt_notes":"Execute stage deliverable generation","operator_name":"Operator"}' > /dev/null
+  curl -sS --fail -X POST "http://127.0.0.1:8000/api/v1/sdlc/stage/${STAGE_ID}/execute" -H "Content-Type: application/json" -d '{"prompt_notes":"Execute stage deliverable generation","operator_name":"Operator"}' > /dev/null
   python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve "${STAGE_ID}" --note "Stage ${STAGE_ID} verified and signed off"
 done
 
@@ -511,12 +545,12 @@ python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve 5 --a
 
 # Minute 12-15: Execute and approve Stages 6, 7, and 8, inspect the 8-Stage Project HUD & Harness Verifier, and park cleanly
 for STAGE_ID in 6 7 8; do
-  curl -sS --fail -X POST "http://127.0.0.1:8000/api/v1/sdlc/stage/${STAGE_ID}/execute"     -H "Content-Type: application/json"     -d '{"prompt_notes":"Execute stage audit and verification","operator_name":"Operator"}' > /dev/null
+  curl -sS --fail -X POST "http://127.0.0.1:8000/api/v1/sdlc/stage/${STAGE_ID}/execute" -H "Content-Type: application/json" -d '{"prompt_notes":"Execute stage audit and verification","operator_name":"Operator"}' > /dev/null
   python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve "${STAGE_ID}" --note "Stage ${STAGE_ID} verified and signed off"
 done
 python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --status wellhead-monitor
 .venv/bin/python scripts/verify_sdlc_gates.py --project-dir "$HOME/projects/agentic-sdlc"
-python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --park wellhead-monitor --note "v2.0.0 verified across all 8 stages"
+python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --park wellhead-monitor --note "v3.0.0 verified across all 8 stages"
 ```
 
 ---
@@ -528,6 +562,9 @@ All terminal CLI commands below use the globally installed skill path (`~/.gemin
 | Operator Goal | Antigravity Chat Command | Terminal CLI / REST API Command (Works from Any Directory) |
 | :--- | :--- | :--- |
 | **Start or Resume Selector** | `/agentic-sdlc` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py` |
+| **Upgrade `v1.x` / `v2.x` to `v3.0.0`** | `/agentic-sdlc --upgrade` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --check-update` |
+| **Distill Intranet Standards into `org-standards.md`** | `/org-standards-builder` | Copy-paste [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) or [`STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) |
+| **Generate / Ingest Stage 1 RACI Spreadsheet** | *(Stage 1 Turn 1)* | `sdlc_hud.py --generate-raci-template` and `sdlc_hud.py --ingest-raci <file> --apply-raci` |
 | **Create New Project** | `/agentic-sdlc --new` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py --project-name "<Name>" --target-dir "<Dir>"` |
 | **List All Projects** | `/agentic-sdlc --list` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --list` |
 | **Resume Project (ID or Path)** | `/agentic-sdlc --resume [id_or_path]` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --resume <id_or_path>` |
@@ -539,10 +576,13 @@ All terminal CLI commands below use the globally installed skill path (`~/.gemin
 | **Synthesize Stage 4 Builders** | *(Stage 4 `@parallel-builder-orchestrator`)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --synthesize-builders` (`POST /api/v1/sdlc/builders/synthesize`) |
 | **Approve Gate 4 Builder Roster** | *(Stage 4 `lead_architect`)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve-roster --approver "@lead_architect"` (`POST /api/v1/sdlc/builders/approve`) |
 | **Execute Stage 5 Parallel Waves** | *(Stage 5 `@parallel-builder-orchestrator`)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --execute-builders` (`POST /api/v1/sdlc/builders/execute`) |
-| **Approve Stage Gate (`1..8`)** | *(Via chat or UI)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve <1-8> --approver "@owner" --note "Approved"` |
+| **Dispatch & Sync Authenticated Team Gate (`1..8`)** | *(Stage Gate in `TEAM_STRICT`)* | `sdlc_hud.py --dispatch-gate <1-8> [--channel GITHUB_ISSUE\|GOOGLE_SHEETS\|DEPLOYED_FLIGHT_DECK]` and `sdlc_hud.py --sync-gate <1-8> [--wait]` |
+| **Confirm Quarantined `CHANGES_REQUESTED` Notes** | *(After R/A/C Rework Request)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --confirm-rework <1-8>` |
+| **Audit Solo-to-Team Gate Grandfathering** | *(After Adding 2nd Human)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --reverify-gates` |
+| **Approve Solo Advisory Gate (`1..8`)** | *(`SOLO_ADVISORY` 1-Human Only)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --approve <1-8> --approver "@owner" --note "Approved"` |
 | **Pause Stage Gate (`1..8`)** | *(Via chat or UI)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --pause <1-8> --note "Hold for review"` |
 | **Switch Execution Policy** | *(Via chat or UI)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --policy {hitl,autonomous}` |
-| **Initialize / Upgrade OpenTelemetry & Cloud Outer Loop** | `/agentic-sdlc --outer-loop-init` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --outer-loop-init [--pattern {LOCAL_FILE_SINK,SHARED_REMOTE_SINK,CLOUD_OUTER_LOOP}]` |
+| **Initialize / Upgrade OpenTelemetry & Cloud Outer Loop** | `/agentic-sdlc --outer-loop-init` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --outer-loop-init [--telemetry-pattern {LOCAL_FILE_SINK,SHARED_REMOTE_SINK,CLOUD_OUTER_LOOP}]` |
 | **Inspect OpenTelemetry & Outer-Loop Status** | `/agentic-sdlc --outer-loop-status` | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/sdlc_hud.py --outer-loop-status` |
 | **Run 8-Stage Gate Verifier** | *(Run in Stage 7)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/verify_sdlc_gates.py --project-dir <dir>` |
 | **Run CodeMender Security Triage** | *(Run in Stage 6)* | `python3 ~/.gemini/config/skills/agentic-sdlc/scripts/cm_triage.py --project-dir <dir>` |
@@ -563,23 +603,23 @@ All terminal CLI commands below use the globally installed skill path (`~/.gemin
 
 ---
 
-# 🎛️ Flight Deck Control Center Implementation & Multi-Channel Approval Workflows
+# 🎛️ Flight Deck Control Center Implementation & 3-Surface Authenticated Gate Approvals
 
-> **Document Purpose:** Architectural, security, and operational runbook for deploying and extending the **A/SDLC v2.0 Flight Deck Control Center (`http://localhost:8000`)**, the decoupled Target Application process manager (`:8001` / `:8002+`), the 6-Role RACI & User Directory engine, and the **5-Channel Enterprise HITL Gate Approval Workflow Engine**.
+> **Document Purpose:** Architectural, security, and operational runbook for deploying and extending the **A/SDLC v3.0 Flight Deck Control Center (`http://localhost:8000` locally or Cloud Run behind Cloud IAP / OIDC)**, the decoupled Target Application process manager (`:8001` / `:8002+`), the `3..N` Role RACI & User Directory engine, and the **3-Surface Enterprise HITL Gate Approval Workflow Engine (`GITHUB_ISSUES_PR`, `GOOGLE_SHEETS_TRACKER`, `FLIGHT_DECK_UI`)**.
 
 ---
 
 ## 1. Flight Deck Control Center Architecture (`:8000` vs `:8001+`)
 
-A/SDLC v2.0 strictly separates the **Harness Control Plane** from the **Target Application Data Plane**:
+A/SDLC v3.0 strictly separates the **Harness Control Plane** from the **Target Application Data Plane**:
 
 ```mermaid
 flowchart TD
-    Chat["Antigravity Chat and CLI"] --> ControlPlane["Port 8000 Flight Deck Control Plane"]
+    Chat["Antigravity Chat and CLI"] --> ControlPlane["Flight Deck Control Plane Local 8000 or Cloud Run IAP OIDC"]
     Browser["Operator Browser UI"] --> ControlPlane
-    ExtChannels["External Approval Channels Gmail Sheets GitHub Jira"] --> ModelArmor["Model Armor and RACI Accountable Verifier"]
+    ExtChannels["3 Authenticated Surfaces GitHub Issues Sheets Comments Cloud Flight Deck"] --> ModelArmor["Model Armor Quarantine and RACI Accountable Verifier"]
     ModelArmor --> ControlPlane
-    ControlPlane --> Spine["Unified 8 Stage State Spine and Session Checkpoint"]
+    ControlPlane --> Spine["Unified 8 Stage State Spine and ES256 Gate Receipts"]
     ControlPlane --> DVR["Port 8001 Built In Reference DVR Cartridge"]
     ControlPlane --> TargetApps["Ports 8002 Plus Live User Target Workspaces"]
 ```
@@ -619,7 +659,7 @@ To obey the Stage 5 vertical-slice size guardrail (`<= 300` non-empty lines per 
 | `adk_sdlc_orchestrator/sdlc_state_spine.py` | Core Spine | 8-Stage state machine (`.sdlc/state.json`), tokenomics ledger, and automatic `.sdlc/RESUME_BRIEF.md` checkpointing. |
 | `adk_sdlc_orchestrator/sdlc_builder_orchestrator.py` | Dynamic Builders | Stage 1 Tech Stack Discovery Side-Quest (`.sdlc/tech_stack.json`), Stage 4 Dynamic Parallel Builder Synthesizer (`.sdlc/builder_manifest.json` & `.sdlc/agents/builders/*.md`), and Stage 5 Wave Executor. |
 | `adk_sdlc_orchestrator/sdlc_project_lifecycle.py` | Lifecycle | `--list`, `--resume`, `--park`, Two-Tier `--delete` with automatic compliance audit archival, and workspace auto-discovery. |
-| `adk_sdlc_orchestrator/sdlc_approval_workflows.py` | Approvals | 5-Channel outbound approval dispatcher, strict Accountable (`A`) verification, Model Armor note screening, and rejection routing. |
+| `adk_sdlc_orchestrator/sdlc_approval_workflows.py` | Approvals | 3-Surface authenticated gate dispatcher (`GITHUB_ISSUES_PR`, `GOOGLE_SHEETS_TRACKER`, `FLIGHT_DECK_UI`), strict Accountable (`A`) verification, `R/A/C` rework quarantine, and Author-to-Reviewer code SoD. |
 
 ---
 
@@ -646,33 +686,28 @@ The Flight Deck UI implements the **Clean Enterprise Light First Design Language
 
 ---
 
-## 4. Multi-Channel HITL Gate Approval Workflows & Security Hardening
+## 4. Three-Surface Authenticated HITL Gate Approvals & Security Hardening
 
-During Stage 1 Onboarding (or anytime in `/projects/admin?task=raci`), `@project-conductor` configures `.sdlc/approval_workflows.json` with a **Project Default Channel** and optional **Per-Gate Channel Overrides (`Stages 1..8`)**.
+During Stage 1 Onboarding (or on unapproved stages via `--dispatch-gate <N> --channel <SURFACE>`), `@project-conductor` configures `.sdlc/approval_workflows.json` with a **Project Default Surface** and optional **Per-Gate Overrides (`Stages 1..8`)**. Legacy `GMAIL_THREAD` and `JIRA_WEBHOOK_TICKET` channels are retired in `v3.0`.
 
-### 4.1 The 5 Supported Approval Channels
+### 4.1 The 3 Authenticated Approval Surfaces (`TEAM_STRICT`)
 
-| Channel Code | Enterprise System | Outbound Dispatch Behavior (`WAITING_FOR_HITL`) | Inbound Sign-Off & Sync Behavior |
+| Surface Code (Short Alias) | Enterprise System | Outbound Dispatch Behavior (`--dispatch-gate <N>`) | Inbound Sign-Off & Verification (`--sync-gate <N>`) |
 | :--- | :--- | :--- | :--- |
-| `FLIGHT_DECK_UI` | **Flight Deck Web UI (`:8000`) & CLI** | Surfaces the Accountable (`A`) Sign-Off Box directly in `/projects/status` and `sdlc_hud.py`. | Operator clicks **Approve Stage Gate** in UI or runs `sdlc_hud.py --approve <1-8> --approver "@owner"`. |
-| `GMAIL_THREAD` | **Gmail Approval Thread** | Composes a structured approval email (`DRAFT_FIRST` or `AUTO_SEND`) to the stage's Accountable (`A`) owner with subject tag `[ASDLC-GATE][<project_id>][STAGE-<N>]` and deliverable links. | Syncs the Accountable (`A`) owner's reply (`APPROVED` vs `REJECTED` / `CHANGES_REQUESTED`) via `/api/v1/sdlc/approvals/inbound`. |
-| `GOOGLE_SHEETS_TRACKER` | **Shared Google Sheet Gate Tracker** | `AUTO_PROVISION` generates `.sdlc/gate_tracker_sheet.csv` (and links a native Google Sheet) with columns for Stage `1..8`, Responsible Agent, Accountable Owner, Deliverable Links, Status, and Reviewer Notes; `LINK_EXISTING` binds an existing Sheet ID/URL. | Reads the Accountable (`A`) owner's row decision and timestamp into `.sdlc/state.json`. |
-| `GITHUB_ISSUES_PR` | **GitHub Issues / Pull Request Reviews** | Opens or links a GitHub Gate Review Issue/PR labeled `asdlc-hitl-gate` in the configured `owner/repo` with deliverable diffs and verification checklists. | Syncs the Accountable (`A`) reviewer's PR approval or requested changes. |
-| `JIRA_WEBHOOK_TICKET` | **Jira / ServiceNow Gate Ticket** | Dispatches a gate payload to the configured Jira project key (`ASDLC`) and webhook URL. | Ingests inbound webhook transitions (`Approved` vs `Rejected`) from the Accountable (`A`) owner. |
+| `GITHUB_ISSUES_PR` (`GITHUB_ISSUE`) | **GitHub Issues Gate Review (GraphQL Verified)** | Pushes `refs/heads/asdlc/gate-<N>-review` and opens or updates 1 Gate Issue per stage (`asdlc-hitl-gate`) pre-filled with `APPROVED G<N> <sha12+>`. | Queries GitHub GraphQL (`author.__typename == "User"`, `login` matches `A` owner's `github_handle`, `createdAt == updatedAt`, `userContentEdits == 0`, no post-approval comment deletions). |
+| `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS`) | **Dedicated Google Sheets Gate Tracker (Drive Comments Only)** | Provisions or links a dedicated Gate Tracker Sheet (separate from the Stage 1 RACI intake sheet) and posts an Assigned Comment (`+accountable_email`) with `APPROVED G<N> <sha12+>`. | Verifies unedited Drive Comment replies where `author.emailAddress` matches the `A` owner's corporate email (cell-dropdown status edits are ignored). |
+| `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK`) | **Deployed Cloud Run Flight Deck (Cloud IAP / OIDC + `ES256` JWS)** | Surfaces the gate in the Cloud Run Flight Deck behind Cloud IAP (`x-goog-iap-jwt-assertion`) or single-tenant OIDC (Google, Entra ID, Okta). | Verifies the caller's IAP/OIDC assertion against the `A` owner and signs an asymmetric NIST P-256 (`ES256`) RFC 7515 JWS gate receipt. (`localhost:8000` and CLI `--approve` are permitted only in `1`-human `SOLO_ADVISORY` mode.) |
 
-### 4.2 Four-Layer Security & Compliance Guardrails on Gate Approvals and Control Plane
+### 4.2 Asymmetric RACI Permissions, Rework Quarantine & Code SoD
 
-1. **Strict Accountable (`A`) Identity Verification & Segregation of Duties (SoD):**
-   - Every inbound approval or rejection (`POST /api/v1/sdlc/approvals/inbound`) is verified against the stage's Accountable (`A`) role owner in `RACI.md` (matching handle, email, or full name).
-   - If an AI subagent (`@*`) or an unauthorized human handle attempts to approve or reject the gate, the engine blocks the action with `HTTP 400` and logs an `EXTERNAL_APPROVAL_UNAUTHORIZED` security event in `.sdlc/events.jsonl`.
-   - For regulated workloads (SOC 2 Type II, ISO 27001, NERC CIP), assign distinct human identities to `tech_lead` (Stage 5) and `security_lead` (Stage 6) to enforce Segregation of Duties.
-2. **Model Armor Screening on Inbound `pending_revision_notes` (Second-Order Prompt Injection Defense):**
-   - Before storing external reviewer comments (`decision_notes`) in `stage["pending_revision_notes"]`, `verify_and_record_external_decision()` screens the text through `inspect_with_model_armor()`.
-   - Any external comment containing prompt-override or SQL-injection patterns (`"ignore previous instructions"`, `"system prompt override"`, `"exfiltrate credentials"`, `"DROP TABLE"`) is immediately rejected with `HTTP 400` (`Model Armor blocked inbound decision_notes`) before it can ever be injected into a Responsible (`R`) subagent prompt.
-3. **Automatic Rejection Feedback Routing (`pending_revision_notes`):**
-   - When a clean `REJECTED` or `CHANGES_REQUESTED` decision is recorded:
-     - The stage transitions to `PAUSED_FOR_HUMAN` and stores the feedback in `stage["pending_revision_notes"]`.
-     - On the next execution (`POST /api/v1/sdlc/stage/{id}/execute`), `execute_stage_subagent()` injects `pending_revision_notes` into the subagent's instructions, clears `pending_revision_notes`, and records the resolved feedback in `stage["last_addressed_revision_notes"]`.
+1. **Single Accountable (`A`) Approval vs. `R/A/C` Rework Trigger:**
+   - Only the stage's single Accountable (`A`) human can post `APPROVED G<N> <commit_sha_12+>`.
+   - Any Responsible (`R`), Accountable (`A`), or Consulted (`C`) human on that gate can post `CHANGES_REQUESTED: <notes>`, which permanently taints that commit SHA in `.sdlc/approval_workflows.json` and writes `.sdlc/rework/gate_<N>_changes_requested.json`.
+2. **Reviewer Feedback Quarantine (`--confirm-rework <N>`):**
+   - External `CHANGES_REQUESTED` notes are screened via `screen_reviewer_feedback_quarantine()` and held in quarantine until a local operator reviews and confirms them via `python3 scripts/sdlc_hud.py --confirm-rework <N>` before any LLM subagent consumes them.
+3. **Practical Code-Scoped Segregation of Duties (Stages 5 & 6) & Solo-to-Team Grandfathering:**
+   - On Stages 5 and 6, `verify_stage_code_sod()` and `.sdlc/bin/verify_sdlc_gates.py --ci` block self-approval of governed code authored by the Accountable (`A`) reviewer.
+   - Adding a second distinct human to `.sdlc/raci.json` locks `TEAM_STRICT`: verified solo receipts grandfather only for Stages 1 through 5 when deliverables match the promotion commit, while Stages 6 and 7 always require fresh `TEAM_STRICT` sign-off.
 4. **Local Control Plane (`:8000`) Hardening & Audit Retention:**
    - **CORS Restriction:** `backend/app/main.py` restricts CORS origins strictly to `localhost:8000`, `127.0.0.1:8000`, `localhost:8001`, and `127.0.0.1:8001`.
    - **Deliverable Editor Extension Allowlist:** `PUT /api/v1/sdlc/artifact/{path}` only permits documentation and data extensions (`.md`, `.json`, `.yaml`, `.yml`, `.txt`, `.csv`), blocking `.py` or `.sh` overwrites with `HTTP 400`.
@@ -697,17 +732,17 @@ Open `http://localhost:4450` in your browser to inspect all 16 Vue 3 `<script se
 
 ---
 
-# 🤖 Complete Catalog of All 9 Universal A/SDLC v2.0 Agent Definitions, Reusable Builder Presets & Skills
+# 🤖 Complete Catalog of All 10 Specialist A/SDLC v3.0 Agent Definitions, Reusable Builder Presets & 11 Skills
 
-> **Document Purpose:** Complete operational profiles and **100% verbatim Markdown/YAML definitions (`agents/*.md`)** for all **9 Universal A/SDLC v2.0 Specialist Agents** (7 Core Pipeline Agents + 2 Specialist Critics/Auditors), the **7 Reusable Stage 4/5 Builder Presets** synthesized per project by `@parallel-builder-orchestrator` into `<project_dir>/.sdlc/agents/builders/<builder-id>.md`, and the **8 Installed Skills (`skills/*/SKILL.md`)**.
+> **Document Purpose:** Complete operational profiles and **Markdown/YAML definitions (`agents/*.md`)** for all **10 A/SDLC v3.0 Specialist Agents** (7 Core Pipeline Agents + 3 Specialist Critics/Syncers), the **Reusable Stage 4/5 Builder Presets** synthesized per project by `@parallel-builder-orchestrator` into `<project_dir>/.sdlc/agents/builders/<builder-id>.md`, and the **11 Installed Skills (`skills/*/SKILL.md`)**.
 
 ---
 
-## 1. Master Roster of All 9 Universal Specialist Agents
+## 1. Master Roster of All 10 Specialist Agents
 
 | # | Agent Handle | File in `agents/` | Stage Ownership | Default Model | Accountable (`A`) Human Partner |
 | :---: | :--- | :--- | :--- | :---: | :--- |
-| **1** | `@project-conductor` | `agents/project-conductor.md` | Stage 1 (Onboarding, RACI, Asset Intake & Tech Stack Side-Quest) + Stage 4 & Stage 8 Co-Conductor | `gemini-2.5-pro` | executive_sponsor (Stage 1) / lead_architect (Stage 4) / product_owner (Stage 8) |
+| **1** | `@project-conductor` | `agents/project-conductor.md` | Stage 1 (Onboarding, Turn 1 RACI Sheet, Git Setup, OTel Sink & Asset Intake) + Stage 4 & Stage 8 Co-Conductor | `gemini-2.5-pro` | executive_sponsor (Stage 1) / lead_architect (Stage 4) / product_owner (Stage 8) |
 | **2** | `@product-owner` | `agents/product-owner.md` | Stage 2 (Stack-Agnostic Product Discovery & Requirements) | `gemini-2.5-pro` | product_owner (Agile Product Owner) |
 | **3** | `@spec-architect` | `agents/spec-architect.md` | Stage 3 (Stack-Adaptive Blueprint & Builder Decomposition Plan) & Stage 4 Co-Architect | `gemini-2.5-pro` | lead_architect (Lead AI / Systems Architect) |
 | **4** | `@parallel-builder-orchestrator` | `agents/parallel-builder-orchestrator.md` | Stage 4 (Dynamic Project Builder Synthesis & Roster Governance) & Stage 5 (Parallel Wave Execution) | `gemini-2.5-pro` | lead_architect (Stage 4 Roster) & tech_lead (Stage 5 Execution) |
@@ -715,6 +750,7 @@ Open `http://localhost:4450` in your browser to inspect all 16 Vue 3 `<script se
 | **6** | `@eval-telemetry-auditor` | `agents/eval-telemetry-auditor.md` | Stage 7 (Testing, Quality, OpenTelemetry & FinOps Check) | `inherit (gemini-2.5-pro)` | sre_finops_lead (Quality, SRE & FinOps Lead) |
 | **7** | `@kaizen-evolution-agent` | `agents/kaizen-evolution-agent.md` | Stage 8 (Continuous Improvement, Golden Eval Flywheel & 4-Speed Return Loop Router) | `gemini-2.5-pro` | product_owner (Agile Product Owner) |
 | **8** | `@adversarial-doc-critic` | `agents/adversarial-doc-critic.md` | Cross-Stage 4-Lens Adversarial Document, PRD, SPEC & Executive Playbook Critic | `gemini-2.5-pro` | Invoked on-demand by any stage owner or author |
+| **10** | `@asdlc-doc-version-syncer` | `agents/asdlc-doc-version-syncer.md` | Internal CE Documentation Auditor across Workstreams 1, 2 & 3 | `gemini-2.5-pro` | Framework Maintainer / Delivering CE |
 
 ---
 
@@ -723,101 +759,19 @@ Open `http://localhost:4450` in your browser to inspect all 16 Vue 3 `<script se
 ### 2.1 `@project-conductor` (`agents/project-conductor.md`)
 
 #### Operational Profile
-- **Stage Ownership (Responsible `R`):** Stage 1 (Onboarding, RACI, Asset Intake & Tech Stack Side-Quest) + Stage 4 & Stage 8 Co-Conductor
+- **Stage Ownership (Responsible `R`):** Stage 1 (Onboarding, Turn 1 RACI Spreadsheet Intake, Git Setup, OTel Sink, Asset Intake & Tech Stack Side-Quest) + Stage 4 & Stage 8 Co-Conductor
 - **Accountable (`A`) Human Gate Partner:** executive_sponsor (Stage 1) / lead_architect (Stage 4) / product_owner (Stage 8)
 - **Default Model Tier:** `gemini-2.5-pro`
-- **Required Inputs:** Project Charter, org-standards.md, .okf/intake/ assets, 6-Role RACI roster, Approval Workflow config
-- **Guaranteed Outputs:** RACI.md, .sdlc/raci.json, .sdlc/approval_workflows.json, org-standards.md, .sdlc/tech_stack.json, .okf/intake/ASSET_MANIFEST.md
-- **Direct Invocation:** Invoke via `@agent:project-conductor` / `invoke_subagent(TypeName="project-conductor")` in Antigravity, or click **Run Stage Agent (`@project-conductor`)** in the `:8000` Flight Deck UI.
+- **Required Inputs:** Project Charter, Stage 1 Turn 1 RACI Spreadsheet (`3..N` custom roles), GitHub repository URL/slug, OpenTelemetry pattern, `org-standards.md`, `.okf/intake/` 6-Pillar assets
+- **Guaranteed Outputs:** `RACI.md`, `.sdlc/raci.json`, `.sdlc/git_config.json`, `.sdlc/telemetry_config.json`, `.sdlc/approval_workflows.json`, `org-standards.md`, `.sdlc/tech_stack.json`, `.okf/intake/ASSET_MANIFEST.md`
+- **Direct Invocation:** Invoke via `@agent:project-conductor` / `invoke_subagent(TypeName="project-conductor")` in Antigravity, or see canonical [`agents/project-conductor.md`](./agents/project-conductor.md).
 
-#### Verbatim Agent Definition (`agents/project-conductor.md`)
-````markdown
----
-name: project-conductor
-description: "Stage 1 Project Onboarding, 6-Role RACI Governance, Background Asset Intake (.okf/intake/), and Continuous PMO Overwatch Agent (@project-conductor). Invoke this agent first to initialize a new A/SDLC project charter, assign the 6 Core Enterprise Roles across all 8 HITL stage gates (RACI.md & .sdlc/raci.json), walk through the Stage 1 Background Asset Intake Checklist (org-standards.md, UI/UX designs, brand style guides, domain docs, and schemas), and govern stage transitions across Stages 1 to 8."
-tools:
-  - ask_question
-  - view_file
-  - write_to_file
-  - replace_file_content
-  - run_command
-  - invoke_subagent
-mainAgent: true
-subagent: true
-model: pro
-commandExecutionPolicy: auto
----
-
-# System Instructions: Stage 1 Project Onboarding & Continuous PMO Overwatch Agent (`@project-conductor`)
-
-## Role and Persona
-You are the **Project Conductor & Continuous PMO Overwatch Agent** (`@project-conductor`) for the 8-Stage Agentic SDLC (`A/SDLC v2.0`). You own **Stage 1: Project Onboarding, RACI & Asset Intake**, co-manage **Stage 4: Workspace & Guardrail Setup** and **Stage 8: Continuous Improvement & Next Iteration**, and act as the continuous governance conductor across all 8 stages (`Stages 1 to 8`), whether invoked from the CLI, Antigravity chat, or the `:8000` Flight Deck Control Center.
-
-## Primary Objectives
-1. **Project Lifecycle & Cross-Surface Session Continuity (`--list`, `--resume`, `--status`, `--park`, `--delete`, `--new`):** Help users move in and out of projects cleanly across CLI, chat, and the `:8000` Flight Deck Web UI using `sdlc_hud.py` and `.sdlc/RESUME_BRIEF.md` checkpoints, including Two-Tier Project Deletion (`UNREGISTER` vs `PURGE_DISK`) and full context hydration on `--resume`.
-2. **Project Charter & Governance Policy Setup:** Establish the project name, target directory, target application port (`:8001` or `:8002+`), and Governance Execution Policy (`HITL_GATED` vs `AUTONOMOUS_GUARDRAILED`).
-3. **Program & 8-Stage HITL Gate RACI Matrix (`RACI.md` & `.sdlc/raci.json`):** Configure the **6 Core Enterprise Roles** and map named individuals to Accountable (`A`), Responsible (`R`), Consulted (`C`), and Informed (`I`) duties across the overall program and every stage gate (`Stages 1 to 8`).
-   - **Strict Governance Invariant:** AI subagents may be Responsible (`R`), Consulted (`C`), or Informed (`I`), never Accountable (`A`). Every stage gate (`1..8`) must have exactly one Accountable human role.
-4. **Multi-Channel External Approval Workflows (`.sdlc/approval_workflows.json`):** Configure how HITL gate approvals connect to the team's enterprise workflows (`FLIGHT_DECK_UI`, `GMAIL_THREAD` with `[ASDLC-GATE]` subject tags and `DRAFT_FIRST` vs `AUTO_SEND`, `GOOGLE_SHEETS_TRACKER` with auto-provisioned or linked spreadsheets, `GITHUB_ISSUES_PR`, or `JIRA_WEBHOOK_TICKET`), including a project default channel and per-gate overrides in `RACI.md`.
-   - **Bidirectional Dispatch & Rejection Routing:** Reaching `WAITING_FOR_HITL` dispatches the approval request via the gate's channel. Inbound approvals verify that the responder matches the Accountable (`A`) owner (`RACI.md`), while rejections (`REJECTED` / `CHANGES_REQUESTED`) move the stage to `PAUSED_FOR_HUMAN`, run Model Armor prompt-injection sanitization on the feedback, and inject `pending_revision_notes` into the Responsible (`R`) subagent's next re-run.
-5. **Stage 1 Background Asset Intake Checklist (`.okf/intake/` & `org-standards.md`) & Tech Stack Discovery Side-Quest (`.sdlc/tech_stack.json`):** Assume enterprise teams arrive with rich background materials and proactively walk the stakeholder through the 5-part intake checklist:
-   - **Pillar 1 (`org-standards.md` & Tech Stack Discovery Side-Quest):** Organizational Development Standards, tech stack policies, cloud security guardrails, and testing benchmarks. **Do NOT assume any default technology stack.** Extract the project's technology stack from `org-standards.md` first. If `org-standards.md` does not specify a stack (or the user wants architectural guidance selecting one), launch the **Stage 1 Tech Stack Discovery Side-Quest** to evaluate workload archetype, latency/scale requirements, deployment target, and team skills, and persist the chosen stack into `<project_dir>/.sdlc/tech_stack.json` and `<project_dir>/org-standards.md`.
-   - **Pillar 2 (`.okf/intake/designs/`):** UI/UX wireframes, mockups, Figma links, screen flows, and architecture diagrams.
-   - **Pillar 3 (`.okf/intake/styles/`):** Brand guidelines, color palettes, typography tokens, and CSS/design-system presets.
-   - **Pillar 4 (`.okf/intake/docs/`):** Domain runbooks, legacy PRDs, standard operating procedures (SOPs), and briefing decks.
-   - **Pillar 5 (`.okf/intake/schemas/`):** Existing OpenAPI 3.1 specs, gRPC/Protobuf definitions, SQL DDL schemas, BigQuery/Spanner schemas, and sample payloads.
-6. **Handoff to Stage 2 (`@product-owner`) & Stage 4 Dynamic Builder Synthesis (`@parallel-builder-orchestrator`):** Once `RACI.md`, `.sdlc/approval_workflows.json`, `org-standards.md`, `.sdlc/tech_stack.json`, and `.okf/intake/ASSET_MANIFEST.md` are generated and signed off by the Stage 1 Accountable owner (`executive_sponsor`), hand off to `@product-owner` (Stage 2). In Stage 4, coordinate with `@parallel-builder-orchestrator` to synthesize the project-specific builders in `.sdlc/agents/builders/*.md` and govern Gate 4 Builder Roster approval (`HITL_GATED` vs `AUTONOMOUS_GUARDRAILED`).
-
----
-
-## Six Core Enterprise Roles (Default Accountable Gate Mapping)
-
-| Role ID | Enterprise Role Title | Default Accountable (`A`) Stage Gates | Primary Partner Subagents (`R`) |
-| :--- | :--- | :--- | :--- |
-| `executive_sponsor` | **Executive Sponsor / Business Owner** | **Program Overall** & **Stage 1 (Onboarding, RACI & Assets)** | `@project-conductor` |
-| `product_owner` | **Agile Product Owner** | **Stage 2 (Product Discovery `PRD.md`)** & **Stage 8 (Kaizen Iteration)** | `@product-owner`, `@kaizen-evolution-agent` |
-| `lead_architect` | **Lead AI / Systems Architect** | **Stage 3 (Blueprint `SPEC.md`)** & **Stage 4 (Workspace, Guardrails & Builder Synthesis)** | `@spec-architect`, `@parallel-builder-orchestrator`, `@project-conductor` |
-| `tech_lead` | **Engineering Tech Lead** | **Stage 5 (Parallel Builder Execution)** | `@parallel-builder-orchestrator` (+ synthesized `.sdlc/agents/builders/*.md`) |
-| `security_lead` | **Security & Governance Lead (CISO Delegate)** | **Stage 6 (Automated Security & Code Review)** | `@security-governance-critic` |
-| `sre_finops_lead` | **Quality, SRE & FinOps Lead** | **Stage 7 (Testing, Quality & Cost Check)** | `@eval-telemetry-auditor` |
-
----
-
-## Stage 1 Step-by-Step Execution Protocol
-
-### Step 1: Open-Ended Project Charter & Background Asset Prompt (Turn 1)
-Unless the user has already provided their project description and background asset paths, introduce yourself briefly and ask in plain text for:
-1. **Application Idea, Target Users & Core Problem:** What are we building, who is it for, and what operational bottleneck does it solve?
-2. **Organizational Development Standards (`org-standards.md`):** Local file path or Google Doc URL to the organization's engineering standards.
-3. **Existing Background Assets:** Any UI/UX designs, wireframes, brand/style guides, domain runbooks, or API/database schemas to ingest into `.okf/intake/`.
-
-### Step 2: Interactive Stage 1 RACI, Approval Workflows & Asset Intake Grill (`ask_question` on Turn 2)
-Once the user shares their project overview, use `ask_question` (maximum 3 to 4 focused questions) to lock in:
-1. **Governance Policy & Target Port:** `HITL_GATED` (Recommended) vs `AUTONOMOUS_GUARDRAILED`, and whether to auto-launch the `:8000` Flight Deck Control Center.
-2. **6-Role RACI Roster Confirmation:** Confirm or customize the named assignees for `executive_sponsor`, `product_owner`, `lead_architect`, `tech_lead`, `security_lead`, and `sre_finops_lead`.
-3. **Multi-Channel Gate Approval Workflows (`.sdlc/approval_workflows.json`):** Confirm the project default approval channel (`FLIGHT_DECK_UI`, `GMAIL_THREAD`, `GOOGLE_SHEETS_TRACKER`, `GITHUB_ISSUES_PR`, or `JIRA_WEBHOOK_TICKET`), per-gate channel overrides in `RACI.md`, Gmail dispatch mode (`DRAFT_FIRST` vs `AUTO_SEND`), and whether to auto-provision or link an existing Shared Google Sheet Gate Tracker.
-4. **Background Asset Checklist & Tech Stack Discovery Side-Quest:** Confirm which paths or URLs should be ingested into `org-standards.md` and `.okf/intake/{designs,styles,docs,schemas}/`. If `org-standards.md` does not specify the project's technology stack (or the user asks for stack guidance), run the **Stage 1 Tech Stack Discovery Side-Quest** (`ask_question`) with zero pre-selected default to determine:
-   - **Workload Archetype:** Web Application + API, Event-Driven Microservice, Data/Analytics & ML Pipeline, Edge/OT Telemetry Service, or Multi-Agent ADK Graph System.
-   - **Backend & Data Stack:** e.g., Python/FastAPI + ADK, Go/gRPC, Node/TypeScript, Rust/Tokio, or BigQuery/Dataform/Dataflow.
-   - **Frontend / Consumer Surface (if applicable):** e.g., Vue 3 + Tailwind CSS, React/Next.js, Streamlit/Lit, Headless API/CLI, or Chat/A2UI Surface.
-   - **Target Runtime & Verification Suite:** e.g., Cloud Run, GKE, Vertex AI Agent Engine, or Dataflow, paired with `pytest`, `go test`, `vitest`, or `cargo test`.
-   Persist the resolved stack to `<project_dir>/.sdlc/tech_stack.json` and `<project_dir>/org-standards.md`.
-
-### Step 3: Execute `bootstrap_harness.py` & Generate Stage 1 Deliverables
-Run `bootstrap_harness.py` to initialize the 8-stage workspace, RACI matrix, and `.okf/intake/` manifest:
-```bash
-python3 ${ASDLC_SKILLS_HOME}/agentic-sdlc/scripts/bootstrap_harness.py \
-  --project-name "<Project Name>" \
-  --target-dir "<Target Directory>" \
-  --org-standards "<Path to org-standards.md>" \
-  --designs-dir "<Optional Designs Path>" \
-  --style-guide "<Optional Style Guide Path>" \
-  --docs-dir "<Optional Docs Path>" \
-  --policy <HITL_GATED|AUTONOMOUS_GUARDRAILED> \
-  --start-flight-deck
-```
-Verify that `RACI.md`, `.sdlc/raci.json`, `org-standards.md`, `.okf/intake/ASSET_MANIFEST.md`, and `.sdlc/intake_manifest.json` exist and are populated, then transition to **Stage 2: Product Discovery & Requirements (`@product-owner`)**.
-````
+#### Canonical Agent Definition Summary (`agents/project-conductor.md`)
+*(Canonical definition lives in [`agents/project-conductor.md`](./agents/project-conductor.md), `asdlc_version: "3.0.0"`.)*
+- Collects the completed RACI spreadsheet upfront on Stage 1 Turn 1 via the [Master Starter Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or `.okf/intake/raci/RACI_STARTER_TEMPLATE.{xlsx,csv}`, supporting `3..N` custom roles (`1` distinct human runs `SOLO_ADVISORY`; `2+` distinct humans lock `TEAM_STRICT`).
+- Configures and validates read/write Git access (`.sdlc/git_config.json`), vendors `.sdlc/bin/verify_sdlc_gates.py` + `.github/workflows/asdlc-gate-verify.yml` + `.github/CODEOWNERS`, and configures `.sdlc/telemetry_config.json` (`LOCAL_FILE_SINK`, `SHARED_REMOTE_SINK`, or `CLOUD_OUTER_LOOP`).
+- Restricts `TEAM_STRICT` gate approvals to **3 authenticated surfaces**: `GITHUB_ISSUES_PR` (`GITHUB_ISSUE`), `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS` Drive Comments), and `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK` behind Cloud IAP / OIDC signing `ES256` JWS receipts), where only `A` posts `APPROVED G<N> <sha12+>` and `R/A/C` can post `CHANGES_REQUESTED: <notes>` (quarantined until `--confirm-rework <N>`).
+- Walks through all **6 `.okf/intake/` Asset Intake Pillars** (`org-standards.md`, `designs`, `styles`, `docs`, `schemas`, and External/Internal Data Sources) via completion-driven `2 to 3` question batches.
 
 ---
 
@@ -835,7 +789,9 @@ Verify that `RACI.md`, `.sdlc/raci.json`, `org-standards.md`, `.okf/intake/ASSET
 ````markdown
 ---
 name: product-owner
-description: "Stage 2 Expert Agile Product Owner Agent. Grounds discovery in Stage 1 ingested assets (org-standards.md, RACI.md, and .okf/intake/ designs, style guides, domain docs, and schemas) and interviews the stakeholder step-by-step across 4 phases (Vision & Value Proposition, High-Level Scope & Epics, MoSCoW User Stories & Acceptance Criteria, and Formal Handoff) to generate PRD.md before handing off to @spec-architect (Stage 3)."
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
+description: "Stage 2 Expert Agile Product Owner Agent (A/SDLC v3.0). Grounds discovery in Stage 1 ingested assets (org-standards.md, RACI.md, .sdlc/git_config.json, .sdlc/telemetry_config.json, and .okf/intake/ designs, style guides, domain docs, and schemas) and interviews the stakeholder step-by-step across 4 completion-driven phases (Vision & Value Proposition, High-Level Scope, Data Source Access Rules & OpenTelemetry/Kaizen SLA, MoSCoW User Stories & Acceptance Criteria, and Formal Handoff) to generate PRD.md before handing off to @spec-architect (Stage 3)."
 tools:
   - ask_question
   - view_file
@@ -955,7 +911,9 @@ When writing `PRD.md`, always use this exact structure:
 ````markdown
 ---
 name: spec-architect
-description: "Stage 3 & 4 Agentic SDLC Architect for Scoping, Spec-Driven Development (SDD), and Harness Setup. Invoke this agent to run Socratic /grill-me scoping, define measurable KPIs (Google WAF Problem-First sequence), and generate a stack-adaptive executable SPEC.md (API/data contracts, UI component contracts, and a Proposed Parallel Builder Decomposition Plan) plus Stage 4 AGENTS.md harness rules."
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
+description: "Stage 3 & 4 Agentic SDLC v3.0 Architect for Scoping, Spec-Driven Development (SDD), OpenTelemetry & Cloud Outer-Loop Contracts, and Harness Setup. Invoke this agent to run completion-driven Socratic /grill-me scoping, define measurable KPIs (Google WAF Problem-First sequence), and generate a stack-adaptive executable SPEC.md (API/data contracts, UI component contracts, data source connectivity/auth/sandbox strategy, OpenTelemetry Exporter & POST /api/v1/kaizen/override Contract, SPIFFE/WIF identities, and a Proposed Parallel Builder Decomposition Plan) plus Stage 4 AGENTS.md harness rules."
 tools:
   - view_file
   - write_to_file
@@ -1039,7 +997,9 @@ When invoked for an iterative sprint (`v1.x`) or via **Loop 2 (`Stage 8 -> Stage
 ````markdown
 ---
 name: parallel-builder-orchestrator
-description: "Stage 4 & 5 Universal Parallel Builder Orchestrator (@parallel-builder-orchestrator). Reads the approved Stage 3 SPEC.md and .sdlc/tech_stack.json to dynamically synthesize 1..N project-specific builders (sized from SPEC.md) in .sdlc/agents/builders/<builder-id>.md and .sdlc/builder_manifest.json with non-overlapping directory ownership, enforces Hybrid Gate 4 Roster Approval, and orchestrates parallel wave execution and integration verification in Stage 5."
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
+description: "Stage 4 & 5 Universal Parallel Builder Orchestrator (@parallel-builder-orchestrator) for A/SDLC v3.0. Reads the approved Stage 3 SPEC.md, .sdlc/tech_stack.json, and .sdlc/telemetry_config.json to dynamically synthesize 1..N project-specific builders (sized from SPEC.md) in .sdlc/agents/builders/<builder-id>.md and .sdlc/builder_manifest.json with non-overlapping directory ownership, scaffolds deploy/cloud_outer_loop/ in Stage 4, enforces Hybrid Gate 4 Roster Approval, and orchestrates parallel wave execution with ADK 2.0 PII redaction callbacks and real OpenTelemetry span export in Stage 5."
 tools:
   - view_file
   - write_to_file
@@ -1056,8 +1016,8 @@ commandExecutionPolicy: auto
 # System Instructions: Stage 4 & 5 Universal Parallel Builder Orchestrator (`@parallel-builder-orchestrator`)
 
 ## Role and Persona
-You are the **Universal Parallel Builder Orchestrator** (`@parallel-builder-orchestrator`) for the 8-Stage Agentic SDLC (`A/SDLC v2.0`). Rather than forcing every project into a fixed technology stack, you inspect the approved **Stage 1 Tech Stack Profile (`.sdlc/tech_stack.json` & `org-standards.md`)** and the **Stage 3 Technical Blueprint (`SPEC.md` `## Proposed Parallel Builder Decomposition Plan`)** to:
-1. **Stage 4 (Dynamic Builder Synthesis & Roster Governance):** Synthesize `1..N` project-specific builder definitions (dynamically sized from `SPEC.md`) inside `<project_dir>/.sdlc/agents/builders/<builder-id>.md` and `<project_dir>/.sdlc/builder_manifest.json`, validating that every builder obeys the locked Base Guardrail Template (`<= 300` LoC per file, `>= 35%` test ratio, Model Armor & parameterized query rules, OpenTelemetry `gen_ai.*` spans, `<= 8` focused tools, and strictly non-overlapping `owned_paths` write globs).
+You are the **Universal Parallel Builder Orchestrator** (`@parallel-builder-orchestrator`) for the 8-Stage Agentic SDLC (`A/SDLC v3.0`). Rather than forcing every project into a fixed technology stack, you inspect the approved **Stage 1 Tech Stack & Telemetry Profile (`.sdlc/tech_stack.json`, `.sdlc/telemetry_config.json` & `org-standards.md`)** and the **Stage 3 Technical Blueprint (`SPEC.md` `## Proposed Parallel Builder Decomposition Plan`)** to:
+1. **Stage 4 (Dynamic Builder Synthesis, Cloud Outer-Loop Provisioning & Roster Governance):** Synthesize `1..N` project-specific builder definitions (dynamically sized from `SPEC.md`) inside `<project_dir>/.sdlc/agents/builders/<builder-id>.md` and `<project_dir>/.sdlc/builder_manifest.json`, scaffold `<project_dir>/deploy/cloud_outer_loop/` when `CLOUD_OUTER_LOOP` is enabled, and validate that every builder obeys the locked Base Guardrail Template (`<= 300` LoC per file, `>= 35%` test ratio, Model Armor & parameterized query rules, OpenTelemetry `gen_ai.*` spans, `<= 8` focused tools, and strictly non-overlapping `owned_paths` write globs).
 2. **Stage 5 (Parallel Wave Execution & Integration Verification):** Coordinate the parallel execution of all synthesized project builders against their assigned `SPEC.md` contract sections and exclusive `owned_paths`, and run cross-builder integration verification before handing off to `@security-governance-critic` (Stage 6).
 
 The **Lead AI / Systems Architect (`lead_architect`)** holds Accountable (`A`) sign-off authority for Stage 4 (including the Builder Roster in `HITL_GATED` mode), and the **Engineering Tech Lead (`tech_lead`)** holds Accountable (`A`) sign-off authority for Stage 5.
@@ -1130,6 +1090,8 @@ When synthesizing project builders in Stage 4, match each decomposed domain in `
 ````markdown
 ---
 name: security-governance-critic
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
 description: "Stage 6 Adversarial Code Reviewer, AI Threat Defender, and Enterprise Agent Governance Auditor (). Invoke this subagent to run an antagonistic review loop auditing code and agent configs for indirect prompt injection, tool poisoning, overprivileged IAM/SPIFFE identities, Model Armor guardrails, SQL/command injection, and SPEC.md drift."
 tools:
   - view_file
@@ -1189,7 +1151,9 @@ Always return a structured **Security & Governance Audit Verdict**:
 ````markdown
 ---
 name: eval-telemetry-auditor
-description: "Stage 7 Evaluation-Driven Development (EDD), OpenTelemetry GenAI Tracing, and FinOps Cost Optimization Auditor (). Invoke this subagent to run deterministic pytest/vitest suites, score outputs across the 7 Evaluation Dimensions, verify OTel GenAI spans, and audit Semantic Model Routing + Context Caching (90% token savings)."
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
+description: "Stage 7 Evaluation-Driven Development (EDD), Unified OpenTelemetry Sink Auditor (.sdlc/telemetry_config.json), and FinOps Cost Optimization Auditor (A/SDLC v3.0). Invoke this subagent to run deterministic pytest/vitest suites (or delegate untrusted PR tests to the ephemeral Cloud Build gVisor sandbox with --network=none in Cloud Outer-Loop mode), score outputs across the 7 Evaluation Dimensions, read and verify live OpenTelemetry gen_ai.* spans across LOCAL_FILE_SINK, SHARED_REMOTE_SINK, and CLOUD_OUTER_LOOP, and audit Semantic Model Routing + Context Caching (90% token savings)."
 tools:
   - view_file
   - run_command
@@ -1258,7 +1222,9 @@ Verify and document how the application applies the 3 FinOps levers:
 ````markdown
 ---
 name: kaizen-evolution-agent
-description: "Stage 8 Continuous Evolution, Production Telemetry Feedback, Self-Healing Harness Tuner, and Iterative Loop Router (@kaizen-evolution-agent). Invoke this subagent after Stage 7 or on Day-2 production telemetry/human overrides to promote incidents into the Golden Eval Set (.sdlc/golden_eval_set.json), append learned guardrail rules to AGENTS.md, and route work back via Loop 1 (Harness/Bug -> Stage 4/5), Loop 2 (Delta-Spec Feature -> Stage 3), Loop 3 (Strategic Epic -> Stage 2), or Loop 4 (Onboarding/RACI/Assets -> Stage 1)."
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
+description: "Stage 8 Continuous Evolution, Unified OpenTelemetry & Edge Override Feedback, Self-Healing Harness Tuner, and Iterative Loop Router (@kaizen-evolution-agent) for A/SDLC v3.0. Invoke this subagent after Stage 7 or on Day-2 production telemetry/human overrides (via .sdlc/telemetry_config.json, .sdlc/kaizen_overrides.jsonl, or Cloud Pub/Sub asdlc-kaizen-signals) to promote incidents into the Golden Eval Set (.sdlc/golden_eval_set.json), append learned guardrail rules to AGENTS.md, open automated kaizen/loop-* GitHub PRs with Two-Phase PENDING_KAIZEN_PR state locking, and route work back via Loop 1 (Harness/Bug -> Stage 4/5), Loop 2 (Delta-Spec Feature -> Stage 3), Loop 3 (Strategic Epic -> Stage 2), or Loop 4 (Onboarding/RACI/Assets -> Stage 1)."
 tools:
   - view_file
   - run_command
@@ -1272,7 +1238,7 @@ commandExecutionPolicy: auto
 
 # Role: Stage 8 Continuous Evolution & Kaizen Feedback Agent (`@kaizen-evolution-agent`)
 
-You are the **Stage 8 Continuous Evolution & Telemetry Feedback Specialist** of the 8-Stage Agentic SDLC (`A/SDLC v2.0`) framework, partnering with `@project-conductor`. Your job is to transform the Stages 1 to 7 pipeline into a **closed-loop, self-improving engineering flywheel**. The **Agile Product Owner (`product_owner`)** human role holds Accountable (`A`) sign-off authority for Stage 8.
+You are the **Stage 8 Continuous Evolution & Telemetry Feedback Specialist** of the 8-Stage Agentic SDLC (`A/SDLC v3.0`) framework, partnering with `@project-conductor`. Your job is to transform the Stages 1 to 7 pipeline into a **closed-loop, self-improving engineering flywheel** across `LOCAL_FILE_SINK`, `SHARED_REMOTE_SINK`, and Always-On `CLOUD_OUTER_LOOP` deployments. The **Agile Product Owner (`product_owner`)** human role holds Accountable (`A`) sign-off authority for Stage 8.
 
 ## Core Responsibilities
 
@@ -1318,7 +1284,7 @@ Always output a structured report containing:
 
 ---
 
-## 3. Group B: Specialist Critics & Curriculum Auditors (Agents 8 to 9)
+## 3. Group B: Specialist Critics, Curriculum Auditors & Doc Syncers (Agents 8 to 10)
 
 ### 3.1 `@adversarial-doc-critic` (`agents/adversarial-doc-critic.md`)
 
@@ -1333,6 +1299,8 @@ Always output a structured report containing:
 ````markdown
 ---
 name: adversarial-doc-critic
+asdlc_version: "3.0.0"
+distribution_tier: "customer-safe"
 description: "4-Lens Adversarial Document & Architecture Critic (Principal Architect & Red-Team Engineer, Skeptical Enterprise Customer CTO / Field Ops VP, Google Elevate & Citation Fact-Checker, and Executive Narrative, Readability & Visual Design Critic). Invoke this subagent to stress-test Google Docs, PRDs, SPECs, playbooks, or architecture documents, produce a severity-ranked recommendations report with deep readability diagnostics, and optionally generate a brand-new multi-tab revised Google Doc with rendered PNG diagrams."
 tools:
   - view_file
@@ -1396,6 +1364,8 @@ You are the **Adversarial Document & Architecture Critic** (`@adversarial-doc-cr
 
 ````markdown
 ---
+asdlc_version: "3.0.0"
+distribution_tier: "internal"
 tools:
   - view_file
   - run_command
@@ -1421,6 +1391,7 @@ commandExecutionPolicy: auto
   - Apply the user-approved expansions across code, subagents, Markdown docs, and Native Google Workspace assets in `My Drive > A/SDLC`.
 ````
 
+
 ---
 
 ## 4. Reusable Stage 4/5 Builder Presets (`adk_sdlc_orchestrator/sdlc_builder_orchestrator.py`)
@@ -1445,53 +1416,56 @@ During **Stage 4**, `@parallel-builder-orchestrator` reads `SPEC.md` and `.sdlc/
 
 ---
 
-## 5. Catalog of the 8 Installed A/SDLC Skills (`skills/*/SKILL.md`)
+## 5. Catalog of the 11 Installed A/SDLC Skills (`skills/*/SKILL.md`)
 
 | Skill Name | Installed Path (`skills/<name>/SKILL.md`) | Slash Command Trigger | Primary Purpose |
 | :--- | :--- | :--- | :--- |
-| `agentic-sdlc` | `skills/agentic-sdlc/SKILL.md` | `/agentic-sdlc [--list\|--resume\|--status\|--park\|--delete\|--new]` | Master 8-Stage A/SDLC v2.0 orchestrator, project lifecycle manager, and stage gate router. |
+| `agentic-sdlc` | `skills/agentic-sdlc/SKILL.md` | `/agentic-sdlc [--list\|--resume\|--status\|--park\|--delete\|--new\|--upgrade]` | Master 8-Stage A/SDLC v3.0 orchestrator, Turn 1 RACI intake, 3-surface gate router, OpenTelemetry outer-loop manager, and Two-Way Door remote sync. |
+| `asdlc-onboarding-coach` | `skills/asdlc-onboarding-coach/SKILL.md` | `/asdlc-onboarding-coach` | Pre-Flight GCP, IAM, OpenTelemetry APIs (`G06`), Git/GitHub (`G08`), and Toolkit Setup Coach (`G01..G12`) that hard-stops before `/agentic-sdlc --new`. |
+| `org-standards-builder` | `skills/org-standards-builder/SKILL.md` | `/org-standards-builder` | Enterprise Organizational Standards Builder and Intranet Distiller turning scattered wiki pages into `<= 120` line `org-standards.md` and `.okf/runbooks/`. |
 | `product-owner` | `skills/product-owner/SKILL.md` | `/product-owner` | Standalone or Stage 2 4-Phase Agile Product Owner discovery interview and `PRD.md` generator. |
 | `design-language` | `skills/design-language/SKILL.md` | `/design-language` | Clean Enterprise Light First Design Language tokens (`tokens.css`), Tailwind preset, 16 Vue 3 primitives, and `:4450` showroom. |
-| `review-council` | `skills/review-council/SKILL.md` | `/review-council` | Blind adversarial multi-agent code review council for high-stakes PRs and Stage 6 audits. |
+| `review-council` | `skills/review-council/SKILL.md` | `/review-council` | Blind adversarial multi-agent code and documentation review council for high-stakes PRs and Stage 6 audits. |
+| `asdlc-e2e-test` | `skills/asdlc-e2e-test/SKILL.md` | `/asdlc-e2e-test` | Clean-room provisioner, runner, 12-checkpoint grader, and teardown skill for `TC-01`. |
 | `asdlc-demo` | `skills/asdlc-demo/SKILL.md` | `/asdlc-demo` | Entry-point selector for deterministic workshop demo cartridges. |
 | `asdlc-demo-presentation` | `skills/asdlc-demo-presentation/SKILL.md` | `/asdlc-demo-presentation` | Pre-scripted deterministic workshop presentation player. |
 | `asdlc-demo-build` | `skills/asdlc-demo-build/SKILL.md` | `/asdlc-demo-build` | Freezes a live A/SDLC project into a replayable workshop demo cartridge. |
 
 ---
 
-# 🚀 Zero-GitHub Bootstrap Prompts: Build A/SDLC v2.0 From Scratch
+# 🚀 Zero-GitHub Bootstrap Prompts: Build A/SDLC v3.0 From Scratch
 
-> **Document Purpose:** Self-contained, clean-room verified master prompts that enable any developer or Customer Engineer to recreate the entire **8-Stage Agentic SDLC (`A/SDLC v2.0`)** skill, all **9 universal specialist subagents** (plus the Stage 4/5 **Dynamic Parallel Builder Orchestrator**), the **Project Lifecycle & Multi-Channel Approval Engine**, the **Flight Deck Control Center (`:8000`)**, the **Built-In `permian-rig-triage-demo` Reference Cartridge (`:8001`)**, and the **25-test verification harness** from scratch inside an empty directory **without cloning any code from GitHub**.
+> **Document Purpose:** Self-contained, clean-room verified master prompts that enable any developer or Customer Engineer to recreate the entire **8-Stage Agentic SDLC (`A/SDLC v3.0`)** skill, all **10 specialist subagents** (plus the Stage 4/5 **Dynamic Parallel Builder Orchestrator**), the **Turn 1 RACI Spreadsheet & 3-Surface Authenticated Approval Engine (`GITHUB_ISSUES_PR`, `GOOGLE_SHEETS_TRACKER`, `FLIGHT_DECK_UI`)**, the **3-Pattern OpenTelemetry & Cloud Outer-Loop Engine**, the **Flight Deck Control Center (`:8000` / Cloud Run)**, the **Built-In `permian-rig-triage-demo` Reference Cartridge (`:8001`)**, and the **automated verification harness** from scratch inside an empty directory **without cloning any code from GitHub**.
 > **Supported Agent Harnesses:** Google Antigravity, Gemini CLI, Hermes, or OpenClaw.
 
 ---
 
 ## 1. How to Use These Clean-Room Bootstrap Prompts
 
-You have two ways to bootstrap A/SDLC v2.0 in an empty directory (`mkdir ~/projects/agentic-sdlc && cd ~/projects/agentic-sdlc`):
+You have two ways to bootstrap A/SDLC v3.0 in an empty directory (`mkdir ~/projects/agentic-sdlc && cd ~/projects/agentic-sdlc`):
 
 1. **Option A: Staged 5-Prompt Bootstrap Sequence (Recommended for Maximum Determinism)**
    - Feed **Prompts 1 through 5** sequentially into your agent harness. Each prompt includes explicit file paths, JSON schemas, REST endpoint signatures, and test contracts so every stage compiles cleanly against the next.
 2. **Option B: Single All-In-One Master Mega-Prompt (Section 3)**
-   - Paste the consolidated specification prompt into a high-autonomy agent session (such as Antigravity with `/goal` enabled) to scaffold and verify all 25 tests in one pass.
+   - Paste the consolidated specification prompt into a high-autonomy agent session (such as Antigravity with `/goal` enabled) to scaffold and verify the complete `pytest` suite in one pass.
 
 ```mermaid
 flowchart LR
-    P1["Prompt 1 Path Spine and 8 Stage State Machine"] --> P2["Prompt 2 9 Universal Subagents and Builder Orchestrator"]
-    P2 --> P3["Prompt 3 RACI Approvals and Project Lifecycle"]
+    P1["Prompt 1 Path Spine Telemetry and 8 Stage State Machine"] --> P2["Prompt 2 10 Specialist Subagents and Builder Orchestrator"]
+    P2 --> P3["Prompt 3 Turn 1 RACI 3 Surface Approvals and Lifecycle"]
     P3 --> P4["Prompt 4 Modular FastAPI Flight Deck and 5 UI Views"]
-    P4 --> P5["Prompt 5 Gate Verifier CodeMender and 25 Pytest Suite"]
+    P4 --> P5["Prompt 5 Gate Verifier CodeMender and Pytest Suite"]
 ```
 
 ---
 
 ## 2. Option A: Staged 5-Prompt Bootstrap Sequence (Clean-Room Specified)
 
-### Prompt 1 of 5: Portable Path Spine, 8-Stage State Machine, Reference Cartridge & `/agentic-sdlc` Skill
+### Prompt 1 of 5: Portable Path Spine, 8-Stage State Machine, 3-Pattern OpenTelemetry Sink & Core Skills
 Copy and paste this prompt into your agent session:
 
 ````markdown
-We are building the 8-Stage Agentic SDLC (A/SDLC v2.0) framework from scratch in the current directory.
+We are building the 8-Stage Agentic SDLC (A/SDLC v3.0) framework from scratch in the current directory.
 Do not clone any external repository. Implement the following components cleanly in Python 3.12+:
 
 1. Portable Path Resolver (`asdlc/__init__.py` and `asdlc/paths.py`):
@@ -1499,9 +1473,9 @@ Do not clone any external repository. Implement the following components cleanly
    - Resolve `REPO_ROOT`, `skills_home()`, `projects_root(required=False)`, `registry_path()`, and `FALLBACK_CARTRIDGE_DIR` (defaulting to `REPO_ROOT`) via environment variables (`ASDLC_REPO_ROOT`, `ASDLC_SKILLS_HOME`, `ASDLC_PROJECTS_ROOT`), `<repo>/.asdlc.toml`, or `~/.config/asdlc/config.toml`.
    - `projects_root(required=True)` must raise `RuntimeError` if neither `ASDLC_PROJECTS_ROOT` nor `projects_root` in `.asdlc.toml`/`config.toml` is set (never guess `~/projects`).
 
-2. Unified 8-Stage A/SDLC Lifecycle State Spine (`adk_sdlc_orchestrator/sdlc_state_spine.py`):
+2. Unified 8-Stage A/SDLC Lifecycle State Spine (`adk_sdlc_orchestrator/sdlc_state_spine.py`) & 3-Pattern OpenTelemetry Engine (`adk_sdlc_orchestrator/telemetry_outer_loop.py`):
    - Define the 8 stages (IDs 1..8) in `.sdlc/state.json`:
-     - Stage 1: `Project Onboarding, RACI & Asset Intake` (`agent`: `@project-conductor`, `accountable_role`: `executive_sponsor`, `deliverables`: `["RACI.md", "org-standards.md", ".sdlc/tech_stack.json", ".okf/intake/ASSET_MANIFEST.md"]`)
+     - Stage 1: `Project Onboarding, RACI, GitHub Setup & Asset Intake` (`agent`: `@project-conductor`, `accountable_role`: `executive_sponsor`, `deliverables`: `["RACI.md", ".sdlc/raci.json", ".sdlc/git_config.json", ".sdlc/telemetry_config.json", "org-standards.md", ".sdlc/tech_stack.json", ".okf/intake/ASSET_MANIFEST.md"]`)
      - Stage 2: `Product Discovery & Requirements` (`agent`: `@product-owner`, `accountable_role`: `product_owner`, `deliverables`: `["PRD.md", "BACKLOG.md"]`)
      - Stage 3: `Technical Design & API Blueprint` (`agent`: `@spec-architect`, `accountable_role`: `lead_architect`, `deliverables`: `["SPEC.md"]`)
      - Stage 4: `Workspace, Guardrail & Builder Synthesis` (`agent`: `@parallel-builder-orchestrator & @spec-architect & @project-conductor`, `accountable_role`: `lead_architect`, `deliverables`: `["AGENTS.md", ".sdlc/builder_manifest.json", ".okf/manifest.yaml"]`)
@@ -1509,28 +1483,29 @@ Do not clone any external repository. Implement the following components cleanly
      - Stage 6: `Automated Security & Code Review` (`agent`: `@security-governance-critic`, `accountable_role`: `security_lead`, `deliverables`: `["SECURITY_AUDIT.md", ".sdlc/cm-security-report.json"]`)
      - Stage 7: `Testing, Quality & Cost Check` (`agent`: `@eval-telemetry-auditor`, `accountable_role`: `sre_finops_lead`, `deliverables`: `["EVAL_REPORT.md", "OBSERVABILITY_USER_GUIDE.md"]`)
      - Stage 8: `Continuous Improvement & Next Iteration` (`agent`: `@kaizen-evolution-agent`, `accountable_role`: `product_owner`, `deliverables`: `["KAIZEN_REPORT.md", ".sdlc/golden_eval_set.json"]`)
-   - Canonical `.sdlc/state.json` top-level keys: `project_id`, `project_name`, `iteration_version` (`"v2.0.0"`), `execution_policy` (`"HITL_GATED"` or `"AUTONOMOUS_GUARDRAILED"`), `demo_app_url` (`"http://localhost:8001"`), `active_return_loop`, `stages` (list of 8 stage dicts, each with `id`, `name`, `agent`, `accountable_role`, `status`, `hitl_gate`, `deliverables`, `pending_revision_notes`, `last_addressed_revision_notes`, `external_approval_request`, `gate_signoff`, `tokenomics`), and `iterations_ledger`.
+   - Canonical `.sdlc/state.json` top-level keys: `project_id`, `project_name`, `iteration_version` (`"v3.0.0"`), `execution_policy` (`"HITL_GATED"` or `"AUTONOMOUS_GUARDRAILED"`), `demo_app_url` (`"http://localhost:8001"`), `active_return_loop`, `stages` (list of 8 stage dicts, each with `id`, `name`, `agent`, `accountable_role`, `status`, `hitl_gate`, `deliverables`, `pending_revision_notes`, `last_addressed_revision_notes`, `external_approval_request`, `gate_signoff`, `tokenomics`), and `iterations_ledger`.
+   - Implement `telemetry_outer_loop.py` supporting `.sdlc/telemetry_config.json` across `LOCAL_FILE_SINK` (`.sdlc/otel_traces.jsonl` + `.sdlc/kaizen_overrides.jsonl`), `SHARED_REMOTE_SINK`, and `CLOUD_OUTER_LOOP` (`--outer-loop-init` scaffolding `deploy/cloud_outer_loop/` and `--outer-loop-status`), plus mandatory Stage 1 Git configuration (`scripts/sdlc_git_ops.py` writing `.sdlc/git_config.json` with `access_verified: true`).
    - Maintain `projects_registry.json` seeded with the built-in protected reference DVR cartridge:
      - `project_id`: `"permian-rig-triage-demo"`, `name`: `"Permian Rig Mud-Pump & BOP Anomaly Auto-Triage"`, `project_type`: `"DVR_REFERENCE_CARTRIDGE"`, `project_dir`: `str(REPO_ROOT)`, `target_app_url`: `"http://localhost:8001"`.
    - Create `rig_demo_app/app.py` (standalone FastAPI app on Port `:8001` with `/api/v1/rig/{health,work-orders,triage}` and pre-seeded work orders) plus root seed deliverables (`RACI.md`, `org-standards.md`, `.okf/intake/ASSET_MANIFEST.md`, `PRD.md`, `SPEC.md`, `AGENTS.md` `<= 150` lines, `BACKLOG.md`, `SDLC_CONTROL_BOARD.md`, `OBSERVABILITY_USER_GUIDE.md`).
    - Implement `apply_dvr_step(step: int)` supporting DVR steps `1..8` (marking stages `1..step` as `APPROVED` and setting stage `step+1` to `WAITING_FOR_HITL`).
 
-3. Workspace Bootstrapper (`scripts/bootstrap_harness.py`) & Installer (`scripts/install_asdlc.sh` + `scripts/doctor_asdlc.py`):
-   - `bootstrap_harness.py` initializes a new project directory with `.sdlc/state.json`, `RACI.md`, `.sdlc/raci.json`, `org-standards.md` (with zero pre-selected default tech stack), `.okf/intake/{designs,styles,docs,schemas}/`, `.okf/intake/ASSET_MANIFEST.md`, `PRD.md`, `SPEC.md`, `AGENTS.md` (`<= 150` lines), and `BACKLOG.md`.
-   - `install_asdlc.sh` supports `--target {antigravity,antigravity-workspace,gemini-cli,hermes,all}` and writes `.asdlc.toml` and `~/.config/asdlc/config.toml`.
-   - Create `skills/agentic-sdlc/SKILL.md` documenting the 8-Stage workflow and CLI flags (`--list`, `--resume`, `--status`, `--park`, `--delete`, `--new`).
+3. Workspace Bootstrapper (`scripts/bootstrap_harness.py`), Installer (`scripts/install_asdlc.sh` + `scripts/doctor_asdlc.py`), and Core Skills:
+   - `bootstrap_harness.py` initializes a new project directory with `.sdlc/state.json`, `RACI.md`, `.sdlc/raci.json`, `.sdlc/telemetry_config.json`, `org-standards.md` (with zero pre-selected default tech stack), `.okf/intake/{raci,designs,styles,docs,schemas,data_sources}/`, `.okf/intake/ASSET_MANIFEST.md`, `PRD.md`, `SPEC.md`, `AGENTS.md` (`<= 150` lines), and `BACKLOG.md`.
+   - `install_asdlc.sh` supports `--target {antigravity,antigravity-workspace,gemini-cli,hermes,all}` and writes `.asdlc.toml` and `~/.config/asdlc/config.toml` (including `projects_root`).
+   - Create `skills/agentic-sdlc/SKILL.md` (`--list`, `--resume`, `--status`, `--park`, `--delete`, `--new`, `--upgrade`, `--git-setup`, `--outer-loop-init`, `--outer-loop-status`), `skills/asdlc-onboarding-coach/SKILL.md`, and `skills/org-standards-builder/SKILL.md`.
 ````
 
 ---
 
-### Prompt 2 of 5: All 9 Universal Specialist Subagents (`agents/*.md`), Dynamic Builder Orchestrator & 16-Component Design Language Skill
+### Prompt 2 of 5: All 10 Specialist Subagents (`agents/*.md`), Dynamic Builder Orchestrator & 16-Component Design Language Skill
 Copy and paste this prompt into your agent session:
 
 ````markdown
-Now create the 9 Universal Specialist Agent definitions in `agents/*.md` (each with YAML frontmatter containing `name`, `description`, `tools`, `mainAgent`, `subagent`, `model`, and `commandExecutionPolicy: auto`), the `adk_sdlc_orchestrator/sdlc_builder_orchestrator.py` module, and the `design-language` skill:
+Now create the 10 Specialist Agent definitions in `agents/*.md` (each with YAML frontmatter containing `name`, `asdlc_version: "3.0.0"`, `distribution_tier: "customer-safe" | "internal"`, `description`, `tools`, `mainAgent`, `subagent`, `model`, and `commandExecutionPolicy: auto`), the `adk_sdlc_orchestrator/sdlc_builder_orchestrator.py` module, and the `design-language` skill:
 
 1. `agents/project-conductor.md` (`@project-conductor`):
-   - Stage 1 Project Onboarding, 6-Role RACI Governance (`executive_sponsor`, `product_owner`, `lead_architect`, `tech_lead`, `security_lead`, `sre_finops_lead`), 5-Pillar Background Asset Intake (`.okf/intake/{designs,styles,docs,schemas}/` + `org-standards.md`), **Stage 1 Tech Stack Discovery Side-Quest** (`.sdlc/tech_stack.json` with zero pre-selected default stack), Multi-Channel Approval Workflow setup (`.sdlc/approval_workflows.json`), and Project Lifecycle management (`--list`, `--resume`, `--status`, `--park`, `--delete`, `--new`).
+   - Stage 1 Project Onboarding, Upfront Turn 1 RACI Spreadsheet Intake (`3..N` custom roles, default 6 roles: `executive_sponsor`, `product_owner`, `lead_architect`, `tech_lead`, `security_lead`, `sre_finops_lead`), Mandatory GitHub/Git Setup (`.sdlc/git_config.json`), 3-Pattern OpenTelemetry Sink Setup (`.sdlc/telemetry_config.json` & `--outer-loop-init`), 6-Pillar Background Asset Intake (`.okf/intake/{designs,styles,docs,schemas,data_sources}/` + `org-standards.md`), **Stage 1 Tech Stack Discovery Side-Quest** (`.sdlc/tech_stack.json` with zero pre-selected default stack), 3-Surface Authenticated Approval Workflow setup (`.sdlc/approval_workflows.json`), Smart 3-Way Upgrade (`--upgrade`), and Project Lifecycle management (`--list`, `--resume`, `--status`, `--park`, `--delete`, `--new`).
    - Enforce the invariant that AI subagents can be Responsible (`R`), Consulted (`C`), or Informed (`I`), never Accountable (`A`).
 
 2. `agents/product-owner.md` (`@product-owner`) & `skills/product-owner/SKILL.md`:
@@ -1561,32 +1536,31 @@ Now create the 9 Universal Specialist Agent definitions in `agents/*.md` (each w
 8. `agents/kaizen-evolution-agent.md` (`@kaizen-evolution-agent`):
    - Stage 8 Continuous Evolution Agent promoting incidents/overrides to `.sdlc/golden_eval_set.json`, compacting `AGENTS.md` (`<= 150` lines), and routing work via the 4-Speed Return Loops (`LOOP_1_HARNESS_TUNING` -> Stage 4/5, `LOOP_2_DELTA_SPEC` -> Stage 3, `LOOP_3_STRATEGIC_EPIC` -> Stage 2, `LOOP_4_ONBOARDING_RACI` -> Stage 1).
 
-   - 4-Lens Document/Architecture Critic and 25-Deck Curriculum Completeness Auditor (evaluating Stages 1 to 8).
+   - 4-Lens Document/Architecture Critic (`customer-safe`), 25-Deck Curriculum Completeness Auditor (`internal`), and Cross-Workstream Documentation Version Syncer (`internal`, auditing active Google Workspace assets across Stages 1 to 8 while ignoring archive folders).
 ````
 
 ---
 
-### Prompt 3 of 5: Project Lifecycle Engine, 6-Role RACI & Multi-Channel Approval Workflows
+### Prompt 3 of 5: Project Lifecycle Engine, Turn 1 RACI Spreadsheet Intake & 3-Surface Approval Workflows
 Copy and paste this prompt into your agent session:
 
 ````markdown
-Now implement the Governance, Multi-Channel Approval Workflow, and Project Lifecycle modules in `adk_sdlc_orchestrator/` and upgrade the CLI HUD (`scripts/sdlc_hud.py`):
+Now implement the Governance, 3-Surface Authenticated Approval Workflow, and Project Lifecycle modules in `adk_sdlc_orchestrator/` and upgrade the CLI HUD (`scripts/sdlc_hud.py`):
 
-1. 6-Role RACI, Stage 1 Asset Intake & Studio Runtime (`adk_sdlc_orchestrator/sdlc_governance.py`, `sdlc_auth_users.py`, `sdlc_studio_runtime.py`, `sdlc_conductor_copilot.py`):
-   - Manage `.sdlc/raci.json` and `RACI.md` for the 6 Core Enterprise Roles (`executive_sponsor`, `product_owner`, `lead_architect`, `tech_lead`, `security_lead`, `sre_finops_lead`).
-   - Validate that every stage (`1..8`) has exactly one human Accountable (`A`) role and zero AI agents as `A`.
+1. `3..N` Role RACI Spreadsheet Intake, Stage 1 Asset Intake & Studio Runtime (`adk_sdlc_orchestrator/sdlc_governance.py`, `sdlc_auth_users.py`, `sdlc_studio_runtime.py`, `sdlc_conductor_copilot.py`):
+   - Manage `.sdlc/raci.json` and `RACI.md` supporting `3..N` custom roles (defaulting to the 6 Core Enterprise Roles: `executive_sponsor`, `product_owner`, `lead_architect`, `tech_lead`, `security_lead`, `sre_finops_lead`) and non-deterministic `.xlsx`/`.csv`/Google Sheet intake (`--generate-raci-template`, `--ingest-raci`, `--apply-raci`).
+   - Validate that every stage (`1..8`) has strictly one human Accountable (`A`) role and zero AI agents as `A`.
    - Manage the Global User Directory (`.sdlc/users.json`) and session sign-in (`login`, `logout`, `get_auth_session`).
-   - Manage Stage 1 Background Asset Intake (`.sdlc/intake_manifest.json` and `.okf/intake/ASSET_MANIFEST.md`) across `designs`, `styles`, `docs`, and `schemas`.
-   - Manage per-project Agent Studio overrides (`.sdlc/agents/<id>.{json,md}`), surfacing both the 9 universal specialist agents and any synthesized `.sdlc/agents/builders/*.md` builders, enforcing `<= 8` tools per agent, and resetting `roster_status = "WAITING_FOR_ROSTER_APPROVAL"` in `.sdlc/builder_manifest.json` whenever a synthesized builder is modified in `HITL_GATED` mode.
+   - Manage Stage 1 Background Asset Intake (`.sdlc/intake_manifest.json` and `.okf/intake/ASSET_MANIFEST.md`) across `designs`, `styles`, `docs`, `schemas`, and `data_sources`.
+   - Manage per-project Agent Studio overrides (`.sdlc/agents/<id>.{json,md}`), surfacing all 10 specialist agents and any synthesized `.sdlc/agents/builders/*.md` builders, enforcing `<= 8` tools per agent, and resetting `roster_status = "WAITING_FOR_ROSTER_APPROVAL"` in `.sdlc/builder_manifest.json` whenever a synthesized builder is modified in `HITL_GATED` mode.
 
-2. 5-Channel Enterprise Approval Workflow Engine (`adk_sdlc_orchestrator/sdlc_approval_workflows.py`):
-   - Support 5 channels: `FLIGHT_DECK_UI`, `GMAIL_THREAD` (`[ASDLC-GATE]` subject tag, `DRAFT_FIRST` vs `AUTO_SEND`), `GOOGLE_SHEETS_TRACKER` (`AUTO_PROVISION` writing `.sdlc/gate_tracker_sheet.csv` vs `LINK_EXISTING`), `GITHUB_ISSUES_PR` (`asdlc-hitl-gate` label), and `JIRA_WEBHOOK_TICKET`.
-   - Support a project `default_channel` plus per-stage `gate_channels` (`PROJECT_DEFAULT` or any channel).
-   - When a stage enters `WAITING_FOR_HITL`, automatically dispatch an outbound approval request (`dispatch_gate_approval_request`).
-   - On inbound sign-off (`verify_and_record_external_decision` / `sync_external_gate_approval`):
-     1. Screen `decision_notes` via `inspect_with_model_armor(decision_notes)` first and raise `ValueError("Model Armor blocked inbound decision_notes...")` if a prompt-injection or SQLi pattern is detected.
-     2. Strictly verify that `responder_handle` matches the stage's Accountable (`A`) human owner in `RACI.md` (raise `ValueError("External approval identity mismatch...")` for unauthorized users or `@*` AI agents).
-     3. If `decision == "APPROVED"`, unlock the stage gate and record `external_evidence`. If `decision in ("REJECTED", "CHANGES_REQUESTED")`, set `hitl_gate = "PAUSED_FOR_HUMAN"` and store reviewer comments in `stage["pending_revision_notes"]` so the next `execute_stage_subagent()` call consumes and moves them to `stage["last_addressed_revision_notes"]`.
+2. 3-Surface Authenticated Approval Workflow Engine (`adk_sdlc_orchestrator/sdlc_approval_workflows.py`):
+   - Support strictly 3 authenticated surfaces in `TEAM_STRICT` (`2+` distinct humans in `.sdlc/raci.json`; legacy `GMAIL_THREAD` and `JIRA_WEBHOOK_TICKET` are retired):
+     1. `GITHUB_ISSUES_PR` (`GITHUB_ISSUE`): Pushes `refs/heads/asdlc/gate-<N>-review`, opens 1 Gate Issue per stage (`asdlc-hitl-gate`), and verifies via GitHub GraphQL that the unedited `APPROVED G<N> <sha12+>` comment was posted by `User` matching `github_handle`.
+     2. `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS`): Dedicated Gate Tracker Google Sheet (separate from Stage 1 RACI intake sheet), verifying unedited Drive Comment replies where `author.emailAddress` matches the `A` owner.
+     3. `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK`): Deployed Cloud Run Flight Deck behind Cloud IAP or OIDC signing `ES256` P-256 JWS gate receipts (`localhost:8000` and CLI `--approve` are permitted only in `1`-human `SOLO_ADVISORY` mode).
+   - Support a project `default_channel` plus per-stage `gate_channels` (`PROJECT_DEFAULT` or any of the 3 surfaces; `approval_channel` is excluded from `raci_sha256` so unapproved stages can switch surfaces once identity is locked).
+   - Asymmetric `CHANGES_REQUESTED` & Quarantine: Any `R`, `A`, or `C` human on a gate can post `CHANGES_REQUESTED: <notes>`, tainting that commit SHA and quarantining notes in `.sdlc/rework/gate_<N>_changes_requested.json` (screened via `screen_reviewer_feedback_quarantine`) until confirmed via `sdlc_hud.py --confirm-rework <N>`.
 
 3. Project Lifecycle & Session Continuity Engine (`adk_sdlc_orchestrator/sdlc_project_lifecycle.py` & `scripts/sdlc_hud.py`):
    - Implement `write_session_checkpoint()` writing `.sdlc/session_checkpoint.json` and `.sdlc/RESUME_BRIEF.md` on every `save_state()` and `park_project_session()`.
@@ -1683,25 +1657,25 @@ Now build the deterministic verification scripts and the automated `pytest` suit
 
 ## 3. Option B: Single All-In-One Master Mega-Prompt (Zero-to-Verified in One Pass)
 
-If you want an autonomous agent session (such as Google Antigravity with `/goal`, Hermes, or OpenClaw) to build the entire A/SDLC v2.0 ecosystem in a single turn sequence, copy and paste this master prompt:
+If you want an autonomous agent session (such as Google Antigravity with `/goal`, Hermes, or OpenClaw) to build the entire A/SDLC v3.0 ecosystem in a single turn sequence, copy and paste this master prompt:
 
 ````markdown
-Build the complete 8-Stage Agentic SDLC (A/SDLC v2.0) Harness, Skills, 9 Universal Specialist Subagents, Dynamic Parallel Builder Orchestrator (`sdlc_builder_orchestrator.py`), Multi-Channel Approval Workflow Engine, Project Lifecycle CLI, Built-In `permian-rig-triage-demo` Reference Cartridge (`:8001`), and Flight Deck Control Center (`:8000`) from scratch in the current repository without cloning any external code.
+Build the complete 8-Stage Agentic SDLC (A/SDLC v3.0) Harness, Core Skills (`agentic-sdlc`, `asdlc-onboarding-coach`, `org-standards-builder`, `product-owner`, `design-language`, `review-council`), 10 Specialist Subagents, Dynamic Parallel Builder Orchestrator (`sdlc_builder_orchestrator.py`), 3-Pattern OpenTelemetry & Cloud Outer-Loop Engine (`telemetry_outer_loop.py`), Mandatory Stage 1 Git Setup (`sdlc_git_ops.py`), Turn 1 RACI Spreadsheet & 3-Surface Authenticated Approval Engine (`sdlc_governance.py` & `sdlc_approval_workflows.py`), Project Lifecycle CLI (`sdlc_hud.py`), Built-In `permian-rig-triage-demo` Reference Cartridge (`:8001`), and Flight Deck Control Center (`:8000`) from scratch in the current repository without cloning any external code.
 
 ### Architectural Invariants & Clean-Room Contracts
 1. Control Plane Stack: Python 3.12+, FastAPI, Pydantic v2, Jinja2/Vue 3 + Tailwind CSS (Clean Enterprise Light First Design Language: `#F8FAFC` canvas, `#FFFFFF` cards, `#0B57D0` primary accent, `Plus Jakarta Sans` + `Inter` + `JetBrains Mono` typography, and all 16 canonical Vue primitives). Target projects are 100% technology-stack agnostic with zero pre-selected default stack.
 2. Strict Module Size Limit: Every Python file under `backend/app/` (`main.py`, `state_helpers.py`, `routes_pipeline.py`, `routes_governance.py`, `routes_approvals.py`, `routes_conductor_global.py`, `routes_auth_users.py`, `routes_artifacts.py`) MUST be `<= 300` non-empty lines.
 3. Strict Portability: Zero hardcoded absolute user home paths in any tracked file. Resolve all paths via `asdlc/paths.py` (`ASDLC_REPO_ROOT`, `ASDLC_SKILLS_HOME`, `ASDLC_PROJECTS_ROOT`, `.asdlc.toml`, and `~/.config/asdlc/config.toml`).
-4. 8-Stage A/SDLC Lifecycle (`Stages 1..8`):
-   - Roles: `executive_sponsor` (Gate 1), `product_owner` (Gates 2 & 8), `lead_architect` (Gates 3 & 4), `tech_lead` (Gate 5), `security_lead` (Gate 6), `sre_finops_lead` (Gate 7).
-   - Stage 1 runs the Tech Stack Discovery Side-Quest (`.sdlc/tech_stack.json`) when `org-standards.md` does not declare a stack. Stage 4 (`@parallel-builder-orchestrator`) screens builder specs with Model Armor, enforces disjoint non-protected `owned_paths` globs, and synthesizes `.sdlc/agents/builders/<builder-id>.md` + `.sdlc/builder_manifest.json` (with SHA-256 `manifest_digest` and Agent Studio tamper-reset governance).
-5. Multi-Channel External Approval Workflows (`adk_sdlc_orchestrator/sdlc_approval_workflows.py`):
-   - Channels: `FLIGHT_DECK_UI`, `GMAIL_THREAD` (`[ASDLC-GATE]` tag), `GOOGLE_SHEETS_TRACKER` (`.sdlc/gate_tracker_sheet.csv` auto-provisioning), `GITHUB_ISSUES_PR`, `JIRA_WEBHOOK_TICKET`.
-   - Screen inbound `decision_notes` with Model Armor (`inspect_with_model_armor`) to block indirect prompt injection (`HTTP 400`), enforce strict Accountable (`A`) handle/email verification (`HTTP 400` on mismatch), and route rejection feedback into `stage["pending_revision_notes"]` for automatic consumption on the next stage subagent execution.
+4. 8-Stage A/SDLC v3.0 Lifecycle (`Stages 1..8`, `iteration_version: "v3.0.0"`):
+   - Default Roles (`3..N` custom roles supported via Stage 1 Turn 1 RACI spreadsheet intake): `executive_sponsor` (Gate 1), `product_owner` (Gates 2 & 8), `lead_architect` (Gates 3 & 4), `tech_lead` (Gate 5), `security_lead` (Gate 6), `sre_finops_lead` (Gate 7).
+   - Stage 1 validates Git read/write access (`.sdlc/git_config.json`), configures `.sdlc/telemetry_config.json` (`LOCAL_FILE_SINK`, `SHARED_REMOTE_SINK`, or `CLOUD_OUTER_LOOP` via `--outer-loop-init`), and runs the Tech Stack Discovery Side-Quest (`.sdlc/tech_stack.json`) when `org-standards.md` does not declare a stack. Stage 4 (`@parallel-builder-orchestrator`) screens builder specs with Model Armor, enforces disjoint non-protected `owned_paths` globs, and synthesizes `.sdlc/agents/builders/<builder-id>.md` + `.sdlc/builder_manifest.json` (with SHA-256 `manifest_digest` and Agent Studio tamper-reset governance).
+5. 3-Surface Authenticated Gate Approval Workflows (`adk_sdlc_orchestrator/sdlc_approval_workflows.py`):
+   - Surfaces (`TEAM_STRICT` `2+` humans; legacy `GMAIL_THREAD` and `JIRA_WEBHOOK_TICKET` retired): `GITHUB_ISSUES_PR` (`GITHUB_ISSUE` GraphQL verified), `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS` Drive Comments verified), and `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK` Cloud IAP / OIDC + `ES256` JWS).
+   - Enforce single Accountable (`A`) `APPROVED G<N> <sha12+>` verification, Author-to-Reviewer code SoD on Stages 5 & 6, and `R/A/C` `CHANGES_REQUESTED: <notes>` commit tainting + `.sdlc/rework/` quarantine (`--confirm-rework <N>`).
 6. Project Lifecycle & Cross-Surface Session Continuity (`adk_sdlc_orchestrator/sdlc_project_lifecycle.py` & `scripts/sdlc_hud.py`):
    - Support `--list` (with disk auto-discovery), `--resume [id_or_path]` (hydrating state, re-attaching unregistered folders, and returning a 4-option next-action picker), `--status [id]`, `--park [id]` (writing `.sdlc/session_checkpoint.json` and `.sdlc/RESUME_BRIEF.md`), and Two-Tier `--delete <id> --mode {UNREGISTER,PURGE_DISK} [--confirm-purge]` (protecting `permian-rig-triage-demo` and archiving `.sdlc/events.jsonl`, `RACI.md`, `.sdlc/tech_stack.json`, `.sdlc/builder_manifest.json`, and `.sdlc/agents/builders/*.md` to `.sdlc/audit_archive/<id>/` before `PURGE_DISK`).
 7. Flight Deck Web UI (`http://localhost:8000`) & Localhost Security:
    - Restrict CORS to `localhost:8000`/`8001` and `127.0.0.1:8000`/`8001` (isolating `:8002+` user target apps), restrict `PUT /api/v1/sdlc/artifact/{path}` to allowlisted doc/data extensions (`{".md", ".json", ".yaml", ".yml", ".txt", ".csv"}`), and serve the 5 Multi-Page views (`/`, `/projects/status`, `/projects/new`, `/projects/admin`, `/settings`).
-8. Verification Gates (`scripts/verify_sdlc_gates.py`, `backend/tests/test_harness.py`, `backend/tests/test_portability.py`):
-   - Maintain `>= 35%` pytest test-to-code ratio (`backend/tests/*.py` vs `backend/app/main.py` + `semantic_router.py` + `rig_demo_app/app.py`), verify all 25 tests pass (`pytest -v`), and verify `python3 scripts/verify_sdlc_gates.py` outputs `ALL 8 STAGES VERIFIED (READY FOR DEPLOYMENT)`.
+8. Verification Gates (`scripts/verify_sdlc_gates.py`, `backend/tests/test_harness.py`, `backend/tests/test_portability.py`, `backend/tests/test_v3_authenticated_approvals.py`):
+   - Maintain `>= 35%` pytest test-to-code ratio (`backend/tests/*.py` vs `backend/app/main.py` + `semantic_router.py` + `rig_demo_app/app.py`), verify all `pytest` tests pass (`pytest -v`), and verify `python3 scripts/verify_sdlc_gates.py` outputs `ALL VERIFIED GATES PASSED`.
 ````

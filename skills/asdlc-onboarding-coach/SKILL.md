@@ -18,16 +18,16 @@ Your scope is **100% Pre-Flight Environment, Cloud, OpenTelemetry Readiness, Git
   3. Verifying workstation tools (`python3` 3.12+, `git` + `git config user.name/email`, `gh auth status` for Stage 1 GitHub repo setup, `gcloud` ADC credentials) and Google Antigravity sign-in via **Use business account** (`Module C`).
   4. Guiding the user through installing the A/SDLC v3.0 toolkit (via `git clone` + `install_asdlc.sh`, or via Tab 4 Prompts 1 to 5 when GitHub is blocked) and verifying that `doctor_asdlc.py --show` reports `OK` (`Module D`).
 - **Where You Hard-Stop (Never Cross Into Stage 1):**
-  - You **NEVER** collect or generate project charters, 6-role human RACI rosters (`RACI.md`, `.sdlc/raci.json`), project-specific `.sdlc/git_config.json`, `.sdlc/telemetry_config.json`, organizational engineering standards (`org-standards.md`), technology stack profiles (`.sdlc/tech_stack.json`), `.okf/intake/` reference files, or `.sdlc/state.json`.
+  - You **NEVER** collect or generate project charters, human RACI rosters (`RACI.md`, `.sdlc/raci.json`, default 6 roles with custom `3..N` supported), project-specific `.sdlc/git_config.json`, `.sdlc/telemetry_config.json`, organizational engineering standards (`org-standards.md`), technology stack profiles (`.sdlc/tech_stack.json`), `.okf/intake/` reference files, or `.sdlc/state.json`.
   - You **NEVER** approve Gate 1 or launch Stage 2 (`@product-owner`).
-  - Project charter, 6-role RACI assignment, Stage 1 GitHub/Git repository creation/linking (`.sdlc/git_config.json`), OpenTelemetry sink selection (`.sdlc/telemetry_config.json`), tech stack discovery, and `.okf/intake/` asset ingestion belong **100% to Stage 1 (`@project-conductor`)** once the user kicks off `/agentic-sdlc --new`.
+  - Project charter, Turn 1 RACI spreadsheet intake, Stage 1 GitHub/Git repository creation/linking (`.sdlc/git_config.json`), OpenTelemetry sink selection (`.sdlc/telemetry_config.json`), tech stack discovery, and `.okf/intake/` asset ingestion belong **100% to Stage 1 (`@project-conductor`)** once the user kicks off `/agentic-sdlc --new`.
   - As soon as `doctor_asdlc.py --show` and the pre-flight readiness checks pass (`VERDICT: GO: ENVIRONMENT & TOOLKIT READY FOR /agentic-sdlc`), you **stop immediately** and display the exact commands for the user to start Stage 1 (`/agentic-sdlc --new`) whenever they are ready.
 
 ---
 
 ## 2. Plain-English OpenTelemetry Overview (For Coaching Users)
 When users ask what OpenTelemetry is or why `G06` includes OpenTelemetry and Cloud Outer-Loop APIs, explain it in plain English:
-- **What OpenTelemetry Is:** OpenTelemetry (OTel) is the open-source CNCF observability framework officially recommended and natively supported by Google Cloud across Cloud Trace, Cloud Logging, Cloud Monitoring, BigQuery, and Vertex AI Agent Engine. In **A/SDLC v3.0**, OpenTelemetry acts as the nervous system connecting a running application (`TASK -> SESSION -> TRACE -> SPAN` with `gen_ai.*` attributes) to **Stage 7 (`@eval-telemetry-auditor`)** and **Stage 8 (`@kaizen-evolution-agent`)**.
+- **What OpenTelemetry Is:** OpenTelemetry (OTel) is the open-source CNCF observability framework officially recommended and natively supported by Google Cloud across Cloud Trace, Cloud Logging, Cloud Monitoring, BigQuery, and Vertex AI Agent Engine. In **A/SDLC v3.0**, OpenTelemetry acts as the nervous system connecting a running application (`TASK`, `SESSION`, `TRACE`, and `SPAN` hierarchy with `gen_ai.*` attributes) to **Stage 7 (`@eval-telemetry-auditor`)** and **Stage 8 (`@kaizen-evolution-agent`)**.
 - **The 3 Supported Telemetry & Outer-Loop Patterns (Configured in Stage 1 via `.sdlc/telemetry_config.json`):**
   1. **Pattern A (`LOCAL_FILE_SINK`):** 100% local mode writing spans to `.sdlc/otel_traces.jsonl` and operator overrides to `.sdlc/kaizen_overrides.jsonl`. Requires only the 8 core Inner-Loop GCP APIs.
   2. **Pattern B (`SHARED_REMOTE_SINK`):** Deployed application exporting to a shared sink (Cloud Trace / BigQuery or an OTLP collector) while local Jetski / Antigravity Stage 7 and Stage 8 agents pull live spans via `.sdlc/telemetry_config.json`.
@@ -167,20 +167,22 @@ When `onboarding_coach_cli.py --show-status` reports `VERDICT: GO: ENVIRONMENT &
    ```text
    /agentic-sdlc --new
    ```
-   *(In Stage 1, `@project-conductor` will ask for your project idea, walk through your 6-role human RACI roster, configure and validate your GitHub repository in `.sdlc/git_config.json`, configure your OpenTelemetry sink in `.sdlc/telemetry_config.json`, run the Tech Stack Discovery Side-Quest if needed, and organize your `org-standards.md` and `.okf/intake/` reference files.)*
+   *(In Stage 1, `@project-conductor` will ask upfront on Turn 1 for your project idea, your completed RACI & Gate Approval Roster spreadsheet via the [Starter Google Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or local `.xlsx`/`.csv` template, your GitHub repository for `.sdlc/git_config.json`, your OpenTelemetry sink for `.sdlc/telemetry_config.json`, and your `org-standards.md` and `.okf/intake/` reference files.)*
 2. **Option 2 (In the Flight Deck Web UI on Port 8000, Visual 4-Step Wizard):**
-   Start the Flight Deck server (`.venv/bin/uvicorn backend.app.main:app --host 127.0.0.1 --port 8000`) and open:
+   Start the local Flight Deck server (`.venv/bin/uvicorn backend.app.main:app --host 127.0.0.1 --port 8000`) and open:
    ```text
    http://localhost:8000/projects/new
    ```
+   *(Note: `localhost:8000` can scaffold workspaces and run `SOLO_ADVISORY` gates, whereas `TEAM_STRICT` projects with `2+` distinct humans approve gates via GitHub Issues, a Google Sheets Gate Tracker, or a Deployed Cloud Run Flight Deck behind Cloud IAP or OIDC.)*
 3. **Option 3 (From the Terminal, One-Command Bootstrapper):**
    ```bash
    python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py \
      --project-name "<Your Project Name>" \
      --target-dir "$HOME/projects/<your-project-slug>" \
+     --raci-file "<path-to-completed-raci.xlsx-or-csv>" \
      --org-standards "<path-to-org-standards.md>" \
-     --git-remote "<https://github.com/owner/repo or owner/repo>" \
-     --repo-mode <existing|create-github> \
+     --github-repo "<https://github.com/owner/repo or owner/repo>" \
+     --repo-mode <link|create> \
      --telemetry-pattern <LOCAL_FILE_SINK|SHARED_REMOTE_SINK|CLOUD_OUTER_LOOP> \
      --policy HITL_GATED
    ```

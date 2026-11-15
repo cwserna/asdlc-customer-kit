@@ -1,47 +1,58 @@
 <!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
 # Organizational Development Standards & Policies (`org-standards.md`)
 
-> **Stage 0 Grounding Artifact:** Ingested by `@product-owner` during **Stage 0 (Product Discovery & Requirements)** to align `PRD.md`, `SPEC.md` (Stage 1), and `AGENTS.md` (Stage 2) with internal engineering, security, compliance, and FinOps standards.
-> **Open Knowledge Format (`.okf/`):** Pinned at the top of `.okf/manifest.yaml` (`pinned_contracts`) for a **90% Vertex AI Context Cache discount** across Stages 1–6.
+> **A/SDLC v3.0 Grounding Contract (`Stages 1 to 8`):** Ingested in **Stage 1 (`@project-conductor`)**, cited in **Stage 2 (`PRD.md` via `@product-owner`)**, enforced in **Stage 3 (`SPEC.md` via `@spec-architect`)** and **Stage 4 (`AGENTS.md` via `@parallel-builder-orchestrator`)**, audited in **Stage 6 (`@security-governance-critic`)**, and verified in **Stage 7 (`@eval-telemetry-auditor`)**.
+> **Open Knowledge Format (`.okf/`):** Pinned at the top of `.okf/manifest.yaml` (`pinned_contracts`) for prefix context caching across Stages 1 to 8. Keep this file **`<= 120 lines`** and store deep reference manuals in `.okf/runbooks/`.
 
 ---
 
-## 1. Mandatory Full-Stack Reference Architecture
-- **Backend Framework:** Python 3.12+ with **FastAPI**, **Pydantic v2** strict schema validation (`extra="forbid"`), and **Google Cloud Agent Development Kit (ADK 2.0)**.
-- **Frontend Framework:** **Vue.js 3** (Composition API `<script setup>`) with **Tailwind CSS** utility styling and responsive desktop/tablet layouts.
-- **Service Topology:** Strict **Dual-Service Split** — Control Plane runs on `http://localhost:8000` (Flight Deck); Target Application runs independently on `http://localhost:8001` or `http://localhost:8002`.
-- **API Contract Standard:** Contract-First **OpenAPI 3.1** locked in `SPEC.md` before any Stage 3 code generation.
+## 1. Mandatory Reference Architecture & Technology Stack
+- **Organization & Application Profile:** `<Organization Name>` • `<Application / Workload Type, e.g., Internal Web App / Customer Portal / Data Service / Edge OT>`
+- **Backend Language & Framework:** `<e.g., Python 3.12+ with FastAPI & Pydantic v2 / Go 1.22+ / Java 21 Spring Boot / C# .NET 8>`
+- **Frontend Framework & UI System:** `<e.g., Vue.js 3 + Tailwind CSS / React 18 + TypeScript / Angular / Backend-Only API>`
+- **Database & Persistence Layer:** `<e.g., Cloud SQL PostgreSQL / AlloyDB / Cloud Firestore / BigQuery / Snowflake>`
+- **Service Topology & Target Runtime:** `<e.g., Cloud Run containers / GKE / On-Prem Kubernetes, plus local dev ports>`
+- **API Contract Standard:** `<e.g., Contract-First OpenAPI 3.1 / gRPC Protobuf v3 / GraphQL schema locked in SPEC.md before Stage 5 coding>`
 
 ---
 
-## 2. Security, Identity & AI Safety Guardrails
-- **Pre-LLM Input Defense:** All untrusted user prompts, telemetry notes, and external payloads MUST pass **Google Cloud Model Armor** screening (`Prompt Injection`, `Jailbreak`, `SQL/Command Injection`, and `Sensitive Data DLP`) prior to model invocation.
-- **Database & Query Safety:** 100% parameterized SQL queries (`?` / `$1` placeholders); raw f-string or concatenated SQL queries are strictly prohibited (`CM-2026-999` gate).
-- **Workload & Agent Identity:** Enforce **SPIFFE Workload Identity** (`spiffe://...`) and **Workforce Identity Federation (WIF)** with end-user OAuth token propagation over shared static service account keys.
-- **Human-in-the-Loop (`A2UI`) Actuation Gate:** High-impact write operations, physical actuation, or financial transactions require explicit human sign-off via an **ADK 2.0 `A2UI` confirmation card**.
+## 2. Security, Identity (IAM), Data Privacy & AI Safety Guardrails
+- **Authentication & Workload Identity:** `<e.g., OIDC / OAuth 2.0 via Workforce Identity Federation / Okta / Entra ID / SPIFFE; static service account keys prohibited>`
+- **Secret & Credential Management:** `<e.g., Google Cloud Secret Manager / HashiCorp Vault; zero credentials or API keys in source code or .env commits>`
+- **Database & Query Safety:** `<e.g., 100% parameterized queries or ORM prepared statements; raw string-concatenated SQL is a critical Stage 6 blocker>`
+- **Pre-LLM Input & Prompt Defense:** `<e.g., Strict schema validation, prompt-injection screening, and DLP/PII scrubbing on all untrusted inputs before model or tool calls>`
+- **Human-in-the-Loop Approval Gate:** `<e.g., High-impact write actions, production mutations, financial transactions, or OT actuation require explicit human confirmation>`
 
 ---
 
 ## 3. Code Quality, Slicing & Verification Standards
-- **Incremental Vertical Slicing:** Every Stage 3 coding task MUST be scoped to **`<= 300 Lines of Code (LoC)`** per slice to prevent context rot.
-- **Context-Rot Ceiling:** Project harness rules (`AGENTS.md`) MUST remain **`<= 150 lines`**, offloading deep domain reference manuals into `.okf/runbooks/`.
-- **Test-Driven Development (TDD) Floor:** Minimum **`>= 35.0%` test-to-code ratio** (`58%+` target) verified via automated `pytest` and `vitest` suites before Stage 5 release sign-off.
-- **Tool Budgeting:** Each specialized subagent is capped at **`<= 8` domain-specific tools** with explicit `Read`, `Write`, and `Compute` separation.
+- **Incremental Vertical Slicing Ceiling:** Every Stage 5 coding slice MUST remain **`<= <300> Lines of Code (LoC)`** per task to prevent context rot.
+- **Harness Rule Ceiling (`AGENTS.md`):** Project `AGENTS.md` MUST remain **`<= <150> lines`**, offloading detailed domain tables into `.okf/runbooks/`.
+- **Automated Testing Floor (Stage 7 Gate):** Minimum **`>= <35.0%>` test-to-code ratio** (or **`>= <80%>` unit test coverage**) verified via `<pytest / vitest / go test / jest / junit>` before Stage 7 sign-off.
+- **Static Analysis & Linting:** `<e.g., ruff / mypy / eslint / golangci-lint / sonar must pass with zero high-severity findings>`
+- **Unwritten PR Rejection Rules (Tribal Guardrails):**
+  - `<Rule 1 that senior engineers or security reviewers always enforce in PR reviews>`
+  - `<Rule 2 that senior engineers or security reviewers always enforce in PR reviews>`
 
 ---
 
-## 4. FinOps, Model Routing & Observability Standards
-- **3-Tier Semantic Model Router (`< 5ms` routing overhead):**
-  - **Tier 1 (`gemini-2.5-flash-lite`):** Nominal heartbeats, simple classification, and syntax checks.
-  - **Tier 2 (`gemini-2.5-flash`):** Stage 0 discovery interviews, standard RAG synthesis, and Stage 3 vertical slice coding.
-  - **Tier 3 (`gemini-2.5-pro`):** Stage 1 architecture specification (`SPEC.md`), Stage 4 adversarial security review, and complex multi-signal anomaly triage.
-- **Prefix Context Caching:** Pin `org-standards.md`, `PRD.md`, `SPEC.md`, and `AGENTS.md` at the front of every prompt to achieve a **90% input token discount**.
-- **OpenTelemetry GenAI Tracing:** Emit standard `gen_ai.*` attributes (`gen_ai.agent.id`, `gen_ai.operation.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) on every turn.
+## 4. Observability, OpenTelemetry & FinOps Guardrails
+- **OpenTelemetry & Distributed Tracing:** Emit structured `<OpenTelemetry gen_ai.* and HTTP/RPC spans>` configured via `.sdlc/telemetry_config.json` (`<LOCAL_FILE_SINK / SHARED_REMOTE_SINK / CLOUD_OUTER_LOOP>`).
+- **PII & Secret Redaction in Telemetry:** Scrub all `<PII, bearer tokens, API keys, and customer credentials>` before logs or spans leave the application process.
+- **Model Routing & Token FinOps (If Using GenAI/LLMs):**
+  - **Fast / Low-Cost Tier:** `<Model name and approved use cases>`
+  - **Standard Production Tier:** `<Model name and approved use cases>`
+  - **Deep Reasoning / Review Tier:** `<Model name and approved use cases>`
+- **Cloud Resource Tagging & Cost Controls:** `<Mandatory cost-center/project labels and budget circuit breakers>`
 
 ---
 
-## 5. Domain Regulatory & Background Reference Documents
-- **Primary Industry / Regulatory Frameworks:** `<Specify domain standards, e.g., API RP 53, PHMSA 49 CFR 195, NACE SP0169, SEC Reg BI / COPPA, SOC2 / ISO 27001>`
-- **Authoritative Background Documents & Runbooks:**
-  - `.okf/manifest.yaml` — Open Knowledge Format bundle manifest
-  - `.okf/runbooks/README.md` — Version-pinned domain runbooks and legacy schema mappings
+## 5. Regulatory Frameworks & Linked Domain Runbooks (`.okf/runbooks/`)
+- **Applicable Regulatory / Industry Standards:** `<e.g., SOC 2 Type II, ISO 27001, HIPAA, PCI-DSS, NERC CIP, PHMSA 49 CFR 195, API RP 53>`
+- **Detailed Domain Runbooks (Optional Paths Generated by `/org-standards-builder`, Loaded on Demand):**
+  - `.okf/runbooks/INDEX.md`: Master catalog of deep organizational standards
+  - `.okf/runbooks/architecture-and-apis.md`: Detailed framework patterns, API error schemas, and naming rules
+  - `.okf/runbooks/security-and-iam.md`: Detailed IAM roles, encryption ciphers, and threat controls
+  - `.okf/runbooks/data-and-storage.md`: Database migration rules, retention schedules, and PII classification tables
+  - `.okf/runbooks/testing-and-ci.md`: CI/CD pipeline stages, test fixture rules, and release checklists
+  - `.okf/runbooks/observability-and-finops.md`: Log schemas, SLO definitions, and FinOps tagging matrices

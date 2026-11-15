@@ -392,5 +392,32 @@ Once you finish the upgrade and open a new chat window inside **your own app dev
 | **Change your App Activity Log mode (Mode A, B, or C)** | `/agentic-sdlc --outer-loop-init` |
 | **Check your App Activity Logs and feedback status** | `/agentic-sdlc --outer-loop-status` |
 | **Link or check your own app's GitHub repository** | `/agentic-sdlc --git-setup` or `/agentic-sdlc --git-status` |
+| **Check if a newer A/SDLC release is available** | `/agentic-sdlc --check-update` |
+| **Point update checks to your company's internal fork or turn off network checks** | `/agentic-sdlc --set-update-source <fork-url>` or `/agentic-sdlc --set-update-source off` |
 | **Upgrade again when a newer release comes out** | `/agentic-sdlc --upgrade` |
 | **Pause your project and save handoff notes for later** | `/agentic-sdlc --park` |
+
+### 5.1 How Update Checks and Company Forks Work (`update_config.json`)
+
+Instead of hardcoding a single external repository, A/SDLC stores your update settings in `~/.gemini/asdlc/update_config.json` (and optional project overrides in `.sdlc/update_config.json`). It checks your local skill and agent versions on startup and caches remote version checks for 24 hours in `~/.gemini/asdlc/update_check.json` with a 2-second timeout. If you are offline, it continues silently without blocking your work.
+
+| Update Policy | When to Use It | How to Configure It |
+| :--- | :--- | :--- |
+| **`UPSTREAM_GITHUB`** *(Default)* | Checks the standard `asdlc-customer-kit` repository on GitHub (`VERSION` file). If the official repository ever moves, updating `repo_url` here switches it everywhere. | `/agentic-sdlc --set-update-source default` |
+| **`CUSTOMER_FORK`** | Your company maintains its own internal fork of the A/SDLC prompts in GitHub Enterprise, GitLab, or Bitbucket. Checks your internal fork using your existing `git` credentials (`git ls-remote --tags --refs`). | `/agentic-sdlc --set-update-source https://git.yourcompany.internal/ai/asdlc-kit.git` |
+| **`LOCAL_ONLY`** | Turns off all remote update checks and only verifies that your local files match each other. | `/agentic-sdlc --set-update-source off` |
+
+Example `~/.gemini/asdlc/update_config.json` for a company fork:
+
+```json
+{
+  "schema_version": "3.0.0",
+  "update_policy": "CUSTOMER_FORK",
+  "distribution_tier": "customer-safe",
+  "repo_url": "https://git.yourcompany.internal/ai/asdlc-kit.git",
+  "version_file_url": "",
+  "branch": "main",
+  "check_interval_hours": 24,
+  "allow_external_network_check": true
+}
+```
