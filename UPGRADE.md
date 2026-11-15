@@ -63,10 +63,10 @@ Version 1 helped you plan and build software using 7 steps (numbered `Stage 0` t
 
 ```mermaid
 flowchart LR
-    Step1["1. Download ZIP or Clone Toolkit into Downloads"] --> Step2["2. Back Up v1 and Install v3 Skills into .gemini"]
-    Step2 --> Step3["3. Open a New Chat Window in Your Own App Folder"]
-    Step3 --> Step4["4. Upgrade Your App Folder to 8 Stages"]
-    Step4 --> Step5["5. Pick Your App Activity Log Mode A B or C"]
+    Step1["Step 1 Download ZIP or Clone Toolkit into Downloads"] --> Step2["Step 2 Back Up v1 and Install v3 Skills into .gemini"]
+    Step2 --> Step3["Step 3 Open a New Chat Window in Your Own App Folder"]
+    Step3 --> Step4["Step 4 Upgrade Your App Folder to 8 Stages"]
+    Step4 --> Step5["Step 5 Pick Your App Activity Log Mode A B or C"]
 ```
 
 ### Quick Comparison: v1 vs. v3
@@ -146,7 +146,7 @@ Open your AI chat window inside that downloaded `~/Downloads/asdlc-customer-kit`
 Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this downloaded v3.0.0 toolkit folder and upgrade my installed ~/.gemini/config/ skills and agents from v1 to v3.0.0:
 1. Back up all my current v1 agents and skills into ~/.gemini/config/.backups/asdlc-v1-backup-<timestamp>/ first.
 2. Check if I added any custom company rules inside my v1 agent files in ~/.gemini/config/agents/, and save those custom rules into ~/.gemini/config/.backups/migrated-custom-rules.md so nothing is lost.
-3. Copy and install all 8 customer-safe agents (./agents/*.md), all 4 skills (./skills/*/SKILL.md), and all 6 templates (./skills/agentic-sdlc/resources/*.md) from this toolkit folder into ~/.gemini/config/ so they are installed globally for all my projects.
+3. Copy and install all 8 customer-safe agents (./agents/*.md), all 5 skills (./skills/*), and all 6 templates (./skills/agentic-sdlc/resources/*.md) from this toolkit folder into ~/.gemini/config/ so they are installed globally for all my projects.
 4. IMPORTANT: Do NOT create .sdlc/, RACI.md, or any project files inside this ~/Downloads/asdlc-customer-kit toolkit folder.
 5. Show me a summary of the files backed up and installed, and remind me to close this Downloads folder and open a new chat window inside my own app development folder for Step 3.
 ```
@@ -203,7 +203,7 @@ I am upgrading my A/SDLC setup from v1 to v3.0.0. Please perform Step 1 (Pre-Che
 
 | Where to Paste It | Time | What This Prompt Does |
 | :--- | :---: | :--- |
-| Same chat window (right after Prompt 1) | ~1 min | Moves your custom rules into `org-standards.md`, preserves your detailed v1 agent rubrics, and upgrades all 4 skills, 6 stage templates, and 8 customer-safe agents to v3.0.0. |
+| Same chat window (right after Prompt 1) | ~1 min | Moves your custom rules into `org-standards.md`, preserves your detailed v1 agent rubrics, and upgrades all 5 skills, 6 stage templates, and 8 customer-safe agents to v3.0.0. |
 
 ```text
 Now execute Step 2 of my v1 to v3.0.0 upgrade (Preserve Custom Rules and Upgrade Skills, Templates, and Agents to v3.0.0):
@@ -214,13 +214,13 @@ Now execute Step 2 of my v1 to v3.0.0 upgrade (Preserve Custom Rules and Upgrade
 2. IMPORTANT Rule to Prevent Shortened or Incomplete Files:
    Never replace an existing detailed agent or skill file with a short stub! When updating ~/.gemini/config/agents/*.md and ~/.gemini/config/skills/*/SKILL.md, keep all existing detailed security checklists, testing dimensions, and review rules from my backed-up v1 files and merge the v3.0.0 additions below into them.
 
-3. Write or Update the 4 Core v3.0.0 Skills in ~/.gemini/config/skills/ (and .agent/skills/ if my workspace uses .agent/):
+3. Write or Update the 5 Core v3.0.0 Skills in ~/.gemini/config/skills/ (and .agent/skills/ if my workspace uses .agent/):
    Every SKILL.md file MUST start with YAML frontmatter containing:
    name: <skill-name>
    asdlc_version: "3.0.0"
    distribution_tier: "customer-safe"
 
-   Ensure these 4 skills include full v3.0.0 instructions:
+   Ensure these 5 skills include full v3.0.0 instructions:
    * skills/agentic-sdlc/SKILL.md:
      Orchestrates the 8-Stage A/SDLC v3.0 workflow (numbered Stages 1 to 8) using native file tools (read_file, write_file, edit_file, ask_question, run_command) with zero required Python scripts:
      - Stage 1 (@project-conductor, Accountable: executive_sponsor): Project Onboarding, 6-Role RACI (RACI.md and .sdlc/raci.json), Mandatory GitHub/Git Repository Setup and Read/Write Validation for the user's own app development repository (.sdlc/git_config.json with access_verified: true, never confused with the A/SDLC toolkit repo), 3-Mode App Activity Log Setup (.sdlc/telemetry_config.json and .sdlc/cloud_outer_loop.json), 6-Part Background Asset & Data Source Intake (.okf/intake/designs/, .okf/intake/styles/, .okf/intake/docs/, .okf/intake/schemas/, and .okf/intake/ASSET_MANIFEST.md), and Tech Stack Profile (.sdlc/tech_stack.json).
@@ -236,6 +236,9 @@ Now execute Step 2 of my v1 to v3.0.0 upgrade (Preserve Custom Rules and Upgrade
 
    * skills/asdlc-onboarding-coach/SKILL.md:
      Pre-Flight Environment, Google Cloud, App Activity Log APIs, Git/GitHub, and Toolkit Setup Coach (/asdlc-onboarding-coach). Verifies Gates G01 to G12 (GCP project, billing cap, Gemini Enterprise seat, security settings, developer IAM roles, the 8 core Inner-Loop APIs plus 10 Cloud Log/Outer-Loop APIs when using Modes B or C, Python 3.12+, git config and gh auth status, gcloud login, Antigravity business account login, and toolkit health check) and stops cleanly before Stage 1 (/agentic-sdlc --new).
+
+   * skills/org-standards-builder/SKILL.md:
+     Standalone Enterprise Organizational Standards Builder and Intranet Distiller (/org-standards-builder) that turns scattered internal wiki pages into a clean <= 120 line org-standards.md and .okf/runbooks/ catalog across 3 intake modes.
 
    * skills/product-owner/SKILL.md:
      Runs the Stage 2 4-Phase Product Owner interview (Phase 1 Vision & Value, Phase 2 Scope, Epics & Data Source Access Rules, Phase 3 MoSCoW User Stories & Acceptance Criteria, Phase 4 PRD.md Handoff) grounded in org-standards.md and .okf/intake/ assets, asking 2 to 3 questions per turn until 100% complete.
@@ -283,12 +286,12 @@ Please upgrade my existing v1 A/SDLC project workspace to v3.0.0 (Non-Destructiv
 2. Read my existing .sdlc/state.json (and ~/.gemini/asdlc/projects_registry.json if present). Save a backup copy of .sdlc/state.json to .sdlc/state.v1.backup.json.
 3. Convert the old v1 stage numbers (Stage 0 through Stage 6) into the new v3.0.0 stage numbers (Stage 1 through Stage 8) inside .sdlc/state.json:
    * If v1 Stage 0 was approved, mark both Stage 1 (Project Onboarding, RACI, GitHub & Asset Intake) and Stage 2 (Product Discovery & PRD.md) as APPROVED in .sdlc/state.json. If v1 Stage 0 was in progress and PRD.md already exists, mark Stage 1 APPROVED and Stage 2 IN_PROGRESS.
-   * Map v1 Stage 1 -> v3 Stage 3 (Technical Blueprint SPEC.md)
-   * Map v1 Stage 2 -> v3 Stage 4 (Workspace & Builder Synthesis AGENTS.md)
-   * Map v1 Stage 3 -> v3 Stage 5 (Parallel Builder Execution)
-   * Map v1 Stage 4 -> v3 Stage 6 (Security & Governance Review)
-   * Map v1 Stage 5 -> v3 Stage 7 (Testing, Quality & Cost Check)
-   * Map v1 Stage 6 -> v3 Stage 8 (Continuous Improvement & Next Iteration)
+   * Map v1 Stage 1 to v3 Stage 3 (Technical Blueprint SPEC.md)
+   * Map v1 Stage 2 to v3 Stage 4 (Workspace & Builder Synthesis AGENTS.md)
+   * Map v1 Stage 3 to v3 Stage 5 (Parallel Builder Execution)
+   * Map v1 Stage 4 to v3 Stage 6 (Security & Governance Review)
+   * Map v1 Stage 5 to v3 Stage 7 (Testing, Quality & Cost Check)
+   * Map v1 Stage 6 to v3 Stage 8 (Continuous Improvement & Next Iteration)
    * Set schema_version to "3.0.0" and preserve all existing gate approval timestamps, notes, and history.
 4. Create any missing v3.0.0 project governance files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
    * RACI.md and .sdlc/raci.json (mapping the 6 team roles across Stages 1 to 8)
@@ -354,7 +357,7 @@ Please configure my A/SDLC v3.0.0 App Activity Logs and Feedback setup (/agentic
 ```text
 Please run a complete A/SDLC v3.0.0 Post-Upgrade Health Check on my workstation and active project folder:
 
-1. Check ~/.gemini/config/skills/ (or .agent/skills/) and confirm all 4 skills (agentic-sdlc, asdlc-onboarding-coach, product-owner, review-council) and all 6 templates in skills/agentic-sdlc/resources/ exist and have asdlc_version: "3.0.0" and distribution_tier: "customer-safe".
+1. Check ~/.gemini/config/skills/ (or .agent/skills/) and confirm all 5 skills (agentic-sdlc, asdlc-onboarding-coach, org-standards-builder, product-owner, review-council) and all 6 templates in skills/agentic-sdlc/resources/ exist and have asdlc_version: "3.0.0" and distribution_tier: "customer-safe".
 2. Check ~/.gemini/config/agents/ (or .agent/agents/) and confirm all 8 customer-safe agents exist and have asdlc_version: "3.0.0".
 3. Check my active project folder and confirm:
    * .sdlc/state.json uses schema_version "3.0.0" and Stages 1 to 8

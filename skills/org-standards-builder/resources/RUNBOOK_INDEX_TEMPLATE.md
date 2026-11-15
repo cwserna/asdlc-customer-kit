@@ -9,12 +9,12 @@
 
 | Domain Runbook | Scope & Contents | Primary A/SDLC Consumers |
 | :--- | :--- | :--- |
-| [`architecture-and-apis.md`](./architecture-and-apis.md) | Approved libraries, service boundaries, OpenAPI/gRPC conventions, error envelopes, pagination, and UI design tokens. | `@spec-architect` (Stage 3), `@parallel-builder-orchestrator` (Stages 4 & 5) |
-| [`security-and-iam.md`](./security-and-iam.md) | Identity providers, OAuth/OIDC flows, workload identity, secret rotation, encryption standards, and AI safety rules. | `@spec-architect` (Stage 3), `@security-governance-critic` (Stage 6) |
-| [`data-and-storage.md`](./data-and-storage.md) | Database engines, naming conventions, migration rules, PII classification, residency boundaries, and backup SLAs. | `@product-owner` (Stage 2), `@spec-architect` (Stage 3) |
-| [`testing-and-ci.md`](./testing-and-ci.md) | Unit/integration/E2E testing rules, mock vs. sandbox policies, static analysis tools, and branch protection gates. | `@parallel-builder-orchestrator` (Stage 5), `@eval-telemetry-auditor` (Stage 7) |
-| [`observability-and-finops.md`](./observability-and-finops.md) | Structured logging fields, OpenTelemetry span attributes, SLO alerting thresholds, and cloud cost tagging rules. | `@eval-telemetry-auditor` (Stage 7), `@kaizen-evolution-agent` (Stage 8) |
+| `architecture-and-apis.md` | Approved libraries, service boundaries, OpenAPI/gRPC conventions, error envelopes, pagination, and UI design tokens. | `@spec-architect` (Stage 3), `@parallel-builder-orchestrator` (Stages 4 & 5) |
+| `security-and-iam.md` | Identity providers, OAuth/OIDC flows, workload identity, secret rotation, encryption standards, and AI safety rules. | `@spec-architect` (Stage 3), `@security-governance-critic` (Stage 6) |
+| `data-and-storage.md` | Database engines, naming conventions, migration rules, PII classification, residency boundaries, and backup SLAs. | `@product-owner` (Stage 2), `@spec-architect` (Stage 3) |
+| `testing-and-ci.md` | Unit/integration/E2E testing rules, mock vs. sandbox policies, static analysis tools, and branch protection gates. | `@parallel-builder-orchestrator` (Stage 5), `@eval-telemetry-auditor` (Stage 7) |
+| `observability-and-finops.md` | Structured logging fields, OpenTelemetry span attributes, SLO alerting thresholds, and cloud cost tagging rules. | `@eval-telemetry-auditor` (Stage 7), `@kaizen-evolution-agent` (Stage 8) |
 
 ## 2. Audit Log of Filtered Process Noise
 
-* [`DISCARDED_PROCESS_LOG.md`](./DISCARDED_PROCESS_LOG.md): Lists administrative and committee procedures from the internal standards website that were intentionally excluded from the AI coding harness because they are not enforceable in source code.
+* `DISCARDED_PROCESS_LOG.md`: Lists administrative and committee procedures from the internal standards website that were intentionally excluded from the AI coding harness because they are not enforceable in source code.

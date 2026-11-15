@@ -27,7 +27,7 @@ description: >-
 
 This skill runs the **8-Stage Agentic SDLC (`v3.0`)** from initial charter through continuous production improvement. Stage 1 collects the team's RACI spreadsheet upfront (`3..N` custom roles supported), verifies read/write Git repository access (`.sdlc/git_config.json`), configures the 3-Pattern OpenTelemetry sink (`.sdlc/telemetry_config.json`), and ingests background assets (`.okf/intake/`). Stages 2 through 4 drive completion-driven discovery and contract design (`org-standards.md`, `PRD.md`, `SPEC.md`, and `AGENTS.md`). Stages 5 through 8 run parallel builder waves, adversarial security review, Evaluation-Driven Development (EDD), and Kaizen feedback loops (`.sdlc/cloud_outer_loop.json`).
 
-- **Operator & Adopter Runbook:** [`ASDLC_OPERATOR_RUNBOOK.md`](../../ASDLC_OPERATOR_RUNBOOK.md) • [`docs/ASDLC_PROJECT_SETUP_DECISION_TREE.md`](../../docs/ASDLC_PROJECT_SETUP_DECISION_TREE.md) • [`UPGRADE.md`](../../UPGRADE.md)
+- **Operator & Adopter Runbook:** [`ASDLC_OPERATOR_RUNBOOK.md`](https://github.com/cwserna/asdlc-customer-kit/blob/main/ASDLC_OPERATOR_RUNBOOK.md) • [`docs/ASDLC_PROJECT_SETUP_DECISION_TREE.md`](https://github.com/cwserna/asdlc-customer-kit/blob/main/docs/ASDLC_PROJECT_SETUP_DECISION_TREE.md) • [`UPGRADE.md`](https://github.com/cwserna/asdlc-customer-kit/blob/main/UPGRADE.md)
 - **Stage Contract Templates:** [`./resources/ORG_STANDARDS_TEMPLATE.md`](./resources/ORG_STANDARDS_TEMPLATE.md) • [`./resources/RACI_TEMPLATE.md`](./resources/RACI_TEMPLATE.md) • [`./resources/PRD_TEMPLATE.md`](./resources/PRD_TEMPLATE.md) • [`./resources/SPEC_TEMPLATE.md`](./resources/SPEC_TEMPLATE.md) • [`./resources/AGENTS_TEMPLATE.md`](./resources/AGENTS_TEMPLATE.md)
 - **GitHub Repository:** [cwserna/asdlc-customer-kit](https://github.com/cwserna/asdlc-customer-kit)
 
@@ -59,9 +59,39 @@ To ensure Stage 7 and Stage 8 agents automatically know where to read live telem
 | **Pattern B (`SHARED_REMOTE_SINK`)** | Deployed server, Kubernetes, or Cloud Run | Developer workstation (Google Antigravity IDE or CLI, Gemini CLI, or compatible harness triggered on demand) | Shared remote sink: Google Cloud Trace / BigQuery, or an OTLP collector (Jaeger, Grafana Tempo, Postgres, or Flight Deck Remote) | Agents read `.sdlc/telemetry_config.json` and pull live `gen_ai.*` spans and sanitized `/api/v1/kaizen/override` events from Cloud Trace, BigQuery, or the configured OTLP collector endpoint into the local session. |
 | **Pattern C (`CLOUD_OUTER_LOOP`)** | Deployed in customer cloud | Always-on enterprise cloud deployment in customer GCP (`deploy/cloud_outer_loop/`) | Cloud Trace, BigQuery, and Cloud Pub/Sub + Eventarc | **Stage 7** runs on Cloud Run + an ephemeral Cloud Build gVisor sandbox (`--network=none`) for untrusted PR test execution (`RCE-STAGE7`). **Stage 8** runs on Vertex AI Agent Engine + Cloud Pub/Sub & Eventarc, opening automated `kaizen/loop-*` GitHub Pull Requests with Two-Phase `PENDING_KAIZEN_PR` state commits (`STATE-RACE`) and a `max_daily_kaizen_prs: 5` anti-runaway circuit breaker (`HITL-GATE-BYPASS`). |
 
-### 3. Upgrading Legacy `v1.0 / v2.x` Projects (`/agentic-sdlc --outer-loop-init`)
+### 3.0 Offline JSON Schemas (`.sdlc/cloud_outer_loop.json` & `.sdlc/update_config.json`)
+When operating in Pure Markdown Zero-Script mode, write these exact JSON schemas directly via `write_file`:
+
+```json
+// .sdlc/cloud_outer_loop.json
+{
+  "schema_version": "3.0.0",
+  "enabled": false,
+  "gcp_project_id": "<your-gcp-project>",
+  "gcp_region": "us-central1",
+  "gcp_access_verified": false,
+  "pubsub_topic": "asdlc-kaizen-signals",
+  "stage7_cloud_run_service": "asdlc-stage7-eval",
+  "stage8_agent_engine_id": "asdlc-stage8-kaizen",
+  "max_daily_kaizen_prs": 5,
+  "pending_kaizen_pr": null
+}
+```
+
+```json
+// .sdlc/update_config.json (or ~/.gemini/asdlc/update_config.json)
+{
+  "schema_version": "3.0.0",
+  "update_policy": "UPSTREAM_GITHUB",
+  "update_repo_url": "https://github.com/cwserna/asdlc-customer-kit",
+  "last_checked_at": "2026-11-15T00:00:00Z",
+  "pinned_version": "3.0.0"
+}
+```
+
+### 3.1 Upgrading Legacy `v1.0 / v2.x` Projects (`/agentic-sdlc --outer-loop-init`)
 1. **Safe Local Default (`Pattern A`):** Any `v1.0` or `v2.x` project without `.sdlc/telemetry_config.json` defaults safely to `Pattern A (LOCAL_FILE_SINK)` when resumed via `/agentic-sdlc --resume`.
-2. **One-Command Upgrade (`--outer-loop-init`):** Running `/agentic-sdlc --outer-loop-init --telemetry-pattern <LOCAL_FILE_SINK|SHARED_REMOTE_SINK|CLOUD_OUTER_LOOP>` (or `python3 ${ASDLC_SKILLS_HOME:-$HOME/.gemini/config/skills}/agentic-sdlc/scripts/sdlc_hud.py --outer-loop-init`) upgrades any existing `v1.0` or `v2.x` workspace in place by writing `.sdlc/telemetry_config.json` and `.sdlc/cloud_outer_loop.json`, seeding `.sdlc/otel_traces.jsonl` and `.sdlc/kaizen_overrides.jsonl`, appending the non-breaking OpenTelemetry exporter delta to `SPEC.md`, and generating `deploy/cloud_outer_loop/` manifests when `CLOUD_OUTER_LOOP` is selected.
+2. **One-Command Upgrade (`--outer-loop-init`):** Running `/agentic-sdlc --outer-loop-init --telemetry-pattern <LOCAL_FILE_SINK|SHARED_REMOTE_SINK|CLOUD_OUTER_LOOP>` (or `python3 ${ASDLC_SKILLS_HOME:-$HOME/.gemini/config/skills}/agentic-sdlc/scripts/sdlc_hud.py --outer-loop-init` if installed) upgrades any existing `v1.0` or `v2.x` workspace in place by writing `.sdlc/telemetry_config.json` and `.sdlc/cloud_outer_loop.json`, seeding `.sdlc/otel_traces.jsonl` and `.sdlc/kaizen_overrides.jsonl`, appending the non-breaking OpenTelemetry exporter delta to `SPEC.md`, and generating `deploy/cloud_outer_loop/` manifests when `CLOUD_OUTER_LOOP` is selected.
 
 ---
 
@@ -145,7 +175,7 @@ To ensure Stage 7 and Stage 8 agents automatically know where to read live telem
       3. Offer to append the `v3.0` Day-2 Observability & OpenTelemetry sections to existing `PRD.md` (Section 7) and `SPEC.md` (Section 5) files.
 14. **`/agentic-sdlc --ingest-raci <path>`, `--dispatch-gate <stage>`, `--sync-gate <stage>`, `--confirm-rework <stage>` & `--reverify-gates` (RACI Intake & Authenticated Gate Controls):**
     - **`--ingest-raci <path>`:** Parses a `.xlsx` or `.csv` RACI spreadsheet, displays the Markdown read-back table, and writes `RACI.md` and `.sdlc/raci.json` upon confirmation (`python3 ${ASDLC_SKILLS_HOME:-$HOME/.gemini/config/skills}/agentic-sdlc/scripts/sdlc_hud.py --ingest-raci <path> --apply-raci`).
-    - **`--dispatch-gate <stage>` & `--sync-gate <stage>`:** Dispatches and verifies authenticated `TEAM_STRICT` gate approvals across `GITHUB_ISSUES_PR` (`GITHUB_ISSUE`), `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS`), or `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK`).
+    - **`--dispatch-gate <stage>` & `--sync-gate <stage>`:** Dispatches and verifies authenticated `TEAM_STRICT` gate approvals via `/agentic-sdlc --dispatch-gate <1-8> [--channel GITHUB_ISSUES_PR|GOOGLE_SHEETS_TRACKER|FLIGHT_DECK_UI]` and `/agentic-sdlc --sync-gate <1-8>` (short aliases `GITHUB_ISSUE`, `GOOGLE_SHEETS`, and `DEPLOYED_FLIGHT_DECK` are also accepted).
     - **`--confirm-rework <stage>` & `--reverify-gates`:** Releases quarantined `CHANGES_REQUESTED` notes after human inspection (`--confirm-rework <stage>`) and audits solo-to-team gate grandfathering after adding a second human to `RACI.md` (`--reverify-gates`).
 
 ---

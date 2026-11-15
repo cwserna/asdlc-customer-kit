@@ -2,11 +2,11 @@
 # Product Requirements Document (`PRD.md`)
 
 > **Authored By:** `@product-owner` (Stage 2: Agile Product Discovery & Requirements)
-> **Handoff Target:** `@spec-architect` (Stage 3: Spec-Driven Development -> `SPEC.md`)
-> **Organizational Standards Grounding:** [`org-standards.md`](./org-standards.md) (`Pinned in .okf/manifest.yaml for 90% Prefix Cache`)
-> **Git Repository Grounding:** [`.sdlc/git_config.json`](./.sdlc/git_config.json) (`access_verified: true`)
-> **Technology Stack Profile:** [`.sdlc/tech_stack.json`](./.sdlc/tech_stack.json)
-> **OpenTelemetry & Outer-Loop Sink Configuration:** [`.sdlc/telemetry_config.json`](./.sdlc/telemetry_config.json) (`LOCAL_FILE_SINK` | `SHARED_REMOTE_SINK` | `CLOUD_OUTER_LOOP`)
+> **Handoff Target:** `@spec-architect` (Stage 3: Spec-Driven Development for `SPEC.md`)
+> **Organizational Standards Grounding:** `./org-standards.md` (`Pinned in .okf/manifest.yaml for 90% Prefix Cache`)
+> **Git Repository Grounding:** `./.sdlc/git_config.json` (`access_verified: true`)
+> **Technology Stack Profile:** `./.sdlc/tech_stack.json`
+> **OpenTelemetry & Outer-Loop Sink Configuration:** `./.sdlc/telemetry_config.json` (`LOCAL_FILE_SINK` | `SHARED_REMOTE_SINK` | `CLOUD_OUTER_LOOP`)
 
 ---
 
@@ -15,7 +15,7 @@
 - **Target Audience & Personas:** `<Primary End-Users, Operators, Stakeholders>`
 - **Core Value Proposition:** `<Brief summary of the problem solved and why it matters>`
 - **Organizational Standards & Background Documents (`org-standards.md`):**
-  - **Source `org-standards.md`:** `<Local File Path or Google Doc URL provided at Stage 1 -> synced to ./org-standards.md>`
+  - **Source `org-standards.md`:** `<Local File Path or Google Doc URL provided at Stage 1 and synced to ./org-standards.md>`
   - **Background Reference Documents:** `<Domain runbooks, regulatory standards, or legacy schemas ingested into .okf/intake/>`
 - **External & Internal Data Sources in Scope:** `<List all partner/distributor APIs, SaaS systems, ERP/CRMs, and internal databases>`
 - **OpenTelemetry & Outer-Loop Deployment Pattern (`.sdlc/telemetry_config.json`):** `<Pattern A: LOCAL_FILE_SINK | Pattern B: SHARED_REMOTE_SINK | Pattern C: CLOUD_OUTER_LOOP>`
@@ -75,4 +75,4 @@
 - **Performance & Latency:** API endpoints shall respond in `< 200ms` (p95); Semantic Model Router decisions in `< 5ms`.
 - **Security, PII Redaction & AI Governance:** All untrusted user/telemetry inputs and `operator_notes` shall be inspected by **Model Armor** (Prompt Injection / SQLi defense), scrubbed of PII/tokens via deterministic **ADK 2.0 `before_model_callback` and `before_tool_callback` hooks (`OTEL-PII-REDACT`)** before export, use 100% parameterized SQL queries, and bind to **SPIFFE Agent Identity**.
 - **Usability & Accessibility:** Clean Enterprise Light First interface adhering to WCAG AA contrast, keyboard navigation, and responsive grid breakpoints.
-- **OpenTelemetry Observability, Cloud Outer Loop & FinOps:** Full OpenTelemetry GenAI semantic convention spans (`TASK -> SESSION -> TRACE -> SPAN` with `gen_ai.*` attributes) emitted per workflow turn into the sink configured in `.sdlc/telemetry_config.json` (`.sdlc/otel_traces.jsonl` locally and Cloud Trace / BigQuery in cloud mode), paired with `org-standards.md`, `PRD.md`, `SPEC.md`, and `AGENTS.md` pinned in `.okf/manifest.yaml` for a 90% Context Cache discount.
+- **OpenTelemetry Observability, Cloud Outer Loop & FinOps:** Full OpenTelemetry GenAI semantic convention spans (`TASK to SESSION to TRACE to SPAN` with `gen_ai.*` attributes) emitted per workflow turn into the sink configured in `.sdlc/telemetry_config.json` (`.sdlc/otel_traces.jsonl` locally and Cloud Trace / BigQuery in cloud mode), paired with `org-standards.md`, `PRD.md`, `SPEC.md`, and `AGENTS.md` pinned in `.okf/manifest.yaml` for a 90% Context Cache discount.

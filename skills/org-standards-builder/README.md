@@ -20,18 +20,18 @@ In practice, building `org-standards.md` with enterprise customers hits three wa
 
 ```mermaid
 flowchart TD
-    Start["Customer Has Internal Standards (Intranet, Wikis, PDFs, or Tribal Knowledge)"] --> Choice{"How Can We Access the Standards?"}
-    Choice -->|"Mode 1: SSO Intranet with Gemini Enterprise / NotebookLM / Files"| M1["Run prompts/INTRANET_HARVESTER_PROMPT.md or Local Bulk Ingest"]
-    Choice -->|"Mode 2: Browser-Only Access to Internal Website"| M2["Run 5-Round Guided Portal Scavenger Hunt (Search Keywords + Paste)"]
-    Choice -->|"Mode 3: No Written Portal / New Stack"| M3["Run Expert Architect Interview From Scratch"]
-    M1 --> Triage["3-Bucket Triage Engine (Pinned Contract vs Domain Runbook vs Process Noise)"]
+    Start["Customer Has Internal Standards across Intranet Wikis PDFs or Tribal Knowledge"] --> Choice{"How Can We Access the Standards"}
+    Choice -- "Mode 1 SSO Intranet or Bulk Files" --> M1["Run Intranet Harvester Prompt or Local Bulk Ingest"]
+    Choice -- "Mode 2 Browser Access to Internal Portal" --> M2["Run 5 Round Guided Portal Scavenger Hunt"]
+    Choice -- "Mode 3 No Written Portal or New Stack" --> M3["Run Expert Architect Interview From Scratch"]
+    M1 --> Triage["3 Bucket Triage Engine Pinned Contract vs Domain Runbook vs Process Noise"]
     M2 --> Triage
     M3 --> Grill
-    Triage --> Grill["Principal Architect Grill (2 to 3 Questions/Turn on Conflicts, Hard Numbers & Tribal Rules)"]
-    Grill --> Output["Two-Tier Output: org-standards.md (<=120 lines) + .okf/runbooks/*.md"]
+    Triage --> Grill["Principal Architect Grill at 2 to 3 Questions per Turn on Conflicts Numbers and Tribal Rules"]
+    Grill --> Output["Two Tier Output org-standards.md Under 120 Lines plus .okf/runbooks Catalog"]
 ```
 
-### Scenario A: The Customer Uses Antigravity IDE or Gemini CLI (Skill Installed)
+### Scenario A: The Customer Uses Google Antigravity IDE or Gemini CLI (Skill Installed)
 1. Open the terminal or IDE in the project folder (or a shared standards repository).
 2. Run:
    ```text
@@ -56,8 +56,8 @@ If the customer is in a Phase 0 or Phase 1 workshop on a locked-down laptop with
 
 | File | Purpose |
 | :--- | :--- |
-| [`SKILL.md`](./SKILL.md) | Executable skill definition for Antigravity and Gemini CLI (`/org-standards-builder`). |
+| [`SKILL.md`](./SKILL.md) | Executable skill definition for Google Antigravity IDE or Gemini CLI (`/org-standards-builder`). |
 | [`prompts/INTRANET_HARVESTER_PROMPT.md`](./prompts/INTRANET_HARVESTER_PROMPT.md) | Copy-paste prompt for Gemini Enterprise, NotebookLM, Copilot, or Glean to harvest hundreds of SSO-gated intranet pages into `RAW_STANDARDS_EXTRACT.md`. |
 | [`prompts/STANDALONE_ARCHITECT_PROMPT.md`](./prompts/STANDALONE_ARCHITECT_PROMPT.md) | Copy-paste interactive architect prompt for any browser chat UI when the skill is not installed locally. |
 | [`resources/ORG_STANDARDS_TEMPLATE.md`](./resources/ORG_STANDARDS_TEMPLATE.md) | Clean, stack-agnostic A/SDLC v3.0 `org-standards.md` template (`<= 120 lines`, Stages 1 to 8) with zero hardcoded vendor demo assumptions. |
-| [`resources/RUNBOOK_INDEX_TEMPLATE.md`](./resources/RUNBOOK_INDEX_TEMPLATE.md) | Template for `.okf/runbooks/INDEX.md` linking the 5 domain runbooks and the discarded process noise audit log. |
+| [`resources/RUNBOOK_INDEX_TEMPLATE.md`](./resources/RUNBOOK_INDEX_TEMPLATE.md) | Template for `.okf/runbooks/INDEX.md` indexing the 5 domain runbooks and the discarded process noise audit log. |

@@ -179,17 +179,3 @@ When all 12 pre-flight gates (`G01..G12`) are `COMPLETE` in `<skill_dir>/referen
    /agentic-sdlc --new
    ```
    *(In Stage 1, `@project-conductor` will ask upfront on Turn 1 for your project idea, your completed RACI & Gate Approval Roster spreadsheet via the [Starter Google Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or local `.xlsx`/`.csv` template, your GitHub repository for `.sdlc/git_config.json`, your OpenTelemetry sink for `.sdlc/telemetry_config.json`, and your `org-standards.md` and `.okf/intake/` reference files. If your organization has scattered wiki pages, you can also run `/org-standards-builder` first to distill a clean `<= 120` line `org-standards.md`.)*
-2. **Option 2 (Optional Full-Harness Flight Deck Web UI on Port 8000, if installed):**
-   If running the optional Flight Deck server, open `http://localhost:8000/projects/new`.
-3. **Option 3 (Optional Full-Harness CLI Bootstrapper, if `bootstrap_harness.py` is installed):**
-   ```bash
-   python3 ~/.gemini/config/skills/agentic-sdlc/scripts/bootstrap_harness.py \
-     --project-name "<Your Project Name>" \
-     --target-dir "$HOME/projects/<your-project-slug>" \
-     --raci-file "<path-to-completed-raci.xlsx-or-csv>" \
-     --org-standards "<path-to-org-standards.md>" \
-     --github-repo "<https://github.com/owner/repo or owner/repo>" \
-     --repo-mode <link|create> \
-     --telemetry-pattern <LOCAL_FILE_SINK|SHARED_REMOTE_SINK|CLOUD_OUTER_LOOP> \
-     --policy HITL_GATED
-   ```

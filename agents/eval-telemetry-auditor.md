@@ -35,20 +35,20 @@ Evaluate the target implementation across both User-Facing (Outside) and System-
 6. **Reasoning & Session State:** Verify multi-turn state transitions do not leak or corrupt memory.
 7. **Transversal Safety:** Confirm alignment with `@security-governance-critic` guardrails.
 
-## Gate 2: Unified OpenTelemetry Sink Inspection & GenAI Semantic Conventions
+## Gate 2: Unified OpenTelemetry Sink Inspection & GenAI Semantic Conventions (Slides 8 to 10)
 Read `<project_dir>/.sdlc/telemetry_config.json` first to determine the active `sink_type` and inspect captured OpenTelemetry `gen_ai.*` spans across all three supported deployment patterns:
 - **Pattern A (`LOCAL_FILE_SINK`):** Parse captured spans directly from `<project_dir>/.sdlc/otel_traces.jsonl` (via `read_file`, `read_captured_otel_spans`, or `view_file`).
 - **Pattern B (`SHARED_REMOTE_SINK`):** Query live spans from the configured Google Cloud Trace / BigQuery dataset (`bq_dataset`) or OTLP collector (`otlp_endpoint`) defined in `.sdlc/telemetry_config.json`.
 - **Pattern C (`CLOUD_OUTER_LOOP`):** Query sliding-window spans from Google Cloud Trace and BigQuery (`asdlc_otel`) and publish `EVAL_REPORT.md` to the Flight Deck Remote and GitHub PR status checks.
 
-Verify that captured spans across `SPAN -> TRACE -> SESSION -> TASK` include deterministic ADK 2.0 PII/credential redaction (`pii_redacted: true`) and all required semantic attributes:
+Verify that captured spans across `SPAN to TRACE to SESSION to TASK` include deterministic ADK 2.0 PII/credential redaction (`pii_redacted: true`) and all required semantic attributes:
 - `gen_ai.agent.id`
 - `gen_ai.conversation.id`
 - `gen_ai.operation.name`
 - `gen_ai.request.model`
 - `gen_ai.usage.input_tokens` & `gen_ai.usage.output_tokens`
 
-## Gate 3: The 4-Step Cost Optimization Audit
+## Gate 3: The 4-Step Cost Optimization Audit (Slides 14 to 20)
 Verify and document how the application applies the 3 FinOps levers:
 - **Consumption Tiering:** Provisioned Throughput vs. PayGo vs. Batch Inference (50% discount for async jobs).
 - **~5ms Semantic Model Routing:** Vector similarity routing dispatching simple classification/extraction to `gemini-2.5-flash-lite`, standard tasks to `gemini-2.5-flash`, and complex multi-step reasoning to `gemini-2.5-pro` (**3x cost reduction**).
@@ -60,6 +60,6 @@ Verify and document how the application applies the 3 FinOps levers:
 - Upon Stage 7 `APPROVED`, emit telemetry summary to **Stage 8 (`@kaizen-evolution-agent`)** for continuous production feedback, Golden Eval promotion, and 4-Speed Return Loop routing.
 
 ## Enterprise Architecture & Governance Grounding
-- **ADK Evaluation (`uv run adk eval` / `AgentEvaluator.evaluate`):** Verify both **`tool_trajectory_avg_score >= 0.8`** and **`response_match_score >= 0.5`** in `test_config.json` across the **3 Canonical Eval Case Patterns** (**Single-Tool**, **Context-Extraction**, and **Multi-Tool Trajectory**) to prevent *"lucky hallucination"* false positives.
-- **Track B Google Dual Run Validation:** Verify functional equivalence (`Dualize -> Replay -> Compare`) for Brownfield Modernization initiatives.
+- **ADK Evaluation (`uv run adk eval` / `AgentEvaluator.evaluate` to 21):** Verify both **`tool_trajectory_avg_score >= 0.8`** and **`response_match_score >= 0.5`** in `test_config.json` across the **3 Canonical Eval Case Patterns** (**Single-Tool**, **Context-Extraction**, and **Multi-Tool Trajectory**) to prevent *"lucky hallucination"* false positives.
+- **Track B Google Dual Run Validation (to 24):** Verify functional equivalence (`Dualize to Replay to Compare`) for Brownfield Modernization initiatives.
 - **One-Command Deployment Readiness:** Verify `adk deploy agent_engine` and `adk deploy cloud_run --agent_engine_id` readiness alongside 7-Dimension EDD and 90% Context Cache FinOps.

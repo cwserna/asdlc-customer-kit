@@ -38,7 +38,7 @@ It is **100% decoupled from `/agentic-sdlc`** so customers can run it before Sta
 3. **Protect Stages 2 to 8 from Context Rot (The Two-Tier Split):**
    * **Tier 1 (`org-standards.md`, strictly `<= 120 lines`):** Pinned in `.okf/manifest.yaml` and loaded into every prompt across Stages 1 to 8. Contains only deterministic, code-enforceable rules that alter how `PRD.md`, `SPEC.md`, `AGENTS.md`, application code, and automated tests are written and audited.
    * **Tier 2 (`.okf/runbooks/<domain>.md`):** Deep reference standards (database naming conventions, approved Terraform modules, compliance control matrices, UI token tables) stored by domain so coding and review agents load them only when needed.
-   * **Tier 3 (`PROCESS_NOISE` -> Discarded to `.okf/runbooks/DISCARDED_PROCESS_LOG.md`):** Non-code bureaucracy (Change Advisory Board meeting schedules, Jira ticket workflows, HR training policies, legacy mainframe standards) that an AI coding agent cannot enforce in source code.
+   * **Tier 3 (`PROCESS_NOISE`, Discarded to `.okf/runbooks/DISCARDED_PROCESS_LOG.md`):** Non-code bureaucracy (Change Advisory Board meeting schedules, Jira ticket workflows, HR training policies, legacy mainframe standards) that an AI coding agent cannot enforce in source code.
 
 ---
 

@@ -6,7 +6,8 @@
 
 ---
 
-## 1. Mandatory Full-Stack Reference Architecture
+## 1. Stack-Adaptive Reference Architecture (Bound to `.sdlc/tech_stack.json`; Reference Cartridge Profile Shown Below)
+> **Note:** A/SDLC v3.0 never forces a hardcoded vendor stack. Every project binds to the customer's actual stack declared in `.sdlc/tech_stack.json` (or distilled via `/org-standards-builder`). The bullets below show the reference cartridge profile.
 - **Backend Framework:** Python 3.12+ with **FastAPI**, **Pydantic v2** strict schema validation (`extra="forbid"`), and **Google Cloud Agent Development Kit (ADK 2.0)** (or the project's declared stack in `.sdlc/tech_stack.json`).
 - **Frontend Framework & UI Design System:** **Vue.js 3** (Composition API `<script setup>`) with **Tailwind CSS** utility styling governed by the **Clean Enterprise Light First Design Language** (or the project's ingested `.okf/intake/styles/` brand style guide and `.sdlc/tech_stack.json` UI stack). Default tokens enforce `#F8FAFC` alabaster canvas, `#FFFFFF` pure cards, `#E2E8F0` `1px` borders, `#0B57D0` Google Cloud Cobalt primary actions, `Plus Jakarta Sans` headings, `Inter` UI body, and `JetBrains Mono` (`tabular-nums`) for all KPIs and telemetry.
 - **Service Topology:** Strict **Dual-Service Split**: Control Plane runs on `http://localhost:8000` (Flight Deck); Target Application runs independently on `http://localhost:8001` or `http://localhost:8002`.
@@ -17,7 +18,7 @@
 ## 2. Security, Identity & AI Safety Guardrails
 - **Pre-LLM Input Defense:** All untrusted user prompts, telemetry notes, and external payloads MUST pass **Google Cloud Model Armor** screening (`Prompt Injection`, `Jailbreak`, `SQL/Command Injection`, and `Sensitive Data DLP`) prior to model invocation.
 - **Database & Query Safety:** 100% parameterized SQL queries (`?` / `$1` placeholders); raw f-string or concatenated SQL queries are strictly prohibited (**Stage 6** `CM-2026-999` gate).
-- **Workload & Agent Identity:** Enforce **SPIFFE Workload Identity** (`spiffe://corp.google.com/ns/power-energy/sa/agentic-sdlc-coordinator`) and **Workforce Identity Federation (WIF)** over static service account keys.
+- **Workload & Agent Identity:** Enforce **SPIFFE Workload Identity** (`spiffe://<enterprise-trust-domain>/ns/asdlc/sa/agentic-sdlc-coordinator`) and **Workforce Identity Federation (WIF)** over static service account keys.
 - **Human-in-the-Loop (`A2UI`) Actuation Gate:** High-impact write operations, physical OT actuation, or financial transactions require explicit human sign-off via an **ADK 2.0 `A2UI` confirmation card**.
 
 ---

@@ -35,9 +35,9 @@ In your very first reply, greet me briefly and ask me these 2 questions:
 - If I choose **Option A**, read what I paste or upload.
 - If I choose **Option B**, walk me through 5 rounds one at a time (`1. Languages, Frameworks & APIs`, `2. Auth, IAM, Secrets & Security`, `3. Database, Storage & PII`, `4. Testing, Code Sizing & CI/CD Gates`, `5. Logging, OpenTelemetry & FinOps`), giving me exact search keywords to type into our internal portal search bar.
 - Sort every standard into:
-  - **Bucket 1 (`PINNED_CONTRACT` -> `org-standards.md`, <= 120 lines):** Deterministic rules needed on every coding and review turn.
-  - **Bucket 2 (`DOMAIN_RUNBOOK` -> `.okf/runbooks/<domain>.md`):** Detailed tables, naming rules, and compliance matrices loaded only when relevant.
-  - **Bucket 3 (`PROCESS_NOISE` -> `DISCARDED_PROCESS_LOG.md`):** Non-code bureaucracy (CAB meetings, ticket templates, HR policies) excluded from the coding harness.
+  - **Bucket 1 (`PINNED_CONTRACT`, saved to `org-standards.md`, <= 120 lines):** Deterministic rules needed on every coding and review turn.
+  - **Bucket 2 (`DOMAIN_RUNBOOK`, saved to `.okf/runbooks/<domain>.md`):** Detailed tables, naming rules, and compliance matrices loaded only when relevant.
+  - **Bucket 3 (`PROCESS_NOISE`, saved to `DISCARDED_PROCESS_LOG.md`):** Non-code bureaucracy (CAB meetings, ticket templates, HR policies) excluded from the coding harness.
 - Display a concise **Triage Summary Table** showing what went into each bucket.
 
 ### Phase 3: The Principal Architect Grill (2 to 3 Questions per Turn)

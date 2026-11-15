@@ -34,7 +34,7 @@
 | **Stage 2: Product Discovery & Requirements (`PRD.md`)** | Agile Product Owner | `@product-owner` | `PROJECT_DEFAULT` | C | **A** | C | I | I | I |
 | **Stage 3: Technical Design & API Blueprint (`SPEC.md`)** | Lead AI Architect | `@spec-architect` | `PROJECT_DEFAULT` | I | C | **A** | R | C | C |
 | **Stage 4: Workspace & Guardrail Setup (`AGENTS.md`)** | Lead AI Architect | `@parallel-builder-orchestrator + @spec-architect + @project-conductor` | `PROJECT_DEFAULT` | I | I | **A** | R | C | C |
-| **Stage 5: Parallel Backend & Frontend Coding** | Full-Stack Tech Lead | `@parallel-builder-orchestrator` | `PROJECT_DEFAULT` | I | C | C | **A** | I | I |
+| **Stage 5: Parallel Backend & Frontend Coding** | Full-Stack Tech Lead | `@parallel-builder-orchestrator` + `.sdlc/agents/builders/*.md` | `PROJECT_DEFAULT` | I | C | C | **A** | I | I |
 | **Stage 6: Automated Security & Code Review** | Security Lead | `@security-governance-critic` | `PROJECT_DEFAULT` | I | I | C | R | **A** | C |
 | **Stage 7: Testing, Quality & Cost Check** | Quality SRE & FinOps Lead | `@eval-telemetry-auditor` | `PROJECT_DEFAULT` | I | C | I | R | I | **A** |
 | **Stage 8: Continuous Improvement & Next Iteration** | Agile Product Owner | `@kaizen-evolution-agent + @project-conductor` | `PROJECT_DEFAULT` | C | **A** | C | C | I | R |

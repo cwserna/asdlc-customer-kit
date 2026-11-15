@@ -1,9 +1,9 @@
 <!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
-# 📦 Stage 1 Onboarding & Background Asset Manifest (`ASSET_MANIFEST.md`) — <Project / Application Title>
+# 📦 Stage 1 Onboarding & Background Asset Manifest (`ASSET_MANIFEST.md`): `<Project / Application Title>`
 
 - **Project:** `<Project / Application Title>`
 - **Managed By:** `@project-conductor` (Stage 1 Onboarding & Continuous PMO Overwatch)
-- **Schema Version:** `2.0.0`
+- **Schema Version:** `3.0.0`
 
 ## 1. Stage 1 Background Asset Intake Checklist
 

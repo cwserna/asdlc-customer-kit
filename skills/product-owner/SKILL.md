@@ -16,11 +16,11 @@ description: >-
 
 # Stage 2: Expert Agile Product Owner Discovery Skill (`/product-owner`)
 
-This skill executes the **4-Phase Agile Product Owner Interview** (`@product-owner`) as **Stage 2** of the 8-Stage Agentic SDLC (`A/SDLC v2.2`) workflow, building directly upon the charter, 6-role RACI matrix (`RACI.md`), verified Git repository (`.sdlc/git_config.json`), and background assets (`org-standards.md` & `.okf/intake/`) established in **Stage 1 (`@project-conductor`)**.
+This skill executes the **4-Phase Agile Product Owner Interview** (`@product-owner`) as **Stage 2** of the 8-Stage Agentic SDLC (`A/SDLC v3.0`) workflow, building directly upon the charter, RACI matrix (`RACI.md`), verified Git repository (`.sdlc/git_config.json`), and background assets (`org-standards.md` & `.okf/intake/`) established in **Stage 1 (`@project-conductor`)**.
 
 ## How to Execute the 4-Phase Interview
 
-> **🚨 Mandatory First Interaction Rule (Turn 1 -> Open-Ended Description & `org-standards.md`, Turn 2+ -> Completion-Driven Grill):**
+> **🚨 Mandatory First Interaction Rule (Turn 1 to Open-Ended Description & `org-standards.md`, Turn 2+ to Completion-Driven Grill):**
 > 1. **Turn 1 (Open-Ended Prompt):** Unless the user has already provided a description of the application they want to build in their initial message, **your very first response MUST simply ask the user in plain text to describe the application they want to build** (1: Application Idea, 2: Target Users, 3: Core Problem, and 4: Local file path or Google Doc URL to their organization's `org-standards.md` & background documents). Do **NOT** pop up a multiple-choice `ask_question` modal on Turn 1 before the user has described their application.
 > 2. **Turn 2+ (Exhaustive Completion-Driven Socratic Grill via `ask_question`):**
 > - **Gentle Per-Turn Pacing:** Ask **2 to 3 focused questions per `ask_question` turn** tailored specifically to the user's description so the stakeholder is never overwhelmed by a giant wall of questions at once.
@@ -63,14 +63,14 @@ This skill executes the **4-Phase Agile Product Owner Interview** (`@product-own
    - `[ ]` Every story has explicit MoSCoW prioritization (`Must-Have`, `Should-Have`, `Could-Have`, `Won't-Have`).
    - `[ ]` Every `Must-Have` and `Should-Have` story has testable `Given / When / Then` Acceptance Criteria (including data-source error states and write-back confirmation criteria where applicable).
 
-### Phase 4: Handoff Generation (`org-standards.md` + `PRD.md` -> `@spec-architect`)
+### Phase 4: Handoff Generation (`org-standards.md` + `PRD.md` to `@spec-architect`)
 1. Ensure `<target_project_dir>/org-standards.md` is written and pinned in `.okf/manifest.yaml`.
 2. Generate `PRD.md` in the project directory using the 5 mandatory sections (explicitly citing `org-standards.md`, `.okf/intake/` assets, and External/Internal Data Source Access Rules in **Section 1**, **Section 3**, and **Section 5**):
    1. **Executive Summary & Product Vision (including `org-standards.md` & Background Document Grounding)**
    2. **Business Requirements (Objectives & KPIs)**
    3. **Functional Requirements & Data Source Access Governance (Grouped by Module)**
-   4. **Prioritized User Stories (MVP Scope: `[Epic] -> User Story -> Acceptance Criteria` + MoSCoW tag)**
-   5. **Non-Functional Requirements & Organizational Standards (`org-standards.md` — Web App Performance, Security/Model Armor, Usability, Cloud Hosting)**
+   4. **Prioritized User Stories (MVP Scope: `[Epic] to User Story to Acceptance Criteria` + MoSCoW tag)**
+   5. **Non-Functional Requirements & Organizational Standards (`org-standards.md`: Web App Performance, Security/Model Armor, Usability, Cloud Hosting)**
 3. **Phase 4 Exit Checklist (Gate 2 Sign-Off):**
    - `[ ]` `PRD.md` is written to disk with all 5 sections populated and `org-standards.md` pinned in `.okf/manifest.yaml`.
    - `[ ]` The Accountable **Agile Product Owner (`product_owner`)** explicitly approves `PRD.md` (or provides revision notes that are resolved before advancing), Gate 2 is synced to Git (`stage-2-approved`), and the workflow hands off to `@spec-architect` (Stage 3).

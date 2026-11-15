@@ -3,7 +3,7 @@
 
 > **Methodology:** Spec-Driven Development (`Stage 3: Technical Design & API Blueprint`, `A/SDLC v3.0`)
 > **Status:** `ACTIVE_CONTRACT`
-> **OpenTelemetry & Outer-Loop Configuration:** [`.sdlc/telemetry_config.json`](./.sdlc/telemetry_config.json) • [`.sdlc/cloud_outer_loop.json`](./.sdlc/cloud_outer_loop.json)
+> **OpenTelemetry & Outer-Loop Configuration:** `./.sdlc/telemetry_config.json` • `./.sdlc/cloud_outer_loop.json`
 
 ## 1. Problem-First Scoping & KPIs (Google Cloud WAF)
 - **Business Objective:** `<What operational problem or decision is being accelerated?>`
@@ -77,15 +77,15 @@ All synthesized builders in `.sdlc/builder_manifest.json` MUST adhere strictly t
 
 ## 4. OpenTelemetry Exporter & Cloud Outer-Loop Contract (`A/SDLC v3.0`)
 1. **Unified 3-Pattern OpenTelemetry Sink (`.sdlc/telemetry_config.json`):**
-   - **Pattern A (`LOCAL_FILE_SINK`):** Exports `TASK -> SESSION -> TRACE -> SPAN` records with `gen_ai.*` attributes (`gen_ai.agent.id`, `gen_ai.conversation.id`, `gen_ai.operation.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) to `.sdlc/otel_traces.jsonl` and overrides to `.sdlc/kaizen_overrides.jsonl`.
+   - **Pattern A (`LOCAL_FILE_SINK`):** Exports `TASK to SESSION to TRACE to SPAN` records with `gen_ai.*` attributes (`gen_ai.agent.id`, `gen_ai.conversation.id`, `gen_ai.operation.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) to `.sdlc/otel_traces.jsonl` and overrides to `.sdlc/kaizen_overrides.jsonl`.
    - **Pattern B (`SHARED_REMOTE_SINK`):** Dual-exports spans and overrides to Google Cloud Trace / BigQuery (or configured OTLP collector) while local Stage 7 and Stage 8 agents query the shared sink on demand.
    - **Pattern C (`CLOUD_OUTER_LOOP`):** Exports spans and overrides to Cloud Trace, BigQuery, and Cloud Pub/Sub + Eventarc to wake up Always-On Stage 7 (Cloud Run + ephemeral Cloud Build gVisor sandbox) and Stage 8 (Vertex AI Agent Engine).
 2. **Edge Store-and-Forward Buffer (`EDGE-DISCONNECT`) & PII Scrubbing (`OTEL-PII-REDACT`):**
    - Local SQLite buffer (`.sdlc/edge_telemetry_buffer.db`) queues spans and `/api/v1/kaizen/override` payloads during field WAN disconnects and flushes upon reconnect.
    - Deterministic ADK 2.0 `before_model_callback` and `before_tool_callback` hooks scrub PII, API keys, and bearer tokens before any span is written to disk or exported to Cloud Trace / BigQuery.
 3. **Cloud Outer-Loop Identities & Guardrails (`.sdlc/cloud_outer_loop.json`):**
-   - **Stage 7 Eval Identity:** `sa-asdlc-stage7-eval` (`spiffe://corp.google.com/ns/asdlc/sa/stage7-eval`), executing untrusted PR tests exclusively inside an ephemeral Cloud Build gVisor sandbox (`--network=none`).
-   - **Stage 8 Kaizen Identity:** `sa-asdlc-stage8-kaizen` (`spiffe://corp.google.com/ns/asdlc/sa/stage8-kaizen`), enforcing `PENDING_KAIZEN_PR` two-phase state commit (`STATE-RACE`), `max_daily_kaizen_prs: 5`, and bot-branch loop prevention (`HITL-GATE-BYPASS`).
+   - **Stage 7 Eval Identity:** `sa-asdlc-stage7-eval` (`spiffe://<enterprise-trust-domain>/ns/asdlc/sa/stage7-eval`), executing untrusted PR tests exclusively inside an ephemeral Cloud Build gVisor sandbox (`--network=none`).
+   - **Stage 8 Kaizen Identity:** `sa-asdlc-stage8-kaizen` (`spiffe://<enterprise-trust-domain>/ns/asdlc/sa/stage8-kaizen`), enforcing `PENDING_KAIZEN_PR` two-phase state commit (`STATE-RACE`), `max_daily_kaizen_prs: 5`, and bot-branch loop prevention (`HITL-GATE-BYPASS`).
 
 ---
 

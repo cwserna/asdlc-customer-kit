@@ -81,7 +81,7 @@ Produce or update two canonical files in the target project root:
    - Exact commands to run deterministic micro-harnesses (`pytest`, `go test`, `vitest`, linter sweeps) and the synthesized Builder Roster table so downstream subagents can self-verify every turn.
 
 ## 4. Delta-Spec Mode (`mode: GREENFIELD | ITERATION_DELTA`, Loop 2 from Stage 8)
-When invoked for an iterative sprint (`v1.x`) or via **Loop 2 (`Stage 8 -> Stage 3`)** from `@kaizen-evolution-agent`:
+When invoked for an iterative sprint (`v1.x`) or via **Loop 2 (`Stage 8 to Stage 3`)** from `@kaizen-evolution-agent`:
 - Read the existing `SPEC.md` and active codebase first instead of generating a greenfield spec from scratch.
 - Author a versioned **Contract Diff Section (`## Iteration v1.x Delta Specification`)** in `SPEC.md` that explicitly documents:
   - Added or modified OpenAPI 3.1 endpoints, Pydantic v2 fields, and any new/updated external or internal data source contracts.
@@ -89,7 +89,7 @@ When invoked for an iterative sprint (`v1.x`) or via **Loop 2 (`Stage 8 -> Stage
   - **Scoped Vertical Slice (`<= 300 LoC`):** Scope only the delta backend/frontend changes required for Stage 5.
 
 ## Enterprise Architecture & Governance Grounding
-- **The 4-Layer Agentic Architecture & 8 AI Design Patterns:** Explicitly structure `SPEC.md` across Layer 1 (Model), Layer 2 (Framework & Orchestration), Layer 3 (Memory & Knowledge), and Layer 4 (Integration & Actions).
-- **ADK 2.0 Runtime Contract:** Define `Session`, `State`, `Memory`, `Artifact`, `Events`, **`A2UI`** interactive UI schemas, and **Vertex AI Session Service & Memory Bank** persistence.
-- **Data Architecture Decision Matrix & Deployment Target Matrix:** Select between RAG, GraphRAG, **BigQuery Zero-Copy Data Analysis MCP**, and **`MCP Toolbox for Databases`**, and specify the runtime target (**Cloud Run** vs **GKE** vs **Vertex AI Agent Engine**).
-- **End-User Identity Propagation & Open Knowledge Framework (`.okf/`):** Enforce Workforce Identity Federation over broad Service Account anti-patterns in `AGENTS.md`.
+- **The 4-Layer Agentic Architecture (to 7) & 8 AI Design Patterns (to 24):** Explicitly structure `SPEC.md` across Layer 1 (Model), Layer 2 (Framework & Orchestration), Layer 3 (Memory & Knowledge), and Layer 4 (Integration & Actions).
+- **ADK 2.0 Runtime Contract (to 28):** Define `Session`, `State`, `Memory`, `Artifact`, `Events`, **`A2UI`** interactive UI schemas, and **Vertex AI Session Service & Memory Bank** persistence.
+- **Data Architecture Decision Matrix (to 28) & Deployment Target Matrix (to 12):** Select between RAG, GraphRAG, **BigQuery Zero-Copy Data Analysis MCP**, and **`MCP Toolbox for Databases`**, and specify the runtime target (**Cloud Run** vs **GKE** vs **Vertex AI Agent Engine**).
+- **End-User Identity Propagation (to 15) & Open Knowledge Framework (`.okf/`):** Enforce Workforce Identity Federation over broad Service Account anti-patterns in `AGENTS.md`.
