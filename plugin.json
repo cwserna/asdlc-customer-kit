@@ -1,8 +1,8 @@
 {
   "name": "asdlc-customer-kit",
-  "displayName": "Agentic SDLC (A/SDLC v3.0)",
-  "version": "3.0.0",
-  "description": "8-Stage Agentic Software Development Lifecycle (A/SDLC v3.0) with 8 specialist subagents, 5 core skills (including org-standards-builder), 3..N custom-role RACI governance, and 3-Pattern OpenTelemetry observability.",
+  "displayName": "Agentic SDLC (A/SDLC v3.1)",
+  "version": "3.1.0",
+  "description": "8-Stage Agentic Software Development Lifecycle (A/SDLC v3.1) with 8 specialist subagents, 5 core skills (including org-standards-builder), Customer Security & Monitoring Toolchain Discovery (.sdlc/toolchain_config.json), 3..N custom-role RACI governance, and split ingest/query 3-Pattern OpenTelemetry observability.",
   "repository": {
     "type": "git",
     "url": "https://github.com/cwserna/asdlc-customer-kit"
@@ -11,6 +11,7 @@
     "/asdlc-onboarding-coach",
     "/org-standards-builder",
     "/agentic-sdlc --new",
-    "/agentic-sdlc --status"
+    "/agentic-sdlc --status",
+    "/agentic-sdlc --toolchain-status"
   ]
 }

@@ -1,8 +1,8 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # 🛡️ Program & 8-Stage HITL Gate RACI Matrix (`RACI.md`): `<Project / Application Title>`
 
 - **Project:** `<Project / Application Title>`
-- **Schema Version:** `3.0.0`
+- **Schema Version:** `3.1.0`
 - **Managed By:** `@project-conductor` (Stage 1 Upfront RACI Spreadsheet Intake & Continuous PMO Overwatch)
 - **Starter Google Sheet Template (Make a Copy):** [A/SDLC v3.0 Stage 1 RACI & Gate Approval Roster](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy)
 - **Local Starter Templates:** `.okf/intake/raci/RACI_STARTER_TEMPLATE.xlsx` and `.okf/intake/raci/RACI_STARTER_TEMPLATE.csv`

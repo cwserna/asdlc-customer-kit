@@ -1,5 +1,5 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
-# 🚀 The Agentic SDLC (A/SDLC v3.0.0): Customer-Safe Pure Markdown Kit
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+# 🚀 The Agentic SDLC (A/SDLC v3.1.0): Customer-Safe Pure Markdown Kit
 
 > [!CAUTION]
 > **⚠️ IMPORTANT LEGAL DISCLAIMER (`NO WARRANTY` • `NOT FOR PRODUCTION` • `EXAMPLE CODE ONLY` • `USE AT YOUR OWN RISK`):**
@@ -11,7 +11,7 @@
 > * **Full Legal Terms:** Please read **[`DISCLAIMER.md`](./DISCLAIMER.md)** before downloading, cloning, or using this repository.
 
 > * **Distribution Tier:** `customer-safe` (`100% Pure Markdown`, Zero Executable Scripts Required)
-> * **Release Version:** `v3.0.0` ([`VERSION`](./VERSION) • [`UPGRADE.md`](./UPGRADE.md) • [`DISCLAIMER.md`](./DISCLAIMER.md))
+> * **Release Version:** `v3.1.0` ([`VERSION`](./VERSION) • [`UPGRADE.md`](./UPGRADE.md) • [`DISCLAIMER.md`](./DISCLAIMER.md))
 > * **GitHub Repository & Direct ZIP Download:** [https://github.com/cwserna/asdlc-customer-kit](https://github.com/cwserna/asdlc-customer-kit) ([1-Click Download ZIP](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip))
 > * **Important Note:** This repository is the **A/SDLC Toolkit** (used only to install or upgrade the `.md` agents and skills into `~/.gemini/config/`). Keep it in a separate folder like `~/Downloads/asdlc-customer-kit` and never confuse it with the GitHub repository you use for your actual application development!
 > * **Supported Harnesses:** Google Antigravity IDE/CLI, Gemini CLI, and any Markdown-compatible AI coding harness.
@@ -20,24 +20,24 @@
 
 ## 1. What Is Included in This Customer-Safe Kit
 
-This repository contains the **100% Pure Markdown Customer-Safe Edition** of the **8-Stage Agentic Software Development Lifecycle (A/SDLC v3.0.0)**. Every file in this kit is human-readable plain-text Markdown (`.md`) so enterprise security and governance teams can audit and approve it immediately without reviewing third-party Python or shell scripts.
+This repository contains the **100% Pure Markdown Customer-Safe Edition** of the **8-Stage Agentic Software Development Lifecycle (A/SDLC v3.1.0)**. Every file in this kit is human-readable plain-text Markdown (`.md`) so enterprise security and governance teams can audit and approve it immediately without reviewing third-party Python or shell scripts.
 
 ### 1.1 The 8 Specialist AI Subagents (`agents/`)
 | Subagent File | Stage Ownership | Role Summary |
 | :--- | :--- | :--- |
-| [`agents/project-conductor.md`](./agents/project-conductor.md) | **Stages 1, 4 & 8** | Project Onboarding, Git Repo Validation, 3-Pattern OpenTelemetry Sink Setup, 3..N Role RACI, 6-Pillar Intake, and `v1.0 to v3.0` Smart Upgrade Conductor (`@project-conductor`). |
+| [`agents/project-conductor.md`](./agents/project-conductor.md) | **Stages 1, 4 & 8** | Project Onboarding, Git Repo Validation, Split Ingest/Query 3-Pattern OpenTelemetry Sink, Customer Security & Monitoring Toolchain Discovery (`.sdlc/toolchain_config.json`), 3..N Role RACI, 6-Pillar Intake, and zero-rework `v3.0 to v3.1` / `v1.0 to v3.1` Smart Upgrade Conductor (`@project-conductor`). |
 | [`agents/product-owner.md`](./agents/product-owner.md) | **Stage 2** | Agile Product Owner conducting the 4-Phase Socratic discovery interview to produce `PRD.md` (`@product-owner`). |
-| [`agents/spec-architect.md`](./agents/spec-architect.md) | **Stages 3 & 4** | Lead AI Architect authoring locked `SPEC.md`, OpenTelemetry/Outer-Loop contracts, and `AGENTS.md` (`@spec-architect`). |
-| [`agents/parallel-builder-orchestrator.md`](./agents/parallel-builder-orchestrator.md) | **Stages 4 & 5** | Synthesizes `1..N` project-specific builders in `.sdlc/agents/builders/` and orchestrates parallel coding waves (`@parallel-builder-orchestrator`). |
-| [`agents/security-governance-critic.md`](./agents/security-governance-critic.md) | **Stage 6** | Adversarial Red-Team Reviewer auditing prompt injection, SPIFFE/WIF IAM, Model Armor guardrails, and PII redaction (`@security-governance-critic`). |
-| [`agents/eval-telemetry-auditor.md`](./agents/eval-telemetry-auditor.md) | **Stage 7** | 7-Dimension Evaluation-Driven Development (EDD), OpenTelemetry span verification, and FinOps cost auditor (`@eval-telemetry-auditor`). |
-| [`agents/kaizen-evolution-agent.md`](./agents/kaizen-evolution-agent.md) | **Stage 8** | Continuous Evolution, Golden Eval Set promoter, and Loop 1 to 4 router (`@kaizen-evolution-agent`). |
+| [`agents/spec-architect.md`](./agents/spec-architect.md) | **Stages 3 & 4** | Lead AI Architect authoring locked `SPEC.md`, Split OpenTelemetry Ingest/Query & Security Toolchain contracts, and `AGENTS.md` (`@spec-architect`). |
+| [`agents/parallel-builder-orchestrator.md`](./agents/parallel-builder-orchestrator.md) | **Stages 4 & 5** | Synthesizes `1..N` project-specific builders in `.sdlc/agents/builders/`, runs non-destructive Stage 4 toolchain smoke checks, and orchestrates parallel coding waves (`@parallel-builder-orchestrator`). |
+| [`agents/security-governance-critic.md`](./agents/security-governance-critic.md) | **Stage 6** | Adversarial Red-Team Reviewer executing configured customer security scanners (9 presets or Custom Bring Your Own Tool + SARIF 2.1.0), auditing prompt injection, SPIFFE/WIF IAM, Model Armor guardrails, and PII redaction, and publishing `SECURITY_AUDIT.md` with a mandatory Tool Execution Ledger (`@security-governance-critic`). |
+| [`agents/eval-telemetry-auditor.md`](./agents/eval-telemetry-auditor.md) | **Stage 7** | 7-Dimension Evaluation-Driven Development (EDD), split-query OpenTelemetry & customer APM verification (8 presets or Custom, supporting `app_uses_llm: false`), FinOps cost auditing, and mandatory Monitoring Tool Execution Ledger in `EVAL_REPORT.md` (`@eval-telemetry-auditor`). |
+| [`agents/kaizen-evolution-agent.md`](./agents/kaizen-evolution-agent.md) | **Stage 8** | Continuous Evolution, live APM/OpenTelemetry signal ingestion, Golden Eval Set promoter, and Loop 1 to 4 router (`@kaizen-evolution-agent`). |
 | [`agents/adversarial-doc-critic.md`](./agents/adversarial-doc-critic.md) | **Cross-Stage** | 4-Lens Adversarial Document & Architecture Critic (`@adversarial-doc-critic`). |
 
 ### 1.2 The 5 Core Skills, Standalone Prompt Pack & Stage Templates (`skills/`)
-* [`skills/agentic-sdlc/SKILL.md`](./skills/agentic-sdlc/SKILL.md): Primary `/agentic-sdlc` workflow conductor (`--new`, `--resume`, `--status`, `--list`, `--park`, `--upgrade`, `--outer-loop-init`).
+* [`skills/agentic-sdlc/SKILL.md`](./skills/agentic-sdlc/SKILL.md): Primary `/agentic-sdlc` workflow conductor (`--new`, `--resume`, `--status`, `--list`, `--park`, `--upgrade`, `--toolchain-init`, `--toolchain-status`, `--outer-loop-init`).
 * [`skills/asdlc-onboarding-coach/SKILL.md`](./skills/asdlc-onboarding-coach/SKILL.md): Pre-flight environment, Google Cloud, Git/GitHub, and OpenTelemetry readiness coach (`/asdlc-onboarding-coach`).
-* [`skills/org-standards-builder/SKILL.md`](./skills/org-standards-builder/SKILL.md): Standalone Enterprise Organizational Standards Builder and Intranet Distiller (`/org-standards-builder`) that turns hundreds of internal wiki pages into a clean `<= 120` line `org-standards.md` and `.okf/runbooks/` catalog.
+* [`skills/org-standards-builder/SKILL.md`](./skills/org-standards-builder/SKILL.md): Standalone Enterprise Organizational Standards Builder and Intranet Distiller (`/org-standards-builder`) that turns hundreds of internal wiki pages into a clean `<= 120` line `org-standards.md` and `.okf/runbooks/` catalog (including mandated Stage 6 security scanners and Stage 7/8 monitoring tools).
   * [`skills/org-standards-builder/README.md`](./skills/org-standards-builder/README.md): CE and Customer Field Guide for the 3 intake modes (Mode 1 Bulk/Intranet Harvester Ingest, Mode 2 Guided Portal Scavenger Hunt, and Mode 3 Expert Architect Interview).
   * [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md): Copy-paste prompt for Gemini Enterprise, Vertex AI Search, NotebookLM, M365 Copilot, or Glean to harvest SSO-gated intranet standards into `RAW_STANDARDS_EXTRACT.md`.
   * [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md): Zero-install copy-paste interactive architect prompt for any browser chat UI.
@@ -48,7 +48,7 @@ This repository contains the **100% Pure Markdown Customer-Safe Edition** of the
 
 ---
 
-## 2. Quickstart: New Installation vs. Upgrading from `v1.0`
+## 2. Quickstart: New Installation vs. Upgrading from `v3.0` or `v1.0`
 
 ### Option A: Fresh Installation (New Users)
 Copy `agents/*.md` and `skills/*` into your AI harness configuration directory (`~/.gemini/config/` or `.agent/` inside your workspace), start a new chat session, and run:
@@ -56,12 +56,12 @@ Copy `agents/*.md` and `skills/*` into your AI harness configuration directory (
 2. `/org-standards-builder` (optional, before or during Stage 1) if your organization has dozens or hundreds of engineering standards on an internal website (SharePoint, Confluence, Backstage, or wiki). You can also paste [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) into Gemini Enterprise or NotebookLM to extract `RAW_STANDARDS_EXTRACT.md`, then run `/org-standards-builder` (or paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat) to generate a clean `<= 120` line `org-standards.md` and `.okf/runbooks/` catalog.
 3. `/agentic-sdlc --new` to launch Stage 1 Project Onboarding.
 
-### Option B: Upgrading from `v1.0` or `v2.x` (Agent-Driven Smart 3-Way Merge)
-If you already have `A/SDLC v1.0` (or `v2.x`) installed, see [`UPGRADE.md`](./UPGRADE.md). You can either download the **[1-Click ZIP (`main.zip`)](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)** or run `git clone` into `~/Downloads`, open your AI chat inside that downloaded folder, and paste:
+### Option B: Fast-Track Zero-Rework Upgrade from `v3.0` (Teams in Stage 1) or Smart 3-Way Upgrade from `v1.0`/`v2.x`
+If you already have `A/SDLC v3.0` (or `v1.0`/`v2.x`) installed, see **[`UPGRADE.md`](./UPGRADE.md)** (Section 0 covers the 2-minute zero-rework Stage 1 upgrade that preserves 100% of your `RACI.md`, `.sdlc/git_config.json`, `org-standards.md`, `.okf/intake/`, and signed Gate 1 receipts). Download the **[1-Click ZIP (`main.zip`)](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)** or run `git clone` into `~/Downloads`, open your AI chat inside that downloaded folder, and paste:
 ```text
-Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this v3.0.0 repository and execute the Smart 3-Way Agent & Workspace Upgrade against my installed ~/.gemini/config/ (or .agent/) definitions and my active A/SDLC project workspaces.
+Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this v3.1.0 repository and execute the Smart 3-Way Agent & Workspace Upgrade against my installed ~/.gemini/config/ (or .agent/) definitions and my active A/SDLC project workspaces.
 ```
-After Step 1 finishes updating your installed files, **start a new chat session (or reload the `agentic-sdlc` skill)** so the `v3.0.0` definitions load into memory.
+After Step 1 finishes updating your installed files, **start a new chat session (or reload the `agentic-sdlc` skill)** so the `v3.1.0` definitions load into memory.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: product-owner
-asdlc_version: "3.0.0"
+asdlc_version: "3.1.0"
 distribution_tier: "customer-safe"
 description: >-
   Runs the Stage 2 Expert Agile Product Owner 4-phase completion-driven discovery interview

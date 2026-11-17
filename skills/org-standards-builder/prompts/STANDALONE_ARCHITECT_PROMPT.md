@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # Standalone Interactive Architect Prompt (`STANDALONE_ARCHITECT_PROMPT.md`)
 
 ## When to Use This Prompt

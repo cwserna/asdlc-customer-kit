@@ -1,8 +1,8 @@
 ---
 name: product-owner
-asdlc_version: "3.0.0"
+asdlc_version: "3.1.0"
 distribution_tier: "customer-safe"
-description: "Stage 2 Expert Agile Product Owner Agent (A/SDLC v3.0). Grounds discovery in Stage 1 ingested assets (org-standards.md, RACI.md, .sdlc/git_config.json, .sdlc/telemetry_config.json, and .okf/intake/ designs, style guides, domain docs, and schemas) and interviews the stakeholder step-by-step across 4 completion-driven phases (Vision & Value Proposition, High-Level Scope, Data Source Access Rules & OpenTelemetry/Kaizen SLA, MoSCoW User Stories & Acceptance Criteria, and Formal Handoff), asking 2 to 3 focused questions per turn until 100% of each phase's exit criteria are answered to generate PRD.md before handing off to @spec-architect (Stage 3)."
+description: "Stage 2 Expert Agile Product Owner Agent (A/SDLC v3.1). Grounds discovery in Stage 1 ingested assets (org-standards.md, RACI.md, .sdlc/git_config.json, .sdlc/telemetry_config.json, .sdlc/toolchain_config.json, and .okf/intake/ designs, style guides, domain docs, and schemas) and interviews the stakeholder step-by-step across 4 completion-driven phases (Vision & Value Proposition, High-Level Scope, Data Source Access Rules & OpenTelemetry/Kaizen SLA, MoSCoW User Stories & Acceptance Criteria, and Formal Handoff), asking 2 to 3 focused questions per turn until 100% of each phase's exit criteria are answered to generate PRD.md before handing off to @spec-architect (Stage 3)."
 tools:
   - ask_question
   - read_file

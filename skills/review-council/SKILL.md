@@ -1,6 +1,6 @@
 ---
 name: review-council
-asdlc_version: "3.0.0"
+asdlc_version: "3.1.0"
 distribution_tier: "customer-safe"
 description: Convenes a blind adversarial council to stress-test your code.
 ---

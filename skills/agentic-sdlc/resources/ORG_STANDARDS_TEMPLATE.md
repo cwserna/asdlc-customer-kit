@@ -1,7 +1,7 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # Organizational Development Standards & Policies (`org-standards.md`)
 
-> **A/SDLC v3.0 Grounding Contract (`Stages 1 to 8`):** Ingested in **Stage 1 (`@project-conductor`)**, cited in **Stage 2 (`PRD.md` via `@product-owner`)**, enforced in **Stage 3 (`SPEC.md` via `@spec-architect`)** and **Stage 4 (`AGENTS.md` via `@parallel-builder-orchestrator`)**, audited in **Stage 6 (`@security-governance-critic`)**, and verified in **Stage 7 (`@eval-telemetry-auditor`)**.
+> **A/SDLC v3.1 Grounding Contract (`Stages 1 to 8`):** Ingested in **Stage 1 (`@project-conductor`)**, cited in **Stage 2 (`PRD.md` via `@product-owner`)**, enforced in **Stage 3 (`SPEC.md` via `@spec-architect`)** and **Stage 4 (`AGENTS.md` via `@parallel-builder-orchestrator`)**, audited in **Stage 6 (`@security-governance-critic`)**, and verified in **Stage 7 (`@eval-telemetry-auditor`)**.
 > **Open Knowledge Format (`.okf/`):** Pinned at the top of `.okf/manifest.yaml` (`pinned_contracts`) for prefix context caching across Stages 1 to 8. Keep this file **`<= 120 lines`** and store deep reference manuals in `.okf/runbooks/`.
 
 ---
@@ -21,6 +21,7 @@
 - **Secret & Credential Management:** `<e.g., Google Cloud Secret Manager / HashiCorp Vault; zero credentials or API keys in source code or .env commits>`
 - **Database & Query Safety:** `<e.g., 100% parameterized queries or ORM prepared statements; raw string-concatenated SQL is a critical Stage 6 blocker>`
 - **Pre-LLM Input & Prompt Defense:** `<e.g., Strict schema validation, prompt-injection screening, and DLP/PII scrubbing on all untrusted inputs before model or tool calls>`
+- **Approved Stage 6 Security Scanners (`.sdlc/toolchain_config.json`):** `<e.g., Wiz CLI, GitHub CodeQL, Semgrep, Snyk, SonarQube, Trivy, Gitleaks, CodeMender, or Custom SARIF tool>`
 - **Human-in-the-Loop Approval Gate:** `<e.g., High-impact write actions, production mutations, financial transactions, or OT actuation require explicit human confirmation>`
 
 ---
@@ -37,7 +38,8 @@
 ---
 
 ## 4. Observability, OpenTelemetry & FinOps Guardrails
-- **OpenTelemetry & Distributed Tracing:** Emit structured `<OpenTelemetry gen_ai.* and HTTP/RPC spans>` configured via `.sdlc/telemetry_config.json` (`<LOCAL_FILE_SINK / SHARED_REMOTE_SINK / CLOUD_OUTER_LOOP>`).
+- **OpenTelemetry & Distributed Tracing:** Emit structured `<OpenTelemetry gen_ai.* or standard HTTP/RPC/DB spans>` configured via `.sdlc/telemetry_config.json` (`<LOCAL_FILE_SINK / SHARED_REMOTE_SINK / CLOUD_OUTER_LOOP>`).
+- **Approved Stage 7 & 8 Monitoring / APM Backends (`.sdlc/toolchain_config.json`):** `<e.g., Local JSONL, Google Cloud Trace & BigQuery, Datadog, Dynatrace, Grafana LGTM, Splunk, Azure Monitor, AWS CloudWatch, or Custom>`
 - **PII & Secret Redaction in Telemetry:** Scrub all `<PII, bearer tokens, API keys, and customer credentials>` before logs or spans leave the application process.
 - **Model Routing & Token FinOps (If Using GenAI/LLMs):**
   - **Fast / Low-Cost Tier:** `<Model name and approved use cases>`

@@ -1,9 +1,9 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # 📦 Stage 1 Onboarding & Background Asset Manifest (`ASSET_MANIFEST.md`): `<Project / Application Title>`
 
 - **Project:** `<Project / Application Title>`
 - **Managed By:** `@project-conductor` (Stage 1 Onboarding & Continuous PMO Overwatch)
-- **Schema Version:** `3.0.0`
+- **Schema Version:** `3.1.0`
 
 ## 1. Stage 1 Background Asset Intake Checklist
 
@@ -14,6 +14,7 @@
 - [ ] **5. Existing API Schemas & Data Contracts (`.okf/intake/schemas/`)** (OpenAPI specs, SQL DDL schemas, BigQuery/Spanner definitions, and sample JSON payloads)
 - [ ] **6. External & Internal Data Source Inventory (`.okf/intake/schemas/` & `ASSET_MANIFEST.md`)** (Upstream/downstream internal databases, partner/distributor REST APIs, MCP servers, file feeds, and whether non-production sandboxes or sanitized sample payloads exist for Stage 2 `@product-owner` and Stage 3 `@spec-architect`)
 - [x] **7. Mandatory GitHub / Git Repository Configuration (`.sdlc/git_config.json`)** (Validated remote repository URL, branch, and verified read/write push access `access_verified: true`)
+- [x] **8. Customer Security & Monitoring Toolchain Contract (`.sdlc/toolchain_config.json` & Split `ingest`/`query` `.sdlc/telemetry_config.json`)** (Auto-probed and confirmed Stage 6 security scanners across 9 presets or custom Bring Your Own Tool + SARIF report paths, Stage 7/8 monitoring query backends across 8 presets or custom, `app_uses_llm` flag, and `missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY"`)
 
 ## 2. Ingested Asset Inventory (`.okf/intake/`)
 

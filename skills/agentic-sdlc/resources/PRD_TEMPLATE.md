@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # Product Requirements Document (`PRD.md`)
 
 > **Authored By:** `@product-owner` (Stage 2: Agile Product Discovery & Requirements)
@@ -6,7 +6,7 @@
 > **Organizational Standards Grounding:** `./org-standards.md` (`Pinned in .okf/manifest.yaml for 90% Prefix Cache`)
 > **Git Repository Grounding:** `./.sdlc/git_config.json` (`access_verified: true`)
 > **Technology Stack Profile:** `./.sdlc/tech_stack.json`
-> **OpenTelemetry & Outer-Loop Sink Configuration:** `./.sdlc/telemetry_config.json` (`LOCAL_FILE_SINK` | `SHARED_REMOTE_SINK` | `CLOUD_OUTER_LOOP`)
+> **OpenTelemetry & Toolchain Configuration:** `./.sdlc/telemetry_config.json` • `./.sdlc/toolchain_config.json` (`LOCAL_FILE_SINK` | `SHARED_REMOTE_SINK` | `CLOUD_OUTER_LOOP`)
 
 ---
 

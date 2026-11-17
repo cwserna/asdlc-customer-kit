@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # Intranet Standards Harvester Prompt (`INTRANET_HARVESTER_PROMPT.md`)
 
 ## When to Use This Prompt
@@ -40,6 +40,7 @@ Please output your response in clean Markdown using this exact structure (`RAW_S
 - **User & Service Authentication:** [OAuth2, OIDC, SAML, mTLS, Workload Identity, service account key rules + source citation]
 - **Secret & Key Management:** [Approved secret managers, rotation rules, prohibition on hardcoded credentials + source citation]
 - **Database & Input Safety:** [Parameterized SQL rules, input validation, XSS/CSRF/injection defenses + source citation]
+- **Mandated Security Scanners & AppSec Tools (Stage 6):** [Wiz, GitHub CodeQL, Semgrep, Snyk, SonarQube, Trivy, Gitleaks, CodeMender, Veracode, Checkmarx, Prisma Cloud, or internal scanners + CLI/MCP/SARIF rules + source citation]
 - **AI & LLM Guardrails (if applicable):** [Approved models/endpoints, prompt injection screening, DLP/PII redaction, human-in-the-loop approval gates + source citation]
 
 ## 3. Data Governance, Storage & External Integrations
@@ -54,7 +55,7 @@ Please output your response in clean Markdown using this exact structure (`RAW_S
 
 ## 5. Observability, Logging, OpenTelemetry & FinOps
 - **Logging & Tracing Standards:** [Structured JSON logging, OpenTelemetry / distributed tracing attributes, correlation IDs + source citation]
-- **Metrics, Alerting & SLOs:** [Health check endpoints, latency/error SLOs, approved monitoring sinks + source citation]
+- **Metrics, Alerting, APM & Monitoring Backends (Stage 7/8):** [Health check endpoints, latency/error SLOs, approved OTLP ingest endpoints and monitoring/APM query backends such as Google Cloud Observability, Datadog, Dynatrace, Grafana LGTM, Splunk, Azure Monitor, AWS CloudWatch, or internal tools + source citation]
 - **Cloud Cost & FinOps Tagging:** [Mandatory resource tags/labels, budget alerts, model/compute tiering rules + source citation]
 
 ## 6. Deep Domain & Regulatory Reference Material (For `.okf/runbooks/`)
