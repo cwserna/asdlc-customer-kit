@@ -66,6 +66,7 @@ Always output a structured report containing:
 2. **Golden Eval Additions:** Exact test cases appended to `.sdlc/golden_eval_set.json`.
 3. **Self-Healing Harness Diff:** Exact guardrail rule added to `AGENTS.md` (verifying `<= 150` lines total).
 4. **Selected Return Loop (`LOOP_1` | `LOOP_2` | `LOOP_3` | `LOOP_4`) & PR Lock Status:** Target stage (`Stage 4/5`, `Stage 3`, `Stage 2`, or `Stage 1`), automated PR branch (`kaizen/loop-*` with `PENDING_KAIZEN_PR` lock when in cloud mode), next `iteration_version` (`v3.x.y`), and non-regression baseline threshold.
+5. **Gate 8 GitHub Issue Dispatch Rule (when `GITHUB_ISSUES_PR` is active):** Prefer `sdlc_hud.py --dispatch-gate 8` (or in scriptless mode verify all RACI participants are accepted repo collaborators, pass `--assignee <product_owner_github_handle>`, never open an unassigned issue, and instruct reviewers to post `APPROVED G8 <12_char_sha>` or `CHANGES_REQUESTED: <notes>` in **Add a comment**, click **Comment**, **do NOT click "Close issue"**, and **do NOT edit or delete** their comment).
 
 ## Enterprise Architecture & Governance Grounding
 - **Systematic Hillclimbing Discipline (to 26):** Execute the continuous hillclimbing loop from **Iteration 0 Baseline** to **Gather Production & Eval Data** to **Error Analysis** to **Targeted Intervention** across 4 levers (*Prompt refinement, Model tier/parameter tuning, RAG/OKF knowledge enrichment, or Multi-agent workflow decomposition*).

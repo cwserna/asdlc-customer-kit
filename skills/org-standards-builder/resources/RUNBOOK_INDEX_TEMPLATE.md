@@ -1,7 +1,7 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # Master Organizational Runbooks Catalog (`.okf/runbooks/INDEX.md`)
 
-> **Two-Tier Context-Rot Defense (A/SDLC v3.0):**
+> **Two-Tier Context-Rot Defense (A/SDLC v3.1):**
 > * **Tier 1 (`./org-standards.md`, `<= 120 lines`):** Pinned in `.okf/manifest.yaml` and loaded on every turn across Stages 1 to 8.
 > * **Tier 2 (`./.okf/runbooks/*.md`):** Deep domain reference standards catalogued below. AI agents read these files on demand only when designing, building, or auditing the corresponding domain.
 

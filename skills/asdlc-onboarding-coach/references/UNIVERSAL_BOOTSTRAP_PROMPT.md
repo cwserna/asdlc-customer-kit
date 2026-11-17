@@ -1,3 +1,4 @@
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # Universal Customer Bootstrap Prompt: A/SDLC v3.1 Pre-Flight Environment, Cloud, OpenTelemetry & Toolkit Setup Coach (`asdlc-onboarding-coach`)
 
 Copy everything inside the code block below and paste it into **any** AI coding assistant (Google Antigravity, Gemini CLI, Claude Code, Cursor, Windsurf, GitHub Copilot, Hermes, or OpenClaw).

@@ -82,6 +82,8 @@ Produce or update two canonical files in the target project root:
      - `verification_cmd` (deterministic test command such as `pytest`, `go test ./...`, `vitest`, or `cargo test`)
 2. **`AGENTS.md` (Harness Rules):**
    - Exact commands to run deterministic micro-harnesses (`pytest`, `go test`, `vitest`, linter sweeps) and the synthesized Builder Roster table so downstream subagents can self-verify every turn.
+3. **Gate 3 Sign-Off Dispatch Rule (when `GITHUB_ISSUES_PR` is active):**
+   - Prefer `sdlc_hud.py --dispatch-gate 3` when installed. If creating Gate 3 natively via `gh issue create`, first verify all RACI participants are accepted repo collaborators, ALWAYS pass `--assignee <lead_architect_github_handle>` (never open an unassigned Gate Issue), and include explicit instructions telling reviewers to post `APPROVED G3 <12_char_sha>` or `CHANGES_REQUESTED: <notes>` in **Add a comment**, click **Comment**, **do NOT click "Close issue"**, and **do NOT edit or delete** their comment so `--sync-gate 3` verifies and closes it automatically.
 
 ## 4. Delta-Spec Mode (`mode: GREENFIELD | ITERATION_DELTA`, Loop 2 from Stage 8)
 When invoked for an iterative sprint (`v1.x`) or via **Loop 2 (`Stage 8 to Stage 3`)** from `@kaizen-evolution-agent`:

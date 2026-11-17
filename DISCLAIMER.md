@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.0.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
 # ⚠️ Legal Disclaimer, Terms of Use & Risk Notice
 
 > **PLEASE READ CAREFULLY BEFORE DOWNLOADING, CLONING, INSTALLING, OR USING ANY FILES, PROMPTS, SKILLS, AGENTS, TEMPLATES, OR CODE IN THIS REPOSITORY.**

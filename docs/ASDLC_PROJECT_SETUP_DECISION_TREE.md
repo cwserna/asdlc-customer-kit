@@ -1,6 +1,7 @@
-# 🧭 A/SDLC v3.0: Project Setup Decision Tree & Quick-Reference Guide
+<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+# 🧭 A/SDLC v3.1: Project Setup Decision Tree & Quick-Reference Guide
 
-**Framework Version:** `A/SDLC v3.0.0` (Split-Plane Always-On Cloud Outer-Loop & Unified 3-Pattern OpenTelemetry Sink)
+**Framework Version:** `A/SDLC v3.1.0` (Customer Security & Monitoring Toolchain Discovery, Split-Plane Always-On Cloud Outer-Loop & Unified 3-Pattern OpenTelemetry Sink)
 **Primary Skills & Entry Points:** `/asdlc-onboarding-coach`, `/org-standards-builder`, `/agentic-sdlc`, `@project-conductor`
 
 ---
@@ -9,7 +10,7 @@
 
 ```mermaid
 flowchart TD
-    Start["Start A/SDLC v3.0 Project Setup"] --> PreFlight{"0. Environment Ready GCP APIs IAM Python 3.12 gh auth gcloud ADC"}
+    Start["Start A/SDLC v3.1 Project Setup"] --> PreFlight{"0. Environment Ready GCP APIs IAM Python 3.12 gh auth gcloud ADC"}
 
     PreFlight -- "No or First Time on Machine" --> Coach["Run /asdlc-onboarding-coach to Verify Gates G01 to G12"]
     Coach --> PreFlight
@@ -19,7 +20,7 @@ flowchart TD
     EntryMode -- "Join Shared Team Project" --> CloneRemote["Clone App Git Repo and --resume or Flight Deck --clone"]
     EntryMode -- "Brand New Project" --> InitNew["Initialize Empty Workspace /agentic-sdlc --new"]
 
-    LocalOps --> UpgradeCheck{"Upgrading v1 or v2 to v3.0.0"}
+    LocalOps --> UpgradeCheck{"Upgrading v3.0 or v1 or v2 to v3.1.0"}
     UpgradeCheck -- "Yes" --> UpgradeCmd["Run /agentic-sdlc --upgrade and --outer-loop-init"]
     UpgradeCheck -- "No" --> ActiveStage["Resume Active Stage 1 to 8"]
     UpgradeCmd --> ActiveStage

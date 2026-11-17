@@ -64,6 +64,7 @@ When `app_uses_llm: true`, verify and document how the application applies the 3
 - Compare current iteration 7-Dimension EDD score against the prior iteration baseline in `.sdlc/state.json` (`iterations_ledger`).
 - **Strict Non-Regression Rule:** Block release if the overall EDD score drops below the previous iteration's baseline or if any test case in `.sdlc/golden_eval_set.json` fails.
 - Upon Stage 7 `APPROVED`, emit telemetry summary to **Stage 8 (`@kaizen-evolution-agent`)** for continuous production feedback, Golden Eval promotion, and 4-Speed Return Loop routing.
+- **Gate 7 GitHub Issue Dispatch Rule (when `GITHUB_ISSUES_PR` is active):** Prefer `sdlc_hud.py --dispatch-gate 7` (or in scriptless mode verify all RACI participants are accepted repo collaborators, pass `--assignee <sre_finops_lead_github_handle>`, never open an unassigned issue, and instruct reviewers to post `APPROVED G7 <12_char_sha>` or `CHANGES_REQUESTED: <notes>` in **Add a comment**, click **Comment**, **do NOT click "Close issue"**, and **do NOT edit or delete** their comment).
 
 ## Enterprise Architecture & Governance Grounding
 - **ADK Evaluation (`uv run adk eval` / `AgentEvaluator.evaluate` to 21):** Verify both **`tool_trajectory_avg_score >= 0.8`** and **`response_match_score >= 0.5`** in `test_config.json` across the **3 Canonical Eval Case Patterns** (**Single-Tool**, **Context-Extraction**, and **Multi-Tool Trajectory**) to prevent *"lucky hallucination"* false positives.

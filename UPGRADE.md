@@ -46,9 +46,11 @@ If your team is already running **A/SDLC v3.0** and is currently in **Stage 1** 
 * `.okf/intake/` (all ingested designs, style guides, domain docs, and schemas)
 * **Any signed Gate 1 approval receipt** (if Gate 1 is already `APPROVED`, it stays `APPROVED` with zero re-signoff required)
 
-### Fast-Track Option A (Recommended, ~2 Minutes): Download ZIP or `git pull` into `~/Downloads` + 2 Prompts
+### Fast-Track Option A (Recommended, ~2 Minutes): Auto-ZIP Upgrade or Download ZIP into `~/Downloads` + 2 Prompts
 
-1. Download the `v3.1.0` Customer-Safe Toolkit ZIP ([main.zip](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)) into `~/Downloads` and unzip it (or run `cd ~/Downloads/asdlc-customer-kit && git pull origin main`).
+> **Tip (One-Step Auto-Download):** If your machine can reach GitHub (or is signed in with `gh auth status`), you can simply run `/agentic-sdlc --upgrade` inside your project folder. If you installed the toolkit via ZIP without a `.git` folder, `--upgrade` (and `python3 scripts/sdlc_hud.py --pull-zip`) automatically downloads `main.zip`, backs up `~/.gemini/config/` into `~/.gemini/config/.backups/asdlc-upgrade-<timestamp>/`, updates your installed `v3.1.0` agents and skills cleanly, and runs your zero-rework Stage 1 delta check.
+
+1. Or manually download the `v3.1.0` Customer-Safe Toolkit ZIP ([main.zip](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)) into `~/Downloads` and unzip it (or run `cd ~/Downloads/asdlc-customer-kit && git pull origin main`).
 2. **Prompt 1 of 2 (Paste inside `~/Downloads/asdlc-customer-kit`):**
 ```text
 Read ./UPGRADE.md in this v3.1.0 toolkit folder and refresh my installed ~/.gemini/config/ agents and skills from v3.0 to v3.1.0:

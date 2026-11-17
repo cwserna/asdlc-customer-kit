@@ -67,6 +67,7 @@ Always write `<project_dir>/SECURITY_AUDIT.md` and return a structured **Securit
 - `CRITICAL_FINDINGS`: File, line range, source tool (or LLM audit), threat category, and exact remediation patch.
 - `GOVERNANCE_SCORECARD`: Pass/Fail/N/A rating across Visibility (Registry metadata), Control (Identity/IAM), and Security (Model Armor / Circuit Breakers / Scanners).
 - `SELF_HEALING_HARNESS_RULE`: Whenever `STATUS` is `CHANGES_REQUIRED` (or a `CRITICAL`/`HIGH` vulnerability is remediated), append a concise 1-line preventive guardrail rule to the `## Learned Anti-Patterns & Regression Rules` section of `AGENTS.md` (keeping `AGENTS.md <= 150 lines`) so builder agents never repeat the defect class in future iterations.
+- `GATE_6_DISPATCH_RULE`: When Gate 6 uses `GITHUB_ISSUES_PR`, prefer `sdlc_hud.py --dispatch-gate 6` (or in scriptless mode verify all RACI participants are accepted repo collaborators, pass `--assignee <security_lead_github_handle>`, never open an unassigned issue, and instruct reviewers to post `APPROVED G6 <12_char_sha>` or `CHANGES_REQUESTED: <notes>` in **Add a comment**, click **Comment**, **do NOT click "Close issue"**, and **do NOT edit or delete** their comment).
 
 ## Enterprise Architecture & Governance Grounding
 - **The 4 CISO Security Interrogatives (to 27):** Enforce *"Lead with control, not capability"* by verifying: 1) Where is data stored? 2) Who can access it? 3) Can prompts leak data? 4) How are actions controlled?
