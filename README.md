@@ -43,7 +43,7 @@ This repository contains the **100% Pure Markdown Customer-Safe Edition** of the
   * [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md): Zero-install copy-paste interactive architect prompt for any browser chat UI.
   * [`skills/org-standards-builder/resources/`](./skills/org-standards-builder/resources/): Stack-agnostic `ORG_STANDARDS_TEMPLATE.md` (`<= 120` lines) and `RUNBOOK_INDEX_TEMPLATE.md` (`.okf/runbooks/INDEX.md`).
 * [`skills/product-owner/SKILL.md`](./skills/product-owner/SKILL.md): Stage 2 Product Owner interview skill (`/product-owner`).
-* [`skills/review-council/SKILL.md`](./skills/review-council/SKILL.md): Blind Adversarial Review Council skill (`/review-council`).
+* [`skills/review-council/SKILL.md`](./skills/review-council/SKILL.md): Blind multi-model Adversarial Review Council skill (`/review-council`) enforcing isolated read-only workers on distinct non-coordinator base models across approved processors and developers, with fail-closed ZDR/region governance.
 * [`skills/agentic-sdlc/resources/`](./skills/agentic-sdlc/resources/): Standardized Markdown templates (`RACI_TEMPLATE.md`, `ASSET_MANIFEST_TEMPLATE.md`, `ORG_STANDARDS_TEMPLATE.md`, `PRD_TEMPLATE.md`, `SPEC_TEMPLATE.md`, `AGENTS_TEMPLATE.md`).
 
 ---

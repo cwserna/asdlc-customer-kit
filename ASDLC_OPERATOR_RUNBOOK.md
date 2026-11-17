@@ -1614,7 +1614,7 @@ During **Stage 4**, `@parallel-builder-orchestrator` reads `SPEC.md` and `.sdlc/
 | `asdlc-onboarding-coach` | `skills/asdlc-onboarding-coach/SKILL.md` | `/asdlc-onboarding-coach` | Pre-Flight GCP, IAM, OpenTelemetry APIs (`G06`), Git/GitHub (`G08`), and Toolkit Setup Coach (`G01..G12`) that hard-stops before `/agentic-sdlc --new`. |
 | `org-standards-builder` | `skills/org-standards-builder/SKILL.md` | `/org-standards-builder` | Enterprise Organizational Standards Builder and Intranet Distiller turning scattered wiki pages into `<= 120` line `org-standards.md` and `.okf/runbooks/`. |
 | `product-owner` | `skills/product-owner/SKILL.md` | `/product-owner` | Standalone or Stage 2 4-Phase Agile Product Owner discovery interview and `PRD.md` generator. |
-| `review-council` | `skills/review-council/SKILL.md` | `/review-council` | Blind adversarial multi-agent code and documentation review council for high-stakes PRs and Stage 6 audits. |
+| `review-council` | `skills/review-council/SKILL.md` | `/review-council` | Blind multi-model adversarial review council requiring isolated read-only workers on distinct non-coordinator base models across approved processors and developers, with fail-closed ZDR/region governance and human-gated iterative loops. |
 
 ---
 
