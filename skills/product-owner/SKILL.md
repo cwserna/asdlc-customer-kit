@@ -71,8 +71,12 @@ This skill executes the **4-Phase Agile Product Owner Interview** (`@product-own
    3. **Functional Requirements & Data Source Access Governance (Grouped by Module)**
    4. **Prioritized User Stories (MVP Scope: `[Epic] to User Story to Acceptance Criteria` + MoSCoW tag)**
    5. **Non-Functional Requirements & Organizational Standards (`org-standards.md`: Web App Performance, Security/Model Armor, Usability, Cloud Hosting)**
-3. **Phase 4 Exit Checklist (Gate 2 Sign-Off):**
+3. **Phase 4 Exit Checklist (Recommend `/review-council` & Gate 2 Sign-Off):**
    - `[ ]` `PRD.md` is written to disk with all 5 sections populated and `org-standards.md` pinned in `.okf/manifest.yaml`.
+   - `[ ]` **Proactive `/review-council` Recommendation While `PRD.md` Awaits Review:** Right after writing `PRD.md` and before locking Gate 2, recommend running `/review-council` (`skills/review-council/SKILL.md`) via `ask_question`:
+     1. `(Recommended) Run /review-council to stress-test PRD.md with a blind adversarial council before Gate 2 sign-off`
+     2. `Proceed directly to Gate 2 sign-off / --dispatch-gate 2 for PRD.md as written`
+     3. `Revise specific sections of PRD.md`
    - `[ ]` **GitHub Gate Issue Dispatch Rule (when `GITHUB_ISSUES_PR` / `GITHUB_ISSUE` is active):** Prefer `sdlc_hud.py --dispatch-gate 2` when installed. If opening Gate 2 natively via `gh issue create`, first verify every RACI participant is an accepted repository collaborator (`gh api repos/<owner>/<repo>/collaborators --paginate --jq '.[].login'`), ALWAYS pass `--assignee <product_owner_github_handle>` (never silently open an unassigned issue; verify with `gh issue view <num> --json assignees`), and include step-by-step instructions telling reviewers to post `APPROVED G2 <12_char_sha>` (Accountable `A` only) or `CHANGES_REQUESTED: <notes>` (`R/A/C`) in **Add a comment**, click **Comment**, **do NOT click "Close issue"**, and **do NOT edit or delete** their comment (leaving the issue Open for `--sync-gate 2` to verify and auto-close).
    - `[ ]` The Accountable **Agile Product Owner (`product_owner`)** explicitly approves `PRD.md` (or provides revision notes that are resolved before advancing), Gate 2 is synced to Git (`stage-2-approved`), and the workflow hands off to `@spec-architect` (Stage 3).
 

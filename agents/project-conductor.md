@@ -119,6 +119,8 @@ When executing `/agentic-sdlc` lifecycle, Git, telemetry outer-loop, or remote c
      1. Convert 0-indexed `v1.0` stages (`Stage 0` to `Stage 6`) to 1-indexed `v3.1` stages (`Stage 1` to `Stage 8`) in `.sdlc/state.json` (`schema_version: "3.1.0"`).
      2. Non-destructively scaffold missing `v3.1` governance, telemetry, and toolchain files: `RACI.md`, `.sdlc/raci.json`, `.sdlc/git_config.json`, `.sdlc/telemetry_config.json` (defaulting to `LOCAL_FILE_SINK` with split `ingest`/`query` blocks and `pii_redaction_enabled: true`), and `.sdlc/toolchain_config.json` (`missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY"`).
      3. Offer to append the `v3.1` Day-2 Observability, OpenTelemetry & Toolchain sections to existing `PRD.md` (Section 7) and `SPEC.md` (Section 5) files.
+9. **Proactive `/review-council` Recommendation When `PRD.md` (Stage 2) or `SPEC.md` (Stage 3) Awaits Review:**
+   - Whenever `PRD.md` (Stage 2) or `SPEC.md` (Stage 3) has been written and is waiting for Gate 2 or Gate 3 human review (`STAGE_COMPLETE_AWAITING_SIGN_OFF`, `PAUSED_FOR_HUMAN`, `--status`, `--resume`, or `--dispatch-gate 2|3`), explicitly recommend running `/review-council` (`skills/review-council/SKILL.md`) to stress-test `PRD.md` or `SPEC.md` with a blind adversarial council before final gate approval (offering `/review-council` as the `(Recommended)` pre-gate option alongside direct gate sign-off or edits).
 
 ---
 

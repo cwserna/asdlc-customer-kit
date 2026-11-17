@@ -99,9 +99,12 @@ Once Phase 2 is 100% complete, break down the confirmed Epics into User Stories 
 Once all Phase 1, Phase 2, and Phase 3 Exit Checklists are 100% satisfied:
 1. Copy/write the ingested organizational standards document to `<project_dir>/org-standards.md` and ensure `org-standards.md` is pinned at the top of `.okf/manifest.yaml` (`pinned_contracts`).
 2. Generate the formal handoff document (`PRD.md` in the target project directory) using the exact 5-section specification below (citing `org-standards.md`, `.sdlc/tech_stack.json`, `.sdlc/telemetry_config.json`, External/Internal Data Source Access Rules, and the OpenTelemetry/Kaizen Override SLA in Section 1, Section 3, and Section 5).
-3. **Phase 4 Exit Checklist (Gate 2 Sign-Off):**
+3. **Phase 4 Exit Checklist (Recommend `/review-council` & Gate 2 Sign-Off):**
    - `[ ]` `PRD.md` is written to `<project_dir>/PRD.md` and `org-standards.md` is pinned in `.okf/manifest.yaml`.
-   - `[ ]` Present `PRD.md` to the Accountable **Agile Product Owner (`product_owner`)** via `ask_question` to confirm sign-off (or apply requested edits if any section needs refinement) before dispatching Gate 2 approval.
+   - `[ ]` **Proactive `/review-council` Recommendation While Waiting for Review:** Immediately after writing `PRD.md` and while it awaits Gate 2 review, recommend running `/review-council` (`skills/review-council/SKILL.md`) to stress-test `PRD.md` with a blind adversarial council before final sign-off. Present `PRD.md` via `ask_question` with three clear choices:
+     1. `(Recommended) Run /review-council to stress-test PRD.md with a blind adversarial council before Gate 2 sign-off`
+     2. `Proceed directly to Gate 2 sign-off / --dispatch-gate 2 for PRD.md as written`
+     3. `Revise specific sections of PRD.md`
    - `[ ]` **GitHub Gate Issue Dispatch Rule (when `GITHUB_ISSUES_PR` / `GITHUB_ISSUE` is active):** Prefer `sdlc_hud.py --dispatch-gate 2` when installed. If opening Gate 2 natively via `gh issue create`, first verify every RACI participant is an accepted repository collaborator (`gh api repos/<owner>/<repo>/collaborators --paginate --jq '.[].login'`), ALWAYS pass `--assignee <product_owner_github_handle>` (never silently open an unassigned issue; verify with `gh issue view <num> --json assignees`), and include step-by-step instructions telling the reviewer to post `APPROVED G2 <12_char_sha>` (Accountable `A` only) or `CHANGES_REQUESTED: <notes>` (`R/A/C`) in **Add a comment**, click **Comment**, **do NOT click "Close issue"**, and **do NOT edit or delete** their comment (leaving the issue Open for `--sync-gate 2` to verify and auto-close). Once Gate 2 is approved and `stage-2-approved` is synced to Git, invoke `@spec-architect` (Stage 3).
 
 ---

@@ -221,11 +221,11 @@ Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this downloaded v3.1.0 t
 
 ```text
 Please upgrade my current app development project folder from A/SDLC v1 to v3.1.0:
-1. Verify first that this folder is my own application project and NOT the asdlc-customer-kit or agentic-sdlc-harness toolkit folder. If ~/.gemini/config/.backups/migrated-custom-rules.md exists, append those custom rules into my project's org-standards.md.
+1. Verify first that this folder is my own application project and NOT the asdlc-customer-kit toolkit folder. If ~/.gemini/config/.backups/migrated-custom-rules.md exists, append those custom rules into my project's org-standards.md.
 2. Back up .sdlc/state.json to .sdlc/state.v1.backup.json, then convert my v1 stages (Stage 0 through Stage 6) into the v3.1 stages (Stage 1 through Stage 8) with schema_version: "3.1.0" while keeping all existing approval timestamps and notes.
 3. Create any missing v3.1 project files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
    * RACI.md and .sdlc/raci.json (6 team roles across Stages 1 to 8)
-   * .sdlc/git_config.json: check git remote get-url origin in this folder (or ask me via ask_question for my app's GitHub URL). Never save asdlc-customer-kit or agentic-sdlc-harness as my app's Git remote!
+   * .sdlc/git_config.json: check git remote get-url origin in this folder (or ask me via ask_question for my app's GitHub URL). Never save asdlc-customer-kit as my app's Git remote!
    * .sdlc/telemetry_config.json (defaulting to LOCAL_FILE_SINK with split ingest/query blocks, app_uses_llm, and pii_redaction_enabled: true), .sdlc/otel_traces.jsonl, and .sdlc/kaizen_overrides.jsonl.
    * .sdlc/toolchain_config.json (auto-probing local PATH CLIs and .github/workflows/, then confirming my Stage 6 security scanners and Stage 7/8 monitoring backend with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true) and .sdlc/reports/.
 4. Show me my updated 8-Stage Project Status Board (Stages 1 to 8).
@@ -343,7 +343,7 @@ Now execute Step 2 of my v1 to v3.1.0 upgrade (Preserve Custom Rules and Upgrade
 ```text
 Please upgrade my existing v1 A/SDLC project workspace to v3.1.0 (Non-Destructive Workspace Migration):
 
-1. Verify first that this current working directory is my own application project folder and NOT the downloaded asdlc-customer-kit or agentic-sdlc-harness toolkit folder.
+1. Verify first that this current working directory is my own application project folder and NOT the downloaded asdlc-customer-kit toolkit folder.
 2. Read my existing .sdlc/state.json (and ~/.gemini/asdlc/projects_registry.json if present). Save a backup copy of .sdlc/state.json to .sdlc/state.v1.backup.json.
 3. Convert the old v1 stage numbers (Stage 0 through Stage 6) into the new v3.1.0 stage numbers (Stage 1 through Stage 8) inside .sdlc/state.json:
    * If v1 Stage 0 was approved, mark both Stage 1 (Project Onboarding, RACI, GitHub & Asset Intake) and Stage 2 (Product Discovery & PRD.md) as APPROVED in .sdlc/state.json. If v1 Stage 0 was in progress and PRD.md already exists, mark Stage 1 APPROVED and Stage 2 IN_PROGRESS.
@@ -356,7 +356,7 @@ Please upgrade my existing v1 A/SDLC project workspace to v3.1.0 (Non-Destructiv
    * Set schema_version to "3.1.0" and preserve all existing gate approval timestamps, notes, and history.
 4. Create any missing v3.1.0 project governance files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
    * RACI.md and .sdlc/raci.json (mapping the 6 team roles across Stages 1 to 8)
-   * .sdlc/git_config.json: check git remote get-url origin in this folder (or ask me via ask_question for my app's GitHub repository URL). Hard Guardrail: NEVER save asdlc-customer-kit or agentic-sdlc-harness into .sdlc/git_config.json!
+   * .sdlc/git_config.json: check git remote get-url origin in this folder (or ask me via ask_question for my app's GitHub repository URL). Hard Guardrail: NEVER save asdlc-customer-kit into .sdlc/git_config.json!
    * .sdlc/toolchain_config.json (auto-probing local PATH CLIs and .github/workflows/, then confirming my Stage 6 security scanners and Stage 7/8 monitoring backend with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true) and .sdlc/reports/
    * .okf/intake/designs/, .okf/intake/styles/, .okf/intake/docs/, .okf/intake/schemas/ directories and .okf/intake/ASSET_MANIFEST.md
    * .sdlc/golden_eval_set.json (seeded with an initial test case list if not present)
@@ -426,7 +426,7 @@ Please run a complete A/SDLC v3.1.0 Post-Upgrade Health Check on my workstation 
 3. Check my active project folder and confirm:
    * .sdlc/state.json uses schema_version "3.1.0" and Stages 1 to 8
    * RACI.md, .sdlc/raci.json, .sdlc/git_config.json, .sdlc/telemetry_config.json, .sdlc/toolchain_config.json (with stage1_delta_confirmed: true and missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY"), and .sdlc/cloud_outer_loop.json are present and valid
-   * .sdlc/git_config.json points to my own application development GitHub repo (and NOT to asdlc-customer-kit or agentic-sdlc-harness)
+   * .sdlc/git_config.json points to my own application development GitHub repo (and NOT to asdlc-customer-kit)
    * .sdlc/otel_traces.jsonl, .sdlc/kaizen_overrides.jsonl, and .sdlc/reports/ exist and .sdlc/telemetry_config.json has pii_redaction_enabled: true
    * My custom company rules (if any) are safely stored in org-standards.md or AGENTS.md
 4. Print a clear PASS / FAIL table in plain English (including --toolchain-status readiness) and tell me my next recommended command (such as /agentic-sdlc --status or /agentic-sdlc --resume).
