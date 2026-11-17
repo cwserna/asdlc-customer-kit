@@ -412,6 +412,78 @@ A/SDLC enforces a **Two-Tier Deletion Safety Protocol**, protects the built-in `
 | **Tier 2: Permanent Disk Purge (With Audit Archive)** | `PURGE_DISK` (requires explicit confirmation) | **Option 2: Permanently Purge from Disk** (requires typing exact project ID) | Automatically archives `.sdlc/events.jsonl`, `RACI.md`, `.sdlc/raci.json`, `.sdlc/approval_workflows.json`, `.sdlc/tech_stack.json`, `.sdlc/builder_manifest.json`, and synthesized `.sdlc/agents/builders/*.md` into `.sdlc/audit_archive/<project_id>/` for SOX ITGC / SOC 2 / ISO 27001 / NERC CIP retention, then deletes the workspace folder. | **Audit Logs & Builder Roster Preserved** (Workspace code deleted unless in Git). |
 
 
+### 5.6 Joining an Existing Team Project (New Developer Starting from Zero)
+
+Use this checklist when a new developer joins an active A/SDLC project and has never set up Google Antigravity or A/SDLC on their workstation.
+
+#### Before You Start: Confirm Access With Your Project Lead
+1. **Google Cloud License & 4 Developer IAM Roles:** Confirm you have an active **Gemini Enterprise** license (`Standard`, `Plus`, `Standard Emerging Market`, or `Pay-as-you-go`, not Gemini Enterprise Business) and `roles/discoveryengine.agentspaceUser`, `roles/aiplatform.user`, `roles/cloudaicompanion.user`, and `roles/serviceusage.serviceUsageConsumer` on `<PILOT_PROJECT_ID>` (note that `roles/discoveryengine.agentspaceAdmin` does not include user access). If the project uses Pattern B or Pattern C remote telemetry, also confirm `roles/cloudtrace.agent` and `roles/bigquery.dataViewer`.
+2. **Git Repository Write Access & Accepted Collaborator Invite:** Confirm write access to `<PROJECT_GIT_REPO_URL>` and **accept your GitHub repository collaborator invitation**. When a project uses GitHub Issues (`GITHUB_ISSUES_PR`) for stage gates, pending collaborator invitations block gate dispatch.
+3. **RACI Roster Update (`RACI.md`):** Confirm your Project Lead added your name, email, and GitHub handle to `RACI.md` if you will execute stages or approve gates. If this moves a solo project (`1` human) to a team project (`2+` humans), run `/agentic-sdlc --reverify-gates` so it promotes cleanly from `SOLO_ADVISORY` to `TEAM_STRICT`.
+4. **Optional Shared Flight Deck Access:** If your team uses a Deployed Cloud Run Flight Deck, confirm Cloud IAP or OIDC sign-in access to `<FLIGHT_DECK_URL>`.
+
+#### Critical Rule: Keep Two Separate Folders
+Never clone your team's application repository inside the A/SDLC toolkit folder, and never run `/agentic-sdlc --new` inside the toolkit folder:
+- **Toolkit Folder (`~/Downloads/asdlc-customer-kit`):** Used only to install agents and skills globally into `~/.gemini/config/`.
+- **Team Project Folder (`~/projects/<PROJECT_FOLDER>`):** Holds `.sdlc/`, `RACI.md`, `org-standards.md`, `PRD.md`, `SPEC.md`, and the application codebase. Open Google Antigravity here every day.
+
+#### Step 1: Install Core Workstation Tools & Sign In (`gcloud`, `git`, `gh`, Python 3.12+)
+Install **Python 3.12+**, **Git 2.40+**, **GitHub CLI (`gh`)**, and **Google Cloud CLI (`gcloud`, Section `0.2 Part B`)**, then bind your Git identity and keyless Google Cloud credentials (zero static JSON key files):
+
+```bash
+git config --global user.name "<Your Full Name>"
+git config --global user.email "<your-work-email>"
+gh auth login
+gh auth status
+
+gcloud auth login
+gcloud config set project <PILOT_PROJECT_ID>
+gcloud auth application-default login
+gcloud auth application-default set-quota-project <PILOT_PROJECT_ID>
+```
+
+#### Step 2: Install Google Antigravity 2.0 & Sign In via "Use business account"
+Install an official enterprise surface (**Antigravity 2.0 Desktop App `>= 2.18.0`**, **CLI `agy >= 1.2.10`**, or **VS Code / JetBrains Extension**; never legacy Windsurf-based builds). On the Welcome screen, click **Use business account** (or select `2. Use a Google Cloud project` in `agy` CLI), select **Gemini Enterprise** (or **Pay as you go**), and choose `<PILOT_PROJECT_ID>` and your org region (`Global`, `US`, or `EU`). **Never click "Continue with Google"**, even with your work email, or you will hit consumer quota errors (`Individual quota reached` / `Ineligible account`). Confirm your plan and project under **Settings > General > Account** (or `/usage` in CLI).
+
+#### Step 3: Install the A/SDLC v3.1 Toolkit Globally & Restart Antigravity
+- **Path A (Pure Markdown Customer-Safe Kit, Zero Scripts Required):**
+  ```bash
+  mkdir -p ~/Downloads ~/.gemini/config/agents ~/.gemini/config/skills
+  cd ~/Downloads
+  git clone https://github.com/cwserna/asdlc-customer-kit.git
+  cp -R asdlc-customer-kit/agents/*.md ~/.gemini/config/agents/
+  cp -R asdlc-customer-kit/skills/* ~/.gemini/config/skills/
+  export ASDLC_PROJECTS_ROOT="$HOME/projects"
+  ```
+  *(Or download the 1-Click ZIP from `https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip` and copy `agents/*.md` and `skills/*` into `~/.gemini/config/`.)*
+- **Restart Required:** Fully close and reopen Google Antigravity (or open a brand-new chat session) so the newly installed A/SDLC skills and subagents load into memory. Optionally run `/asdlc-onboarding-coach` to verify all 12 pre-flight gates (`G01..G12`) pass. **Do not run `/agentic-sdlc --new`.**
+
+#### Step 4: Clone and Resume Your Team's Existing Project
+```bash
+cd ~/projects
+git clone <PROJECT_GIT_REPO_URL> <PROJECT_FOLDER>
+cd ~/projects/<PROJECT_FOLDER>
+```
+Open `~/projects/<PROJECT_FOLDER>` in Google Antigravity, start a **new chat**, and run:
+1. **Hydrate and register the existing project locally (never `--new`):**
+   ```text
+   /agentic-sdlc --resume .
+   ```
+2. **Verify active stage, personal Git read/write access, and local toolchain readiness:**
+   ```text
+   /agentic-sdlc --status
+   /agentic-sdlc --git-status
+   /agentic-sdlc --toolchain-status
+   ```
+   *(Missing local Stage 6 security scanners or Stage 7 monitoring CLIs warn and degrade cleanly under `WARN_AND_DEGRADE_LLM_ONLY` without blocking you.)*
+3. **Optional Deployed Cloud Run Flight Deck sync:** If your team uses a shared Flight Deck, run `/agentic-sdlc --remote-set <FLIGHT_DECK_URL>` (if `.sdlc/remote.json` is not committed), `/agentic-sdlc --remote-login`, and `/agentic-sdlc --remote-sync` (or hydrate directly via `/agentic-sdlc --clone <PROJECT_ID> --url <FLIGHT_DECK_URL>`).
+
+#### Step 5: Shared-Project Team Etiquette
+- Run `git pull` before `/agentic-sdlc --resume .` at the start of every session so you have the latest `.sdlc/state.json` and `stage-<N>-approved` tags.
+- Check `RACI.md` before approving any gate; only the Accountable (`A`) owner approves, while `R`, `A`, or `C` members can submit `CHANGES_REQUESTED`.
+- During Stage 5, check `.sdlc/builder_manifest.json` and run only your assigned builder slice (`owned_paths`) so teammates do not overwrite each other's files.
+- Run `/agentic-sdlc --park` and push your branch when handing off so the next teammate gets a fresh `.sdlc/RESUME_BRIEF.md`.
+
 ---
 
 ## 6. Using the Skill & Tools as a Day-to-Day User (Stages 1 to 8 Playbook)

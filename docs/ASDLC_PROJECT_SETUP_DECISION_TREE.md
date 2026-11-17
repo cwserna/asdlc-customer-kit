@@ -16,7 +16,7 @@ flowchart TD
     PreFlight -- "Yes Gates G01 to G12 Verified" --> EntryMode{"1. Project Entry Mode /agentic-sdlc"}
 
     EntryMode -- "Existing Local Project" --> LocalOps["Manage Lifecycle list status resume or park"]
-    EntryMode -- "Join Shared Team Project" --> CloneRemote["Clone from Flight Deck /agentic-sdlc --clone id --url url"]
+    EntryMode -- "Join Shared Team Project" --> CloneRemote["Clone App Git Repo and --resume or Flight Deck --clone"]
     EntryMode -- "Brand New Project" --> InitNew["Initialize Empty Workspace /agentic-sdlc --new"]
 
     LocalOps --> UpgradeCheck{"Upgrading v1 or v2 to v3.0.0"}
@@ -71,8 +71,8 @@ flowchart TD
 
 | Gate | Setup Question | Options | Recommended Default | Chat Flag or Artifact Created |
 | :--- | :--- | :--- | :--- | :--- |
-| **Gate 0** | Is this machine or GCP environment already verified? | **No** (First time on laptop or VM) / **Yes** (Already verified) | Run `/asdlc-onboarding-coach` on any new machine to verify Gates `G01..G12` | `/asdlc-onboarding-coach` (`G01..G12` readiness check) |
-| **Gate 1** | Are you starting a new project, cloning, upgrading, or resuming? | **New** / **Clone** / **Upgrade** / **Resume or Inspect** | `--new` for new chartering; `--upgrade` when migrating `v1.0` or `v2.x` workspaces | `--new`, `--upgrade`, `--clone <id> --url <url>`, `--list`, `--resume <id>`, `--status <id>` |
+| **Gate 0** | Is this machine or GCP environment already verified? | **No** (First time on laptop or VM, including new teammates joining an existing project) / **Yes** (Already verified) | Complete Antigravity business sign-in, `gcloud` ADC, `gh auth`, accepted GitHub collaborator invite, and toolkit install, then run `/asdlc-onboarding-coach` to verify Gates `G01..G12` | `/asdlc-onboarding-coach` (`G01..G12` readiness check) |
+| **Gate 1** | Are you starting a new project, joining a team project, upgrading, or resuming? | **New** / **Join Team Repo or Flight Deck** / **Upgrade** / **Resume or Inspect** | `--new` for new chartering; `git clone <app-repo>` + `/agentic-sdlc --resume .` (or `--clone <id> --url <url>` from Flight Deck) for joining an active team project; `--upgrade` when migrating `v1.0`, `v2.x`, or `v3.0` workspaces | `--new`, `git clone` + `--resume .`, `--clone <id> --url <url>`, `--upgrade`, `--list`, `--status <id>`, `--git-status`, `--toolchain-status` |
 | **Gate 2** | Do you need a shared Cloud Run Flight Deck dashboard? | **Local-First Only** / **Deployed Cloud Run Flight Deck** | **Local-First Only** for solo builders; **Deployed Flight Deck** (Cloud IAP or OIDC) for multi-person teams using UI approvals | `--remote-set <url>`, `--remote-login`, `--remote-sync` (stored in `.sdlc/remote.json`) |
 | **Gate 3** | How is the project Git repository configured? *(Mandatory)* | **New Repo** / **Existing Repo** (`--git-setup <url> --git-mode <link\|create>`) | Dedicated GitHub repo with `gh auth status` verified and branch protection on `main` | `.sdlc/git_config.json` (`access_verified: true`), `.github/CODEOWNERS` |
 | **Gate 4** | How are RACI roles (`3..N` supported) and gate surfaces assigned on Stage 1 Turn 1? | **Solo (`1` Human: `SOLO_ADVISORY`)** / **Team (`2+` Distinct Humans: `TEAM_STRICT`)** | Copy the [Master RACI Starter Google Sheet](https://docs.google.com/spreadsheets/d/1KZ4mN9t8sEU3--lyKkg5zlCUtqUJ-Vnobfdu6qMBL80/copy) or generate `.okf/intake/raci/RACI_STARTER_TEMPLATE.{xlsx,csv}`; `2+` humans enforce `GITHUB_ISSUES_PR` (`GITHUB_ISSUE`), `GOOGLE_SHEETS_TRACKER` (`GOOGLE_SHEETS`), or `FLIGHT_DECK_UI` (`DEPLOYED_FLIGHT_DECK`) | `--ingest-raci <file>`, `--dispatch-gate <N>`, `--sync-gate <N>` (`RACI.md`, `.sdlc/raci.json`) |

@@ -48,15 +48,26 @@ This repository contains the **100% Pure Markdown Customer-Safe Edition** of the
 
 ---
 
-## 2. Quickstart: New Installation vs. Upgrading from `v3.0` or `v1.0`
+## 2. Quickstart: New Project, Joining an Existing Team Project, or Upgrading
 
-### Option A: Fresh Installation (New Users)
+### Option A: Fresh Installation (Starting a New Project)
 Copy `agents/*.md` and `skills/*` into your AI harness configuration directory (`~/.gemini/config/` or `.agent/` inside your workspace), start a new chat session, and run:
 1. `/asdlc-onboarding-coach` to verify your Google Cloud, Git/GitHub, and OpenTelemetry readiness.
 2. `/org-standards-builder` (optional, before or during Stage 1) if your organization has dozens or hundreds of engineering standards on an internal website (SharePoint, Confluence, Backstage, or wiki). You can also paste [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) into Gemini Enterprise or NotebookLM to extract `RAW_STANDARDS_EXTRACT.md`, then run `/org-standards-builder` (or paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat) to generate a clean `<= 120` line `org-standards.md` and `.okf/runbooks/` catalog.
 3. `/agentic-sdlc --new` to launch Stage 1 Project Onboarding.
 
-### Option B: Fast-Track Zero-Rework Upgrade from `v3.0` (Teams in Stage 1) or Smart 3-Way Upgrade from `v1.0`/`v2.x`
+### Option B: Joining an Existing Team Project (New Developer Starting from Zero)
+If your team already has an active A/SDLC project repository and this is your first time setting up A/SDLC on your machine:
+1. **Confirm access & sign in:** Confirm your Gemini Enterprise seat, 4 developer GCP IAM roles, and accepted GitHub collaborator invite on your team's app repo. Sign in to `gcloud` (`gcloud auth login` + `gcloud auth application-default login`), `gh auth login`, and Google Antigravity 2.0 via **Use business account** (never **Continue with Google**).
+2. **Install this toolkit into `~/.gemini/config/`:** Keep `asdlc-customer-kit` in `~/Downloads/asdlc-customer-kit`, copy `agents/*.md` and `skills/*` into `~/.gemini/config/`, and restart Antigravity (or start a brand-new chat).
+3. **Clone your team's app repo into a separate folder and resume (never `--new`):**
+   ```bash
+   cd ~/projects
+   git clone <PROJECT_GIT_REPO_URL> <PROJECT_FOLDER>
+   ```
+   Open `~/projects/<PROJECT_FOLDER>` in Antigravity, start a new chat, and run `/agentic-sdlc --resume .`, followed by `/agentic-sdlc --status`, `/agentic-sdlc --git-status`, and `/agentic-sdlc --toolchain-status` (see Section `5.6` of [`ASDLC_OPERATOR_RUNBOOK.md`](./ASDLC_OPERATOR_RUNBOOK.md) for the full teammate walkthrough).
+
+### Option C: Fast-Track Zero-Rework Upgrade from `v3.0` (Teams in Stage 1) or Smart 3-Way Upgrade from `v1.0`/`v2.x`
 If you already have `A/SDLC v3.0` (or `v1.0`/`v2.x`) installed, see **[`UPGRADE.md`](./UPGRADE.md)** (Section 0 covers the 2-minute zero-rework Stage 1 upgrade that preserves 100% of your `RACI.md`, `.sdlc/git_config.json`, `org-standards.md`, `.okf/intake/`, and signed Gate 1 receipts). Download the **[1-Click ZIP (`main.zip`)](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)** or run `git clone` into `~/Downloads`, open your AI chat inside that downloaded folder, and paste:
 ```text
 Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this v3.1.0 repository and execute the Smart 3-Way Agent & Workspace Upgrade against my installed ~/.gemini/config/ (or .agent/) definitions and my active A/SDLC project workspaces.
