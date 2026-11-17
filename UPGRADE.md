@@ -66,7 +66,7 @@ Run the zero-rework A/SDLC v3.0 to v3.1.0 Stage 1 delta upgrade on my current pr
    * Which Stage 6 security scanners we use (from the 9 presets or Custom / Bring Your Own Tool) and how Stage 6 accesses them (MCP, CLI, CI_CHECK, HTTP_API, MANUAL_EXPORT, or LLM_ONLY).
    * Which Stage 7/8 monitoring backend we use (from the 8 presets or Custom) and how Stage 7/8 reads telemetry back.
    * Whether this app calls LLM inference (app_uses_llm: true or false).
-4. Write .sdlc/toolchain_config.json with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY", add Item #8 to .okf/intake/ASSET_MANIFEST.md, and show me my ready-to-continue Stage 1 status board.
+4. Write .sdlc/toolchain_config.json with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true, create .sdlc/reports/, add Item #8 to .okf/intake/ASSET_MANIFEST.md, commit the delta cleanly if Gate 1 is already APPROVED (chore(asdlc): apply v3.1.0 Stage 1 toolchain delta) so git status stays clean for CI gates, and show me my ready-to-continue Stage 1 status board.
 ```
 
 ### Fast-Track Option B (Zero Download, Copy-Paste Only in Chat): 2 Prompts Directly in Your App Folder
@@ -109,7 +109,7 @@ Version 1 helped you plan and build software using 7 steps (numbered `Stage 0` t
 1. **8 Clear Steps Instead of 7 (Numbered 1 to 8):**
    In v1, the first step was called `Stage 0`, which felt confusing. Version 3 numbers the 8 steps naturally from **`Stage 1` to `Stage 8`** and separates project setup (`Stage 1`) from product planning (`Stage 2`).
 2. **100% Plain Text AI Helpers (No Hidden Code Required):**
-   Every AI agent and skill is now a simple Markdown text file (`.md`) marked `asdlc_version: "3.0.0"`. Your security team can read and approve every file in minutes without worrying about hidden scripts.
+   Every AI agent and skill is now a simple Markdown text file (`.md`) marked `asdlc_version: "3.1.0"`. Your security team can read and approve every file in minutes without worrying about hidden scripts.
 3. **Keeps Your Custom Rules Safe When Upgrading:**
    If you added your own company rules inside any v1 AI agent file, the v3 upgrade saves a backup first, copies your custom rules into your project's **`org-standards.md`** file, and then installs the clean v3 agents.
 4. **Clear Team Roles and Automatic GitHub Backups (`Stage 1`):**
@@ -201,7 +201,7 @@ cd ~/Downloads/asdlc-customer-kit
 Open your AI chat window inside that downloaded `~/Downloads/asdlc-customer-kit` (or `~/Downloads/asdlc-customer-kit-main`) folder and paste this prompt:
 
 ```text
-Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this downloaded v3.0.0 toolkit folder and upgrade my installed ~/.gemini/config/ skills and agents from v1 to v3.0.0:
+Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this downloaded v3.1.0 toolkit folder and upgrade my installed ~/.gemini/config/ skills and agents from v1 to v3.1.0:
 1. Back up all my current v1 agents and skills into ~/.gemini/config/.backups/asdlc-v1-backup-<timestamp>/ first.
 2. Check if I added any custom company rules inside my v1 agent files in ~/.gemini/config/agents/, and save those custom rules into ~/.gemini/config/.backups/migrated-custom-rules.md so nothing is lost.
 3. Copy and install all 8 customer-safe agents (./agents/*.md), all 5 skills (./skills/*), and all 6 templates (./skills/agentic-sdlc/resources/*.md) from this toolkit folder into ~/.gemini/config/ so they are installed globally for all my projects.
@@ -215,16 +215,17 @@ Read ./UPGRADE.md and ./skills/agentic-sdlc/SKILL.md in this downloaded v3.0.0 t
 
 > [!IMPORTANT]
 > **Close `~/Downloads/asdlc-customer-kit` and Open a Brand-New Chat Window Inside Your Own App Folder!**
-> You are finished with the `Downloads` toolkit folder. Open a **brand-new chat window** inside **your own software project folder** (for example, `~/projects/my-company-app`) so your AI loads the new v3 skills, then paste this prompt:
+> You are finished with the `Downloads` toolkit folder. Open a **brand-new chat window** inside **your own software project folder** (for example, `~/projects/my-company-app`) so your AI loads the new v3.1 skills, then paste this prompt:
 
 ```text
-Please upgrade my current app development project folder from A/SDLC v1 to v3.0.0:
+Please upgrade my current app development project folder from A/SDLC v1 to v3.1.0:
 1. Verify first that this folder is my own application project and NOT the asdlc-customer-kit or agentic-sdlc-harness toolkit folder. If ~/.gemini/config/.backups/migrated-custom-rules.md exists, append those custom rules into my project's org-standards.md.
-2. Back up .sdlc/state.json to .sdlc/state.v1.backup.json, then convert my v1 stages (Stage 0 through Stage 6) into the v3 stages (Stage 1 through Stage 8) with schema_version: "3.0.0" while keeping all existing approval timestamps and notes.
-3. Create any missing v3 project files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
+2. Back up .sdlc/state.json to .sdlc/state.v1.backup.json, then convert my v1 stages (Stage 0 through Stage 6) into the v3.1 stages (Stage 1 through Stage 8) with schema_version: "3.1.0" while keeping all existing approval timestamps and notes.
+3. Create any missing v3.1 project files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
    * RACI.md and .sdlc/raci.json (6 team roles across Stages 1 to 8)
    * .sdlc/git_config.json: check git remote get-url origin in this folder (or ask me via ask_question for my app's GitHub URL). Never save asdlc-customer-kit or agentic-sdlc-harness as my app's Git remote!
-   * .sdlc/telemetry_config.json (defaulting to LOCAL_FILE_SINK with pii_redaction_enabled: true), .sdlc/otel_traces.jsonl, and .sdlc/kaizen_overrides.jsonl.
+   * .sdlc/telemetry_config.json (defaulting to LOCAL_FILE_SINK with split ingest/query blocks, app_uses_llm, and pii_redaction_enabled: true), .sdlc/otel_traces.jsonl, and .sdlc/kaizen_overrides.jsonl.
+   * .sdlc/toolchain_config.json (auto-probing local PATH CLIs and .github/workflows/, then confirming my Stage 6 security scanners and Stage 7/8 monitoring backend with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true) and .sdlc/reports/.
 4. Show me my updated 8-Stage Project Status Board (Stages 1 to 8).
 ```
 
@@ -243,7 +244,7 @@ If you only have this guide and cannot download the ZIP or `git clone` from GitH
 | Inside your existing chat window (in your app folder) | ~30 sec | Finds your v1 files, saves a full backup copy in `~/.gemini/config/.backups/`, and lists any custom rules you added. |
 
 ```text
-I am upgrading my A/SDLC setup from v1 to v3.0.0. Please perform Step 1 (Pre-Check and Safe Backup) using your file tools:
+I am upgrading my A/SDLC setup from v1 to v3.1.0. Please perform Step 1 (Pre-Check and Safe Backup) using your file tools:
 
 1. Locate my installed A/SDLC files in ~/.gemini/config/ (checking ~/.gemini/config/agents/, ~/.gemini/config/skills/, and ~/.gemini/asdlc/projects_registry.json) as well as any local .agent/ or .sdlc/ folder in my current workspace.
 2. Create a timestamped backup folder at ~/.gemini/config/.backups/asdlc-v1-backup-<YYYYMMDD-HHMMSS>/ and copy every existing agent (.md), skill (SKILL.md), projects_registry.json, and active project .sdlc/state.json file into that backup folder.
@@ -261,42 +262,42 @@ I am upgrading my A/SDLC setup from v1 to v3.0.0. Please perform Step 1 (Pre-Che
 
 | Where to Paste It | Time | What This Prompt Does |
 | :--- | :---: | :--- |
-| Same chat window (right after Prompt 1) | ~1 min | Moves your custom rules into `org-standards.md`, preserves your detailed v1 agent rubrics, and upgrades all 5 skills, 6 stage templates, and 8 customer-safe agents to v3.0.0. |
+| Same chat window (right after Prompt 1) | ~1 min | Moves your custom rules into `org-standards.md`, preserves your detailed v1 agent rubrics, and upgrades all 5 skills, 6 stage templates, and 8 customer-safe agents to v3.1.0. |
 
 ```text
-Now execute Step 2 of my v1 to v3.0.0 upgrade (Preserve Custom Rules and Upgrade Skills, Templates, and Agents to v3.0.0):
+Now execute Step 2 of my v1 to v3.1.0 upgrade (Preserve Custom Rules and Upgrade Skills, Templates, and Agents to v3.1.0):
 
 1. Preserve My Custom Rules First:
    If Step 1 found any custom company rules or instructions inside my old v1 agent or skill files, append them cleanly under a "## Migrated Custom Rules from v1" section inside my project's org-standards.md (and AGENTS.md if they are coding guardrails) so zero custom rules are lost.
 
 2. IMPORTANT Rule to Prevent Shortened or Incomplete Files:
-   Never replace an existing detailed agent or skill file with a short stub! When updating ~/.gemini/config/agents/*.md and ~/.gemini/config/skills/*/SKILL.md, keep all existing detailed security checklists, testing dimensions, and review rules from my backed-up v1 files and merge the v3.0.0 additions below into them.
+   Never replace an existing detailed agent or skill file with a short stub! When updating ~/.gemini/config/agents/*.md and ~/.gemini/config/skills/*/SKILL.md, keep all existing detailed security checklists, testing dimensions, and review rules from my backed-up v1 files and merge the v3.1.0 additions below into them.
 
-3. Write or Update the 5 Core v3.0.0 Skills in ~/.gemini/config/skills/ (and .agent/skills/ if my workspace uses .agent/):
+3. Write or Update the 5 Core v3.1.0 Skills in ~/.gemini/config/skills/ (and .agent/skills/ if my workspace uses .agent/):
    Every SKILL.md file MUST start with YAML frontmatter containing:
    name: <skill-name>
-   asdlc_version: "3.0.0"
+   asdlc_version: "3.1.0"
    distribution_tier: "customer-safe"
 
-   Ensure these 5 skills include full v3.0.0 instructions:
+   Ensure these 5 skills include full v3.1.0 instructions:
    * skills/agentic-sdlc/SKILL.md:
-     Orchestrates the 8-Stage A/SDLC v3.0 workflow (numbered Stages 1 to 8) using native file tools (read_file, write_file, edit_file, ask_question, run_command) with zero required Python scripts:
-     - Stage 1 (@project-conductor, Accountable: executive_sponsor): Project Onboarding, 6-Role RACI (RACI.md and .sdlc/raci.json), Mandatory GitHub/Git Repository Setup and Read/Write Validation for the user's own app development repository (.sdlc/git_config.json with access_verified: true, never confused with the A/SDLC toolkit repo), 3-Mode App Activity Log Setup (.sdlc/telemetry_config.json and .sdlc/cloud_outer_loop.json), 6-Part Background Asset & Data Source Intake (.okf/intake/designs/, .okf/intake/styles/, .okf/intake/docs/, .okf/intake/schemas/, and .okf/intake/ASSET_MANIFEST.md), and Tech Stack Profile (.sdlc/tech_stack.json).
+     Orchestrates the 8-Stage A/SDLC v3.1 workflow (numbered Stages 1 to 8) using native file tools (read_file, write_file, edit_file, ask_question, run_command, call_mcp_tool) with zero required Python scripts:
+     - Stage 1 (@project-conductor, Accountable: executive_sponsor): Project Onboarding, 6-Role RACI (RACI.md and .sdlc/raci.json), Mandatory GitHub/Git Repository Setup and Read/Write Validation for the user's own app development repository (.sdlc/git_config.json with access_verified: true, never confused with the A/SDLC toolkit repo), 3-Mode App Activity Log Setup with split ingest/query blocks and app_uses_llm (.sdlc/telemetry_config.json and .sdlc/cloud_outer_loop.json), Customer Security & Monitoring Toolchain Discovery (.sdlc/toolchain_config.json with 9 security presets, 8 monitoring presets, Custom Bring Your Own Tool + SARIF 2.1.0, missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY", stage1_delta_confirmed: true), 6-Part Background Asset & Data Source Intake (.okf/intake/designs/, .okf/intake/styles/, .okf/intake/docs/, .okf/intake/schemas/, and .okf/intake/ASSET_MANIFEST.md), and Tech Stack Profile (.sdlc/tech_stack.json).
      - Stage 2 (@product-owner, Accountable: product_owner): 4-Phase Product Discovery Interview grounded in Stage 1 assets to produce PRD.md (including Section 7: Day-2 App Health Logs & Feedback Goals).
-     - Stage 3 (@spec-architect, Accountable: lead_architect): Technical Blueprint interview producing stack-adaptive SPEC.md (including Section 5: App Activity Log Exporter, Privacy Filter, and POST /api/v1/kaizen/override Contract, plus Section 6: Proposed Parallel Builder Decomposition Plan).
-     - Stage 4 (@parallel-builder-orchestrator + @spec-architect, Accountable: lead_architect): Creates 1..N project-specific builders in .sdlc/agents/builders/<builder-id>.md and .sdlc/builder_manifest.json with non-overlapping folder ownership, writes AGENTS.md (<= 150 lines) and .okf/manifest.yaml, and creates deploy/cloud_outer_loop/ when Mode C (CLOUD_OUTER_LOOP) is active.
-     - Stage 5 (@parallel-builder-orchestrator, Accountable: tech_lead): Runs parallel coding builders in waves, wiring live App Activity Log output (.sdlc/otel_traces.jsonl locally and Cloud Trace/BigQuery in cloud mode), automatic privacy redaction callbacks (scrubbing emails, phone numbers, SSNs, API keys, and tokens), and POST /api/v1/kaizen/override.
-     - Stage 6 (@security-governance-critic, Accountable: security_lead): Red-team security and governance review auditing prompt injection, tool poisoning, least-privilege IAM, SQL/command injection, privacy redaction, and SPEC.md compliance, producing SECURITY_AUDIT.md.
-     - Stage 7 (@eval-telemetry-auditor, Accountable: sre_finops_lead): Runs automated tests, scores outputs across the 7 Quality Dimensions (Correctness, Groundedness, Safety, Tool Trajectory, Latency, Token Cost, and Log Completeness), checks live logs from .sdlc/telemetry_config.json, and writes EVAL_REPORT.md.
-     - Stage 8 (@kaizen-evolution-agent + @project-conductor, Accountable: product_owner): Reads live logs and user feedback from .sdlc/telemetry_config.json, promotes edge cases into .sdlc/golden_eval_set.json, appends learned guardrails to AGENTS.md (<= 150 lines), writes KAIZEN_REPORT.md, and routes improvements via Loop 1 (Stage 4/5 Bug or Rule), Loop 2 (Stage 3 Delta Feature in SPEC.md), Loop 3 (Stage 2 New Epic in PRD.md), or Loop 4 (Stage 1 Charter/RACI/Assets).
+     - Stage 3 (@spec-architect, Accountable: lead_architect): Technical Blueprint interview producing stack-adaptive SPEC.md (including Section 5: Split Ingest/Query App Activity Log Exporter, Security Scanner & SARIF Contract, Privacy Filter, and POST /api/v1/kaizen/override Contract, plus Section 6: Proposed Parallel Builder Decomposition Plan).
+     - Stage 4 (@parallel-builder-orchestrator + @spec-architect, Accountable: lead_architect): Creates 1..N project-specific builders in .sdlc/agents/builders/<builder-id>.md and .sdlc/builder_manifest.json with non-overlapping folder ownership, runs a non-destructive Toolchain & Monitoring Read-Access Smoke Check honoring WARN_AND_DEGRADE_LLM_ONLY, writes AGENTS.md (<= 150 lines) and .okf/manifest.yaml, and creates deploy/cloud_outer_loop/ when Mode C (CLOUD_OUTER_LOOP) is active.
+     - Stage 5 (@parallel-builder-orchestrator, Accountable: tech_lead): Runs parallel coding builders in waves, wiring live App Activity Log output to .sdlc/telemetry_config.json ingest (emitting gen_ai.* spans when app_uses_llm is true or standard HTTP/RPC/DB spans when app_uses_llm is false), automatic privacy redaction callbacks (scrubbing emails, phone numbers, SSNs, API keys, and tokens), and POST /api/v1/kaizen/override.
+     - Stage 6 (@security-governance-critic, Accountable: security_lead): Reads .sdlc/toolchain_config.json first, runs configured customer security scanners (via MCP via call_mcp_tool, shell-validated CLI with human confirmation for custom commands, CI_CHECK, HTTP_API, or path-contained sanitized .sdlc/reports/*.sarif ingestion) with WARN_AND_DEGRADE_LLM_ONLY fallback, audits prompt injection, tool poisoning, least-privilege IAM, SQL/command injection, privacy redaction, and SPEC.md compliance, and writes SECURITY_AUDIT.md with a mandatory Tool Execution Ledger.
+     - Stage 7 (@eval-telemetry-auditor, Accountable: sre_finops_lead): Runs automated tests, scores outputs across the 7 Quality Dimensions (Correctness, Groundedness, Safety, Tool Trajectory, Latency, Token Cost, and Log Completeness), queries live logs via .sdlc/toolchain_config.json and .sdlc/telemetry_config.json query (respecting app_uses_llm and WARN_AND_DEGRADE_LLM_ONLY), and writes EVAL_REPORT.md with a mandatory Monitoring Tool Execution Ledger.
+     - Stage 8 (@kaizen-evolution-agent + @project-conductor, Accountable: product_owner): Reads live logs and user feedback via .sdlc/toolchain_config.json and .sdlc/telemetry_config.json query, promotes edge cases into .sdlc/golden_eval_set.json, appends learned guardrails to AGENTS.md (<= 150 lines), writes KAIZEN_REPORT.md, and routes improvements via Loop 1 (Stage 4/5 Bug or Rule), Loop 2 (Stage 3 Delta Feature in SPEC.md), Loop 3 (Stage 2 New Epic in PRD.md), or Loop 4 (Stage 1 Charter/RACI/Toolchain/Assets).
      - Interview Pacing Rule: Across Stages 1 to 4, ask only 2 to 3 focused questions per turn via ask_question and continue across as many turns as needed until 100% of the stage checklist is answered.
-     - Supported Commands: --new, --resume [id|path], --status [id], --list, --park [id], --delete [id], --upgrade, --git-setup <url>, --git-status, --git-sync [stage], --outer-loop-init, --outer-loop-status, --remote-set <url>, --remote-status, --remote-sync, --remote-remove, --clone <id> --url <url>.
+     - Supported Commands: --new, --resume [id|path], --status [id], --list, --park [id], --delete [id], --upgrade, --check-update, --set-update-source <url|off>, --toolchain-init, --toolchain-status, --git-setup <url>, --git-status, --git-sync [stage], --outer-loop-init, --outer-loop-status, --remote-set <url>, --remote-status, --remote-sync, --remote-remove, --clone <id> --url <url>.
 
    * skills/asdlc-onboarding-coach/SKILL.md:
      Pre-Flight Environment, Google Cloud, App Activity Log APIs, Git/GitHub, and Toolkit Setup Coach (/asdlc-onboarding-coach). Verifies Gates G01 to G12 (GCP project, billing cap, Gemini Enterprise seat, security settings, developer IAM roles, the 8 core Inner-Loop APIs plus 10 Cloud Log/Outer-Loop APIs when using Modes B or C, Python 3.12+, git config and gh auth status, gcloud login, Antigravity business account login, and toolkit health check) and stops cleanly before Stage 1 (/agentic-sdlc --new).
 
    * skills/org-standards-builder/SKILL.md:
-     Standalone Enterprise Organizational Standards Builder and Intranet Distiller (/org-standards-builder) that turns scattered internal wiki pages into a clean <= 120 line org-standards.md and .okf/runbooks/ catalog across 3 intake modes.
+     Standalone Enterprise Organizational Standards Builder and Intranet Distiller (/org-standards-builder) that turns scattered internal wiki pages into a clean <= 120 line org-standards.md and .okf/runbooks/ catalog across 3 intake modes, including mandated Stage 6 security scanners and Stage 7/8 monitoring tools.
 
    * skills/product-owner/SKILL.md:
      Runs the Stage 2 4-Phase Product Owner interview (Phase 1 Vision & Value, Phase 2 Scope, Epics & Data Source Access Rules, Phase 3 MoSCoW User Stories & Acceptance Criteria, Phase 4 PRD.md Handoff) grounded in org-standards.md and .okf/intake/ assets, asking 2 to 3 questions per turn until 100% complete.
@@ -306,28 +307,28 @@ Now execute Step 2 of my v1 to v3.0.0 upgrade (Preserve Custom Rules and Upgrade
 
 4. Write the 6 Stage Templates into ~/.gemini/config/skills/agentic-sdlc/resources/:
    * RACI_TEMPLATE.md: Markdown table and role definitions assigning Responsible (R), Accountable (A), Consulted (C), and Informed (I) across Stages 1 to 8 for the 6 enterprise roles (executive_sponsor, product_owner, lead_architect, tech_lead, security_lead, sre_finops_lead).
-   * ASSET_MANIFEST_TEMPLATE.md: 6-Part Stage 1 Intake checklist recording file paths, owners, and status for (1) org-standards.md, (2) UI/UX designs, (3) brand/style guides, (4) domain docs, (5) API/database schemas, and (6) external/internal data source inventory.
-   * ORG_STANDARDS_TEMPLATE.md: Complete organizational engineering template covering Approved Tech Stack, Least-Privilege IAM, Testing Floor (>= 35% coverage), Mandatory Privacy Redaction in Logs, and AI Cost/Model Routing standards.
+   * ASSET_MANIFEST_TEMPLATE.md: 8-Part Stage 1 Intake checklist recording file paths, owners, and status for (1) org-standards.md, (2) UI/UX designs, (3) brand/style guides, (4) domain docs, (5) API/database schemas, (6) external/internal data source inventory, (7) telemetry sink config, and (8) customer security & monitoring toolchain config (.sdlc/toolchain_config.json).
+   * ORG_STANDARDS_TEMPLATE.md: Complete organizational engineering template covering Approved Tech Stack, Least-Privilege IAM, Mandated Security Scanners & Monitoring Stack, Testing Floor (>= 35% coverage), Mandatory Privacy Redaction in Logs, and AI Cost/Model Routing standards.
    * PRD_TEMPLATE.md: Complete 7-section Product Requirements template: (1) Executive Vision & KPIs, (2) Target Personas, (3) Scope & Epics, (4) MoSCoW User Stories & Given/When/Then Acceptance Criteria, (5) Data Source Access & Privacy Rules, (6) Risks & Dependencies, and (7) Day-2 App Health Logs & Feedback Goals.
-   * SPEC_TEMPLATE.md: Complete 7-section Technical Specification template: (1) System Architecture & Stack Profile, (2) Data Models & Schemas, (3) API Endpoints & Error Contracts, (4) UI Component Hierarchy & State, (5) App Activity Log Exporter, Privacy Filter & POST /api/v1/kaizen/override Contract, (6) Proposed Parallel Builder Decomposition Plan (non-overlapping folder ownership), and (7) Security & IAM Boundaries.
+   * SPEC_TEMPLATE.md: Complete 7-section Technical Specification template: (1) System Architecture & Stack Profile, (2) Data Models & Schemas, (3) API Endpoints & Error Contracts, (4) UI Component Hierarchy & State, (5) Split Ingest/Query App Activity Log Exporter, Security Scanner & SARIF Contract, Privacy Filter & POST /api/v1/kaizen/override Contract, (6) Proposed Parallel Builder Decomposition Plan (non-overlapping folder ownership), and (7) Security & IAM Boundaries.
    * AGENTS_TEMPLATE.md: Concise <= 150-line workspace guardrail template containing Tech Stack summary, Folder Ownership rules, Coding/Testing rules, Security boundaries, and Learned Kaizen Rules.
 
-5. Upgrade or Write All 8 Customer-Safe v3.0.0 Specialist Agents in ~/.gemini/config/agents/ (keeping all detailed v1 instructions and adding YAML frontmatter with name, description, asdlc_version: "3.0.0", and distribution_tier: "customer-safe"):
-   * agents/project-conductor.md (@project-conductor): Owns Stage 1 onboarding (6-Role RACI, app GitHub repo validation in .sdlc/git_config.json, 3-Mode App Activity Log setup in .sdlc/telemetry_config.json, 6-Part asset intake in .okf/intake/), v1-to-v3 Smart 3-Way Upgrade (--upgrade), and Stage-Gate Git sync across Stages 1 to 8.
+5. Upgrade or Write All 8 Customer-Safe v3.1.0 Specialist Agents in ~/.gemini/config/agents/ (keeping all detailed v1 instructions and adding YAML frontmatter with name, description, asdlc_version: "3.1.0", and distribution_tier: "customer-safe"):
+   * agents/project-conductor.md (@project-conductor): Owns Stage 1 onboarding (6-Role RACI, app GitHub repo validation in .sdlc/git_config.json, 3-Mode App Activity Log setup in .sdlc/telemetry_config.json, Customer Security & Monitoring Toolchain Discovery in .sdlc/toolchain_config.json, and asset intake in .okf/intake/), v3.0-to-v3.1 Fast-Track & v1-to-v3.1 Smart 3-Way Upgrade (--upgrade), and Stage-Gate Git sync across Stages 1 to 8.
    * agents/product-owner.md (@product-owner): Owns Stage 2 discovery across 4 phases (2 to 3 questions per turn until 100% complete) grounded in Stage 1 assets to produce PRD.md.
-   * agents/spec-architect.md (@spec-architect): Owns Stage 3 & 4 technical scoping (2 to 3 questions per turn until 100% complete), authoring SPEC.md (including Section 5 App Activity Log & Feedback contracts and Section 6 Parallel Builder Decomposition Plan) and Stage 4 AGENTS.md.
-   * agents/parallel-builder-orchestrator.md (@parallel-builder-orchestrator): Owns Stage 4 & 5 builder synthesis (.sdlc/agents/builders/<id>.md and .sdlc/builder_manifest.json), Gate 4 roster approval, and Stage 5 parallel coding waves with live log export and privacy redaction.
-   * agents/security-governance-critic.md (@security-governance-critic): Owns Stage 6 adversarial code & config audit (prompt injection, tool poisoning, IAM boundaries, SQL/command injection, privacy redaction, and SPEC.md drift) producing SECURITY_AUDIT.md.
-   * agents/eval-telemetry-auditor.md (@eval-telemetry-auditor): Owns Stage 7 automated test execution, 7-Dimension quality scoring, live log verification via .sdlc/telemetry_config.json, and AI cost audit producing EVAL_REPORT.md.
-   * agents/kaizen-evolution-agent.md (@kaizen-evolution-agent): Owns Stage 8 continuous improvement, reading .sdlc/telemetry_config.json logs and .sdlc/kaizen_overrides.jsonl feedback, updating .sdlc/golden_eval_set.json and AGENTS.md, writing KAIZEN_REPORT.md, and routing via Loops 1 to 4.
+   * agents/spec-architect.md (@spec-architect): Owns Stage 3 & 4 technical scoping (2 to 3 questions per turn until 100% complete), authoring SPEC.md (including Section 5 Split Ingest/Query App Activity Log, Scanner & SARIF, and Feedback contracts and Section 6 Parallel Builder Decomposition Plan) and Stage 4 AGENTS.md.
+   * agents/parallel-builder-orchestrator.md (@parallel-builder-orchestrator): Owns Stage 4 & 5 builder synthesis (.sdlc/agents/builders/<id>.md and .sdlc/builder_manifest.json), Stage 4 toolchain & monitoring read-access smoke checks, Gate 4 roster approval, and Stage 5 parallel coding waves with live log export and privacy redaction.
+   * agents/security-governance-critic.md (@security-governance-critic): Owns Stage 6 customer security toolchain execution (via call_mcp_tool, validated CLI, CI_CHECK, HTTP_API, or sanitized .sdlc/reports/*.sarif with WARN_AND_DEGRADE_LLM_ONLY) and adversarial code & config audit producing SECURITY_AUDIT.md with a mandatory Tool Execution Ledger (write access strictly scoped to SECURITY_AUDIT.md and 1-line AGENTS.md rule).
+   * agents/eval-telemetry-auditor.md (@eval-telemetry-auditor): Owns Stage 7 automated test execution, 7-Dimension quality scoring, live log verification via call_mcp_tool / .sdlc/toolchain_config.json / .sdlc/telemetry_config.json query, and AI cost audit producing EVAL_REPORT.md with a mandatory Monitoring Tool Execution Ledger.
+   * agents/kaizen-evolution-agent.md (@kaizen-evolution-agent): Owns Stage 8 continuous improvement, reading live logs via call_mcp_tool / .sdlc/toolchain_config.json / .sdlc/telemetry_config.json query and .sdlc/kaizen_overrides.jsonl feedback, updating .sdlc/golden_eval_set.json and AGENTS.md, writing KAIZEN_REPORT.md, and routing via Loops 1 to 4.
    * agents/adversarial-doc-critic.md (@adversarial-doc-critic): Cross-stage 4-Lens Document & Architecture Critic (Principal Architect, Skeptical Customer CTO, Fact-Checker, and Readability Critic).
 
-6. When finished, confirm every file updated and remind me to open a brand-new chat window before running Prompt 3 so the new v3.0.0 skills and agents load into memory.
+6. When finished, confirm every file updated and remind me to open a brand-new chat window before running Prompt 3 so the new v3.1.0 skills and agents load into memory.
 ```
 
 > [!IMPORTANT]
 > **Stop and Open a New Chat Window Now!**
-> As soon as Prompt 2 finishes, **start a new chat window** (or reload your AI editor) inside **your own app development folder** before pasting Prompt 3. This loads your newly upgraded v3.0.0 skills and agents into active memory.
+> As soon as Prompt 2 finishes, **start a new chat window** (or reload your AI editor) inside **your own app development folder** before pasting Prompt 3. This loads your newly upgraded v3.1.0 skills and agents into active memory.
 
 ---
 
@@ -338,27 +339,28 @@ Now execute Step 2 of my v1 to v3.0.0 upgrade (Preserve Custom Rules and Upgrade
 | **In a brand-new chat window** inside your own app folder | ~1 min | Converts `Stage 0..6` to `Stage 1..8` in `.sdlc/state.json`, creates `RACI.md`, links your app's GitHub repo in `.sdlc/git_config.json`, and keeps all your code and docs safe. |
 
 ```text
-Please upgrade my existing v1 A/SDLC project workspace to v3.0.0 (Non-Destructive Workspace Migration):
+Please upgrade my existing v1 A/SDLC project workspace to v3.1.0 (Non-Destructive Workspace Migration):
 
 1. Verify first that this current working directory is my own application project folder and NOT the downloaded asdlc-customer-kit or agentic-sdlc-harness toolkit folder.
 2. Read my existing .sdlc/state.json (and ~/.gemini/asdlc/projects_registry.json if present). Save a backup copy of .sdlc/state.json to .sdlc/state.v1.backup.json.
-3. Convert the old v1 stage numbers (Stage 0 through Stage 6) into the new v3.0.0 stage numbers (Stage 1 through Stage 8) inside .sdlc/state.json:
+3. Convert the old v1 stage numbers (Stage 0 through Stage 6) into the new v3.1.0 stage numbers (Stage 1 through Stage 8) inside .sdlc/state.json:
    * If v1 Stage 0 was approved, mark both Stage 1 (Project Onboarding, RACI, GitHub & Asset Intake) and Stage 2 (Product Discovery & PRD.md) as APPROVED in .sdlc/state.json. If v1 Stage 0 was in progress and PRD.md already exists, mark Stage 1 APPROVED and Stage 2 IN_PROGRESS.
-   * Map v1 Stage 1 to v3 Stage 3 (Technical Blueprint SPEC.md)
-   * Map v1 Stage 2 to v3 Stage 4 (Workspace & Builder Synthesis AGENTS.md)
-   * Map v1 Stage 3 to v3 Stage 5 (Parallel Builder Execution)
-   * Map v1 Stage 4 to v3 Stage 6 (Security & Governance Review)
-   * Map v1 Stage 5 to v3 Stage 7 (Testing, Quality & Cost Check)
-   * Map v1 Stage 6 to v3 Stage 8 (Continuous Improvement & Next Iteration)
-   * Set schema_version to "3.0.0" and preserve all existing gate approval timestamps, notes, and history.
-4. Create any missing v3.0.0 project governance files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
+   * Map v1 Stage 1 to v3.1 Stage 3 (Technical Blueprint SPEC.md)
+   * Map v1 Stage 2 to v3.1 Stage 4 (Workspace & Builder Synthesis AGENTS.md)
+   * Map v1 Stage 3 to v3.1 Stage 5 (Parallel Builder Execution)
+   * Map v1 Stage 4 to v3.1 Stage 6 (Security & Governance Review)
+   * Map v1 Stage 5 to v3.1 Stage 7 (Testing, Quality & Cost Check)
+   * Map v1 Stage 6 to v3.1 Stage 8 (Continuous Improvement & Next Iteration)
+   * Set schema_version to "3.1.0" and preserve all existing gate approval timestamps, notes, and history.
+4. Create any missing v3.1.0 project governance files without overwriting my existing PRD.md, SPEC.md, org-standards.md, or AGENTS.md:
    * RACI.md and .sdlc/raci.json (mapping the 6 team roles across Stages 1 to 8)
    * .sdlc/git_config.json: check git remote get-url origin in this folder (or ask me via ask_question for my app's GitHub repository URL). Hard Guardrail: NEVER save asdlc-customer-kit or agentic-sdlc-harness into .sdlc/git_config.json!
+   * .sdlc/toolchain_config.json (auto-probing local PATH CLIs and .github/workflows/, then confirming my Stage 6 security scanners and Stage 7/8 monitoring backend with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true) and .sdlc/reports/
    * .okf/intake/designs/, .okf/intake/styles/, .okf/intake/docs/, .okf/intake/schemas/ directories and .okf/intake/ASSET_MANIFEST.md
    * .sdlc/golden_eval_set.json (seeded with an initial test case list if not present)
-5. Non-destructively append the v3.0.0 Day-2 App Activity Log & Feedback sections to my existing documents if they are not already present:
+5. Non-destructively append the v3.1.0 Day-2 App Activity Log & Feedback sections to my existing documents if they are not already present:
    * Append "Section 7: Day-2 App Health Logs & Continuous Improvement Goals" to PRD.md
-   * Append "Section 5: App Activity Log Exporter, Privacy Filter & User Feedback Endpoint (POST /api/v1/kaizen/override)" to SPEC.md
+   * Append "Section 5: Split Ingest/Query App Activity Log Exporter, Security Scanner & SARIF Contract, Privacy Filter & User Feedback Endpoint (POST /api/v1/kaizen/override)" to SPEC.md
 6. Show me my updated 8-Stage Project Status Board (Stages 1 to 8).
 ```
 
@@ -366,30 +368,32 @@ Please upgrade my existing v1 A/SDLC project workspace to v3.0.0 (Non-Destructiv
 
 ### Prompt 4 of 5: Set Up App Activity Logs and Automatic Feedback (Pick Mode A, B, or C)
 
-In Version 3, your app records **App Activity Logs** and **User Feedback Clicks** so the Testing Agent (`Stage 7`) and Improvement Agent (`Stage 8`) can inspect how your app performs in real life.
+In Version 3.1, your app records **App Activity Logs** and **User Feedback Clicks** so the Testing Agent (`Stage 7`) and Improvement Agent (`Stage 8`) can inspect how your app performs in real life.
 
 First, pick which of the **3 simple log modes** fits your project:
 
 | Log Mode | Plain-English Meaning | Best When... | What Gets Created |
 | :--- | :--- | :--- | :--- |
 | **Mode A: Local File Mode (`LOCAL_FILE_SINK`)** *(Recommended Default)* | Saves app activity logs and user feedback clicks into two simple files right inside your project folder on your computer. | You are building or testing on your laptop, or want the simplest setup with zero extra cloud services. | `.sdlc/telemetry_config.json`, `.sdlc/otel_traces.jsonl`, and `.sdlc/kaizen_overrides.jsonl` |
-| **Mode B: Shared Cloud Log Mode (`SHARED_REMOTE_SINK`)** | Your deployed app sends logs to Google Cloud (`Cloud Trace` and `BigQuery`). When you run Stage 7 or Stage 8 on your laptop, your AI helpers read those cloud logs. | Your app runs on a shared server or Cloud Run, and you run your AI helpers from your computer when needed. | `.sdlc/telemetry_config.json` linked to your Google Cloud project |
+| **Mode B: Shared Remote Log Mode (`SHARED_REMOTE_SINK`)** | Your deployed app sends OTLP telemetry to your chosen monitoring backend (Google Cloud Trace & BigQuery, Datadog, Dynatrace, Grafana LGTM, Splunk, Azure Monitor, AWS CloudWatch, or custom APM). When you run Stage 7 or Stage 8 on your laptop, your AI helpers read those remote logs back via your configured `query` path. | Your app runs on a shared server, on-prem cluster, or Cloud Run, and you run your AI helpers from your computer when needed. | `.sdlc/telemetry_config.json` with split `ingest` and `query` endpoints linked to your chosen monitoring backend |
 | **Mode C: Automatic Cloud Helper Mode (`CLOUD_OUTER_LOOP`)** | Both your app and your Stage 7 and Stage 8 AI helpers run automatically in Google Cloud. Untrusted tests run inside a safe isolated cloud sandbox with internet access turned off, and Stage 8 can open up to 5 GitHub pull requests per day on your app's GitHub repo for your team to review. | Your app is in production and you want automatic cloud testing and improvement pull requests. | `.sdlc/telemetry_config.json`, `.sdlc/cloud_outer_loop.json`, and `deploy/cloud_outer_loop/` cloud setup files |
 
 | Where to Paste It | Time | What This Prompt Does |
 | :--- | :---: | :--- |
-| In your active project chat window | ~1 min | Lets you choose Mode A, B, or C and creates `.sdlc/telemetry_config.json` with automatic privacy scrubbing enabled. |
+| In your active project chat window | ~1 min | Lets you choose Mode A, B, or C, confirms `app_uses_llm`, and creates `.sdlc/telemetry_config.json` with split `ingest`/`query` paths and automatic privacy scrubbing enabled. |
 
 ```text
-Please configure my A/SDLC v3.0.0 App Activity Logs and Feedback setup (/agentic-sdlc --outer-loop-init):
+Please configure my A/SDLC v3.1.0 App Activity Logs and Feedback setup (/agentic-sdlc --outer-loop-init):
 
-1. Ask me (via ask_question) which of the 3 App Activity Log modes I want for this project:
+1. Ask me (via ask_question) which of the 3 App Activity Log modes I want for this project and whether the app invokes LLM inference (app_uses_llm: true or false):
    * (Recommended) Mode A: LOCAL_FILE_SINK (saves logs locally in .sdlc/otel_traces.jsonl and .sdlc/kaizen_overrides.jsonl with zero cloud setup)
-   * Mode B: SHARED_REMOTE_SINK (app sends logs to Google Cloud Trace and BigQuery; I run Stage 7 and Stage 8 from my workstation)
+   * Mode B: SHARED_REMOTE_SINK (app sends OTLP logs to Google Cloud Trace/BigQuery, Datadog, Dynatrace, Grafana LGTM, Splunk, Azure Monitor, AWS CloudWatch, or a custom APM; I run Stage 7 and Stage 8 from my workstation)
    * Mode C: CLOUD_OUTER_LOOP (always-on Google Cloud Run Stage 7 safe test sandbox + Vertex AI Stage 8 automatic GitHub pull requests)
 2. Write .sdlc/telemetry_config.json with:
-   * schema_version: "3.0.0"
+   * schema_version: "3.1.0"
    * sink_type: my chosen mode ("LOCAL_FILE_SINK", "SHARED_REMOTE_SINK", or "CLOUD_OUTER_LOOP")
+   * app_uses_llm: true or false (with required_gen_ai_attributes cleared to [] and required_standard_otel_attributes populated when false)
+   * ingest and query blocks synchronized with .sdlc/toolchain_config.json
    * local_traces_path: ".sdlc/otel_traces.jsonl"
    * local_overrides_path: ".sdlc/kaizen_overrides.jsonl"
    * pii_redaction_enabled: true (scrubbing emails, phone numbers, SSNs, API keys, and bearer tokens before any log is saved)
@@ -410,20 +414,20 @@ Please configure my A/SDLC v3.0.0 App Activity Logs and Feedback setup (/agentic
 
 | Where to Paste It | Time | What This Prompt Does |
 | :--- | :---: | :--- |
-| In your active project chat window | ~30 sec | Verifies that all v3 skills, agents, templates, and project files are in place and prints a clear `PASS / FAIL` table. |
+| In your active project chat window | ~30 sec | Verifies that all v3.1 skills, agents, templates, and project files are in place and prints a clear `PASS / FAIL` table. |
 
 ```text
-Please run a complete A/SDLC v3.0.0 Post-Upgrade Health Check on my workstation and active project folder:
+Please run a complete A/SDLC v3.1.0 Post-Upgrade Health Check on my workstation and active project folder:
 
-1. Check ~/.gemini/config/skills/ (or .agent/skills/) and confirm all 5 skills (agentic-sdlc, asdlc-onboarding-coach, org-standards-builder, product-owner, review-council) and all 6 templates in skills/agentic-sdlc/resources/ exist and have asdlc_version: "3.0.0" and distribution_tier: "customer-safe".
-2. Check ~/.gemini/config/agents/ (or .agent/agents/) and confirm all 8 customer-safe agents exist and have asdlc_version: "3.0.0".
+1. Check ~/.gemini/config/skills/ (or .agent/skills/) and confirm all 5 skills (agentic-sdlc, asdlc-onboarding-coach, org-standards-builder, product-owner, review-council) and all 6 templates in skills/agentic-sdlc/resources/ exist and have asdlc_version: "3.1.0" and distribution_tier: "customer-safe".
+2. Check ~/.gemini/config/agents/ (or .agent/agents/) and confirm all 8 customer-safe agents exist and have asdlc_version: "3.1.0".
 3. Check my active project folder and confirm:
-   * .sdlc/state.json uses schema_version "3.0.0" and Stages 1 to 8
-   * RACI.md, .sdlc/raci.json, .sdlc/git_config.json, .sdlc/telemetry_config.json, and .sdlc/cloud_outer_loop.json are present and valid
+   * .sdlc/state.json uses schema_version "3.1.0" and Stages 1 to 8
+   * RACI.md, .sdlc/raci.json, .sdlc/git_config.json, .sdlc/telemetry_config.json, .sdlc/toolchain_config.json (with stage1_delta_confirmed: true and missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY"), and .sdlc/cloud_outer_loop.json are present and valid
    * .sdlc/git_config.json points to my own application development GitHub repo (and NOT to asdlc-customer-kit or agentic-sdlc-harness)
-   * .sdlc/otel_traces.jsonl and .sdlc/kaizen_overrides.jsonl exist and have pii_redaction_enabled: true
+   * .sdlc/otel_traces.jsonl, .sdlc/kaizen_overrides.jsonl, and .sdlc/reports/ exist and .sdlc/telemetry_config.json has pii_redaction_enabled: true
    * My custom company rules (if any) are safely stored in org-standards.md or AGENTS.md
-4. Print a clear PASS / FAIL table in plain English and tell me my next recommended command (such as /agentic-sdlc --status or /agentic-sdlc --resume).
+4. Print a clear PASS / FAIL table in plain English (including --toolchain-status readiness) and tell me my next recommended command (such as /agentic-sdlc --status or /agentic-sdlc --resume).
 ```
 
 #### Prompt 5B: Emergency Undo Prompt (How to Go Back to v1 Anytime)
