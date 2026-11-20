@@ -1,12 +1,12 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
-# 📘 A/SDLC v3.1 Operator Runbook: Installation, Project Lifecycle & User Guide
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
+# 📘 A/SDLC v3.1.1 Operator Runbook: Installation, Project Lifecycle & User Guide
 
 > [!CAUTION]
 > **⚠️ IMPORTANT LEGAL DISCLAIMER (`NO WARRANTY` • `NOT FOR PRODUCTION` • `EXAMPLE CODE ONLY` • `USE AT YOUR OWN RISK`):**
 > All files, prompts, AI agent definitions (`agents/*.md`), skills (`skills/*/SKILL.md`), and templates referenced in this runbook are **example reference materials** provided strictly **"AS IS"** without warranty of any kind, are **NOT intended or certified for direct production use**, are **100% use at your own risk**, and are **NOT an official Google LLC or Google Cloud product or supported service**. Always require human-in-the-loop review before executing or merging AI-generated outputs, and see **[`DISCLAIMER.md`](./DISCLAIMER.md)** for full legal terms.
 
 > **Document Purpose:** Canonical step-by-step operator and adopter runbook for installing the 8-Stage Agentic SDLC (`A/SDLC v3.1`) skill and specialist subagents, launching the Flight Deck Control Center (`:8000`), configuring **Customer Security & Monitoring Toolchain Discovery (`.sdlc/toolchain_config.json`)** alongside the **Split Ingest/Query 3-Pattern OpenTelemetry Sink & Always-On Cloud Outer Loop (`.sdlc/telemetry_config.json` & `--outer-loop-init`)**, creating and managing projects across CLI and Web UI surfaces, and running the 8-stage engineering lifecycle as a day-to-day user.
-> **Framework Version:** `v3.1.0` (8-Stage A/SDLC Lifecycle + Customer Security & Monitoring Toolchain Discovery + Split Ingest/Query OpenTelemetry Sink & Cloud Outer Loop)
+> **Framework Version:** `v3.1.1` (8-Stage A/SDLC Lifecycle + Default `DEEP_CONSULTATIVE` Questioning Mode & Universal Discuss Escape Hatch + Customer Security & Monitoring Toolchain Discovery + Split Ingest/Query OpenTelemetry Sink & Cloud Outer Loop)
 > **Primary Target Runtime:** Google Antigravity (with native support for Gemini CLI, Hermes, and OpenClaw)
 
 ---
@@ -287,16 +287,33 @@ flowchart TD
 
 ### 2.2 Step-by-Step Installation on Google Antigravity
 
-#### Path A: Customer-Safe Pure Markdown Kit (`asdlc-customer-kit`, Zero Scripts Required)
+> **Supply-Chain Pinning & Existing-Skills Safety:** Pin installs to release tag `v3.1.1` (enterprise security teams should review the pinned Markdown files and mirror the reviewed tag/commit SHA internally before rollout). Installing the Pure Markdown kit requires **zero Python dependencies** (install Python 3.12+ only if your target application uses Python or you run the optional Full R&D Harness). Check `~/.gemini/config/skills/` before copying so you do not overwrite existing organization skills of the same name.
+
+#### Pure Markdown Customer-Safe Kit (`asdlc-customer-kit`, Zero Executable Toolkit Scripts)
+
+**macOS / Linux (Bash / Zsh):**
 ```bash
-mkdir -p ~/Downloads ~/.gemini/config/agents ~/.gemini/config/skills
+mkdir -p ~/Downloads ~/projects ~/.gemini/config/agents ~/.gemini/config/skills
 cd ~/Downloads
-git clone https://github.com/cwserna/asdlc-customer-kit.git
+git clone --branch v3.1.1 --depth 1 https://github.com/cwserna/asdlc-customer-kit.git
 cp -R asdlc-customer-kit/agents/*.md ~/.gemini/config/agents/
 cp -R asdlc-customer-kit/skills/* ~/.gemini/config/skills/
+echo 'export ASDLC_PROJECTS_ROOT="$HOME/projects"' >> ~/.zshrc # or ~/.bashrc on Linux
 export ASDLC_PROJECTS_ROOT="$HOME/projects"
 ```
-Start a new Antigravity or Gemini CLI session so the `v3.0.0` Markdown subagents and skills load into memory, then run `/asdlc-onboarding-coach` or `/agentic-sdlc --new`.
+
+**Windows (PowerShell):**
+```powershell
+New-Item -ItemType Directory -Force -Path "$HOME\Downloads","$HOME\projects","$env:USERPROFILE\.gemini\config\agents","$env:USERPROFILE\.gemini\config\skills"
+Set-Location "$HOME\Downloads"
+git clone --branch v3.1.1 --depth 1 https://github.com/cwserna/asdlc-customer-kit.git
+Copy-Item -Recurse -Force "asdlc-customer-kit\agents\*.md" "$env:USERPROFILE\.gemini\config\agents\"
+Copy-Item -Recurse -Force "asdlc-customer-kit\skills\*" "$env:USERPROFILE\.gemini\config\skills\"
+[Environment]::SetEnvironmentVariable("ASDLC_PROJECTS_ROOT", "$HOME\projects", "User")
+```
+*(Offline ZIP alternative: download `https://github.com/cwserna/asdlc-customer-kit/archive/refs/tags/v3.1.1.zip`, extract it, note the nested `asdlc-customer-kit-3.1.1/` folder, and copy `asdlc-customer-kit-3.1.1/agents/*.md` and `asdlc-customer-kit-3.1.1/skills/*` into `~/.gemini/config/`.)*
+
+Fully quit and reopen Google Antigravity (macOS `Cmd+Q` / Windows system tray Quit) or start a new Gemini CLI session so the `v3.1.1` Markdown subagents (8 agents, 5 core skills) load into memory, then run `/asdlc-onboarding-coach` or `/agentic-sdlc --new`.
 
 
 ---
@@ -337,10 +354,10 @@ Use the standalone **`org-standards-builder`** skill ([`skills/org-standards-bui
    - Choose **Mode 1 (Bulk File Ingest or Intranet Harvester Prompt)**, **Mode 2 (5-Round Guided Portal Scavenger Hunt)**, or **Mode 3 (Expert Architect Interview)**.
    - The agent runs a 3-Bucket Triage Engine and grills your architect 2 to 3 questions per turn to resolve conflicting wiki pages, set hard numeric thresholds (max LoC per slice, `AGENTS.md` line cap, test coverage floor), capture unwritten PR rejection rules, and output `org-standards.md` plus `.okf/runbooks/`.
 2. **Option B: Two-Step Copy-Paste Flow for SSO-Gated Intranets (`INTRANET_HARVESTER_PROMPT.md`)**
-   - **Step 1 (Harvest):** Open [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) and paste the prompt into the enterprise AI search tool that already has SSO access to the internal portal (**Google Gemini Enterprise, Vertex AI Search, NotebookLM, Microsoft 365 Copilot, or Glean**). It scans the internal catalog, strips out non-code bureaucracy, flags contradictions, and outputs `RAW_STANDARDS_EXTRACT.md`.
-   - **Step 2 (Distill):** Feed `RAW_STANDARDS_EXTRACT.md` into `/org-standards-builder` (or paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat window) to resolve the flagged conflicts and generate the final `<= 120` line `org-standards.md` and `.okf/runbooks/` files.
-3. **Option C: Zero-Install Browser Scavenger Hunt (`STANDALONE_ARCHITECT_PROMPT.md`)**
-   - On a locked-down laptop with only a web browser open to the company intranet, paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into any browser chat UI and pick **Option B (Guided Portal Scavenger Hunt)**. The agent walks the user through 5 fast domain search rounds, giving exact keywords to type into the portal search bar and cleaning up whatever raw text they paste in.
+   - **Step 1 (Harvest):** Open [`skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md`](./skills/org-standards-builder/prompts/INTRANET_HARVESTER_PROMPT.md) and paste the prompt into an **enterprise-licensed, Zero Data Retention (ZDR) covered AI search tool** that already has SSO access to the internal portal (**Google Gemini Enterprise, Vertex AI Search, or enterprise-approved NotebookLM, Microsoft 365 Copilot, or Glean**; never paste BCSI, secrets, or restricted OT diagrams). It scans the internal catalog, strips out non-code bureaucracy, flags contradictions, and outputs `RAW_STANDARDS_EXTRACT.md`.
+   - **Step 2 (Distill):** Feed `RAW_STANDARDS_EXTRACT.md` into `/org-standards-builder` (or paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into an **enterprise-licensed, ZDR-covered browser chat UI**) to resolve the flagged conflicts and generate the final `<= 120` line `org-standards.md` and `.okf/runbooks/` files.
+3. **Option C: Zero-Install Enterprise Browser Scavenger Hunt (`STANDALONE_ARCHITECT_PROMPT.md`)**
+   - On a locked-down laptop with only a web browser open to the company intranet, paste [`skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md`](./skills/org-standards-builder/prompts/STANDALONE_ARCHITECT_PROMPT.md) into an **enterprise-licensed, security-approved AI chat UI covered by ZDR (never a personal or consumer chatbot)** and pick **Option B (Guided Portal Scavenger Hunt)**. The agent walks the user through 5 fast domain search rounds, giving exact keywords to type into the portal search bar and cleaning up whatever raw text they paste in.
 
 ---
 
@@ -415,75 +432,110 @@ A/SDLC enforces a **Two-Tier Deletion Safety Protocol**, protects the built-in `
 
 ### 5.6 Joining an Existing Team Project (New Developer Starting from Zero)
 
-Use this checklist when a new developer joins an active A/SDLC project and has never set up Google Antigravity or A/SDLC on their workstation.
+Use this checklist when a new developer joins an active A/SDLC v3.1 project and has never set up Google Antigravity or A/SDLC on their workstation.
 
-#### Before You Start: Confirm Access With Your Project Lead
-1. **Google Cloud License & 4 Developer IAM Roles:** Confirm you have an active **Gemini Enterprise** license (`Standard`, `Plus`, `Standard Emerging Market`, or `Pay-as-you-go`, not Gemini Enterprise Business) and `roles/discoveryengine.agentspaceUser`, `roles/aiplatform.user`, `roles/cloudaicompanion.user`, and `roles/serviceusage.serviceUsageConsumer` on `<PILOT_PROJECT_ID>` (note that `roles/discoveryengine.agentspaceAdmin` does not include user access). If the project uses Pattern B or Pattern C remote telemetry, also confirm `roles/cloudtrace.agent` and `roles/bigquery.dataViewer`.
-2. **Git Repository Write Access & Accepted Collaborator Invite:** Confirm write access to `<PROJECT_GIT_REPO_URL>` and **accept your GitHub repository collaborator invitation**. When a project uses GitHub Issues (`GITHUB_ISSUES_PR`) for stage gates, pending collaborator invitations block gate dispatch.
-3. **RACI Roster Update (`RACI.md`):** Confirm your Project Lead added your name, email, and GitHub handle to `RACI.md` if you will execute stages or approve gates. If this moves a solo project (`1` human) to a team project (`2+` humans), run `/agentic-sdlc --reverify-gates` so it promotes cleanly from `SOLO_ADVISORY` to `TEAM_STRICT`.
-4. **Optional Shared Flight Deck Access:** If your team uses a Deployed Cloud Run Flight Deck, confirm Cloud IAP or OIDC sign-in access to `<FLIGHT_DECK_URL>`.
+#### Before You Start: Confirm Access, Safety & Governance With Your Project Lead
+1. **Workstation Network & Operational Technology (OT) Isolation Gate:** Confirm your workstation is on a corporate IT / non-production network (**never** an OT / Supervisory Control and Data Acquisition (SCADA) Electronic Security Perimeter or jump host). Never connect A/SDLC agents or pilot code to live physical control systems or real customer Personally Identifiable Information (PII) / Bulk Electric System Cyber System Information (BCSI).
+2. **Google Cloud License & 4 Developer Identity and Access Management (IAM) Roles:** Confirm an active **Gemini Enterprise** seat (`Standard`, `Plus`, or `Standard Emerging Market`, or enabled billing with a monthly spend cap for **Pay as you go**; check official Google Cloud entitlement documentation for excluded editions). Prefer **IAM Group membership** (for example, `group:asdlc-pilot-devs@<org>`) granted these 4 roles on `<PILOT_PROJECT_ID>`:
+   - `roles/discoveryengine.agentspaceUser` *(note: `roles/discoveryengine.agentspaceAdmin` does not grant user access)*
+   - `roles/aiplatform.user`
+   - `roles/cloudaicompanion.user`
+   - `roles/serviceusage.serviceUsageConsumer`
+   - **If using Pattern B or Pattern C remote telemetry:** Also grant `roles/cloudtrace.user` (to read traces; add `roles/cloudtrace.agent` only if emitting traces directly from local dev), **dataset-scoped** `roles/bigquery.dataViewer` (bound to the dedicated telemetry dataset, never project-wide), `roles/bigquery.jobUser` (for `bigquery.jobs.create` in Stage 7 queries), and `roles/logging.viewer` (plus `roles/logging.logWriter` only if exporting local logs).
+3. **Git Repository Write Access, Collaborator Acceptance & Repo Protections:** Confirm write access to `<PROJECT_GIT_REPO_URL>` (hosted on your organization's approved GitHub org or corporate Git host), **accept your GitHub repository collaborator invitation** (pending invites block GitHub Issues `GITHUB_ISSUES_PR` gate dispatch), and complete **GitHub Organization SAML Single Sign-On (SSO)** authorization if enforced. Confirm the repo enables **Branch Protection on `main`**, **Tag Protection on `stage-*-approved`**, **Secret Scanning + Push Protection**, and **`CODEOWNERS`** protecting `RACI.md`, `.sdlc/raci.json`, `.sdlc/state.json`, `.sdlc/toolchain_config.json`, `.sdlc/remote.json`, `.sdlc/agents/builders/**`, and `.agent/**`.
+4. **Responsible, Accountable, Consulted, Informed (RACI) Roster Update (`RACI.md` & `.sdlc/raci.json`):** Have your **Project Lead** add your name, corporate email, and GitHub handle to **both** `RACI.md` and `.sdlc/raci.json` if you execute stages or approve gates. If you are the second distinct human joining a solo (`SOLO_ADVISORY`) project, the **Project Lead** runs `/agentic-sdlc --reverify-gates` **after** you accept your GitHub collaborator invite so the project promotes cleanly to `TEAM_STRICT` (ensure distinct humans own Stage 5 build vs. Stage 6 security approval, and re-attest prior solo-signed gates before release).
+5. **Optional Deployed Cloud Run Flight Deck Access:** If your team runs a shared Deployed Cloud Run Flight Deck, confirm your admin granted `roles/iap.httpsResourceAccessor` (behind Cloud Identity-Aware Proxy (IAP)) or `roles/run.invoker` (direct Cloud Run OpenID Connect (OIDC); never `allUsers`) and confirm the approved organization hostname for `<FLIGHT_DECK_URL>`.
 
 #### Critical Rule: Keep Two Separate Folders
 Never clone your team's application repository inside the A/SDLC toolkit folder, and never run `/agentic-sdlc --new` inside the toolkit folder:
-- **Toolkit Folder (`~/Downloads/asdlc-customer-kit`):** Used only to install agents and skills globally into `~/.gemini/config/`.
+- **Toolkit Folder (`~/Downloads/asdlc-customer-kit`):** Used only to install or upgrade agents and skills into `~/.gemini/config/`.
 - **Team Project Folder (`~/projects/<PROJECT_FOLDER>`):** Holds `.sdlc/`, `RACI.md`, `org-standards.md`, `PRD.md`, `SPEC.md`, and the application codebase. Open Google Antigravity here every day.
 
-#### Step 1: Install Core Workstation Tools & Sign In (`gcloud`, `git`, `gh`, Python 3.12+)
-Install **Python 3.12+**, **Git 2.40+**, **GitHub CLI (`gh`)**, and **Google Cloud CLI (`gcloud`, Section `0.2 Part B`)**, then bind your Git identity and keyless Google Cloud credentials (zero static JSON key files):
+#### Step 1: Install Core Workstation Tools, Configure Proxy/CA & Sign In
+- **Prerequisites:** Install **Git 2.40+** (`git-scm.com`), **GitHub CLI (`gh`, `cli.github.com`)**, and **Google Cloud CLI (`gcloud`, `cloud.google.com/sdk/docs/install`)**. *(Installing the Pure Markdown toolkit requires **zero Python dependencies**; install **Python 3.12+** only if your target application uses Python.)*
+- **Corporate Proxy & TLS Inspection Root CA (If Applicable):** Behind Zscaler, Netskope, or a corporate proxy, configure `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY=localhost,127.0.0.1` (so local OAuth redirects and localhost previews never route through the proxy), plus `SSL_CERT_FILE`, `PIP_CERT`, `git config --global http.sslCAInfo <ca-bundle.pem>` (Windows Schannel: `git config --global http.sslBackend schannel`), and `gcloud config set core/custom_ca_certs_file <ca-bundle.pem>`.
+- **Bind Git, GitHub, and Google Cloud Credentials (No Static Service Account Key Files):** Use a dedicated named `gcloud` configuration so you do not overwrite other project settings. *(Note: `gcloud auth application-default login` stores a local user OAuth refresh token in `application_default_credentials.json` carrying your user permissions; verify `gcloud auth list` shows your corporate account, use `--no-browser` on headless SSH/VDI sessions, and revoke when leaving the project.)*
 
 ```bash
 git config --global user.name "<Your Full Name>"
 git config --global user.email "<your-work-email>"
-gh auth login
+
+gh auth login # GitHub Enterprise Server: add --hostname <github.corp.com>; authorize SAML SSO if prompted
+gh auth setup-git # Configures git clone / push to use your gh credentials automatically
 gh auth status
 
+gcloud config configurations create asdlc-pilot || gcloud config configurations activate asdlc-pilot
 gcloud auth login
+gcloud auth list # Confirm your corporate email is ACTIVE
 gcloud config set project <PILOT_PROJECT_ID>
 gcloud auth application-default login
 gcloud auth application-default set-quota-project <PILOT_PROJECT_ID>
 ```
+*(SSH behind port-22 firewalls: configure SSH over port 443 via `ssh.github.com`. Non-GitHub remotes such as GitLab, Bitbucket, Azure DevOps, or Cloud Source Repositories: authenticate with your host's CLI/credential manager before Step 4.)*
 
 #### Step 2: Install Google Antigravity 2.0 & Sign In via "Use business account"
-Install an official enterprise surface (**Antigravity 2.0 Desktop App `>= 2.18.0`**, **CLI `agy >= 1.2.10`**, or **VS Code / JetBrains Extension**; never legacy Windsurf-based builds). On the Welcome screen, click **Use business account** (or select `2. Use a Google Cloud project` in `agy` CLI), select **Gemini Enterprise** (or **Pay as you go**), and choose `<PILOT_PROJECT_ID>` and your org region (`Global`, `US`, or `EU`). **Never click "Continue with Google"**, even with your work email, or you will hit consumer quota errors (`Individual quota reached` / `Ineligible account`). Confirm your plan and project under **Settings > General > Account** (or `/usage` in CLI).
+Install an official enterprise surface via your **enterprise Mobile Device Management (MDM) / IT software catalog** or official download portal: **Antigravity 2.0 Desktop App (`>= 2.18.0`, `antigravity.google/download`)**, **VS Code / JetBrains Extension (`antigravity.google/docs/ide/extensions/`)**, or IT-approved **CLI `agy >= 1.2.10`** (never legacy Windsurf-based consumer builds, and avoid unapproved `curl | bash` or PowerShell `irm | iex` scripts on locked-down endpoints).
 
-#### Step 3: Install the A/SDLC v3.1 Toolkit Globally & Restart Antigravity
-- **Path A (Pure Markdown Customer-Safe Kit, Zero Scripts Required):**
+On the Welcome screen, click **Use business account** (or select `2. Use a Google Cloud project` in `agy` CLI), select **Gemini Enterprise** (or **Pay as you go**), select `<PILOT_PROJECT_ID>`, and select the **exact data-residency region (`Global`, `US`, or `EU`) mandated by your project's `org-standards.md`** (never pick `Global` on a US-only or EU-only regulated project). **Never click "Continue with Google"**, even with your work email, or you will hit consumer quota errors (`Individual quota reached` / `Ineligible account`). Confirm your plan, Project ID, and region under **Settings > General > Account** (or `/usage` in CLI).
+
+#### Step 3: Install the Pinned `v3.1.1` A/SDLC Toolkit Globally & Full Restart
+> **Supply-Chain & Existing-Skills Safety:** Always install the pinned `v3.1.1` release tag reviewed by your security team (or your organization's internal Git mirror of that tag). Check `~/.gemini/config/skills/` before copying so you do not overwrite existing organization skills of the same name.
+
+**Pure Markdown Customer-Safe Kit (`asdlc-customer-kit`, Zero Executable Toolkit Scripts):**
+- **macOS / Linux (Bash / Zsh):**
   ```bash
-  mkdir -p ~/Downloads ~/.gemini/config/agents ~/.gemini/config/skills
+  mkdir -p ~/Downloads ~/projects ~/.gemini/config/agents ~/.gemini/config/skills
   cd ~/Downloads
-  git clone https://github.com/cwserna/asdlc-customer-kit.git
+  git clone --branch v3.1.1 --depth 1 https://github.com/cwserna/asdlc-customer-kit.git
   cp -R asdlc-customer-kit/agents/*.md ~/.gemini/config/agents/
   cp -R asdlc-customer-kit/skills/* ~/.gemini/config/skills/
+  echo 'export ASDLC_PROJECTS_ROOT="$HOME/projects"' >> ~/.zshrc # or ~/.bashrc on Linux
   export ASDLC_PROJECTS_ROOT="$HOME/projects"
   ```
-  *(Or download the 1-Click ZIP from `https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip` and copy `agents/*.md` and `skills/*` into `~/.gemini/config/`.)*
-- **Restart Required:** Fully close and reopen Google Antigravity (or open a brand-new chat session) so the newly installed A/SDLC skills and subagents load into memory. Optionally run `/asdlc-onboarding-coach` to verify all 12 pre-flight gates (`G01..G12`) pass. **Do not run `/agentic-sdlc --new`.**
+- **Windows (PowerShell):**
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\Downloads","$HOME\projects","$env:USERPROFILE\.gemini\config\agents","$env:USERPROFILE\.gemini\config\skills"
+  Set-Location "$HOME\Downloads"
+  git clone --branch v3.1.1 --depth 1 https://github.com/cwserna/asdlc-customer-kit.git
+  Copy-Item -Recurse -Force "asdlc-customer-kit\agents\*.md" "$env:USERPROFILE\.gemini\config\agents\"
+  Copy-Item -Recurse -Force "asdlc-customer-kit\skills\*" "$env:USERPROFILE\.gemini\config\skills\"
+  [Environment]::SetEnvironmentVariable("ASDLC_PROJECTS_ROOT", "$HOME\projects", "User")
+  ```
+  *(Pinned ZIP alternative: download `https://github.com/cwserna/asdlc-customer-kit/archive/refs/tags/v3.1.1.zip`, extract it, note the nested `asdlc-customer-kit-3.1.1/` folder, and copy `asdlc-customer-kit-3.1.1/agents/*.md` and `asdlc-customer-kit-3.1.1/skills/*` into `~/.gemini/config/`.)*
+- **Mandatory Full Restart:** Fully quit and reopen Google Antigravity (macOS `Cmd+Q` / Windows system tray Quit) so the `v3.1.1` skills (5 core skills) and 8 customer-safe agents load into memory. Optionally run `/asdlc-onboarding-coach` to verify Gates `G01..G12`. **Do not run `/agentic-sdlc --new`.**
 
-#### Step 4: Clone and Resume Your Team's Existing Project
-```bash
-cd ~/projects
-git clone <PROJECT_GIT_REPO_URL> <PROJECT_FOLDER>
-cd ~/projects/<PROJECT_FOLDER>
-```
-Open `~/projects/<PROJECT_FOLDER>` in Google Antigravity, start a **new chat**, and run:
-1. **Hydrate and register the existing project locally (never `--new`):**
+#### Step 4: Clone, Review Repo Configs, & Resume Your Team's Existing Project
+1. **Clone the team's app repository into its own folder and check out the active branch:**
+   ```bash
+   # macOS / Linux (Windows PowerShell: New-Item -ItemType Directory -Force -Path "$HOME\projects"; Set-Location "$HOME\projects")
+   mkdir -p ~/projects && cd ~/projects
+   git clone <PROJECT_GIT_REPO_URL> <PROJECT_FOLDER>
+   cd <PROJECT_FOLDER>
+   # If joining mid-stage (before a stage gate merges to main), check out the active stage branch:
+   git branch -a
+   # git checkout <ACTIVE_STAGE_BRANCH>
+   ```
+   *(`git clone` is always required for full application source code and Git history. `/agentic-sdlc --clone <PROJECT_ID> --url <FLIGHT_DECK_URL>` hydrates `.sdlc/` state metadata from a Deployed Flight Deck server only and does not replace `git clone`.)*
+2. **Review repo-controlled agent and toolchain configs before running agents:** Inspect `.sdlc/toolchain_config.json`, `.sdlc/remote.json` (if present), `.sdlc/agents/builders/*.md`, and any repo-committed `.agent/` directory with your Project Lead before resuming. *(If `.agent/` is committed inside the app repo, confirm with your Project Lead whether workspace `.agent/` overrides `~/.gemini/config/` so everyone runs the same `v3.1.0` skill version.)*
+3. **Open `~/projects/<PROJECT_FOLDER>` in Google Antigravity, start a brand-new chat, and resume (never `--new`):**
    ```text
    /agentic-sdlc --resume .
-   ```
-2. **Verify active stage, personal Git read/write access, and local toolchain readiness:**
-   ```text
    /agentic-sdlc --status
    /agentic-sdlc --git-status
    /agentic-sdlc --toolchain-status
    ```
-   *(Missing local Stage 6 security scanners or Stage 7 monitoring CLIs warn and degrade cleanly under `WARN_AND_DEGRADE_LLM_ONLY` without blocking you.)*
-3. **Optional Deployed Cloud Run Flight Deck sync:** If your team uses a shared Flight Deck, run `/agentic-sdlc --remote-set <FLIGHT_DECK_URL>` (if `.sdlc/remote.json` is not committed), `/agentic-sdlc --remote-login`, and `/agentic-sdlc --remote-sync` (or hydrate directly via `/agentic-sdlc --clone <PROJECT_ID> --url <FLIGHT_DECK_URL>`).
+   *(If a local security scanner or monitoring CLI is missing on your laptop, `--toolchain-status` warns cleanly without blocking onboarding. However, any security scanner mandated in `org-standards.md` or `.sdlc/toolchain_config.json` **must still execute locally or in CI before Gate 6 (`SECURITY_AUDIT.md`) can be approved**.)*
+4. **Optional Deployed Cloud Run Flight Deck sync:** Verify `<FLIGHT_DECK_URL>` matches your organization's approved Flight Deck hostname (do not authenticate to an unverified URL committed in `.sdlc/remote.json`), then run `/agentic-sdlc --remote-set <FLIGHT_DECK_URL>` (if not already configured), `/agentic-sdlc --remote-login`, and `/agentic-sdlc --remote-sync`.
 
-#### Step 5: Shared-Project Team Etiquette
-- Run `git pull` before `/agentic-sdlc --resume .` at the start of every session so you have the latest `.sdlc/state.json` and `stage-<N>-approved` tags.
-- Check `RACI.md` before approving any gate; only the Accountable (`A`) owner approves, while `R`, `A`, or `C` members can submit `CHANGES_REQUESTED`.
-- During Stage 5, check `.sdlc/builder_manifest.json` and run only your assigned builder slice (`owned_paths`) so teammates do not overwrite each other's files.
-- Run `/agentic-sdlc --park` and push your branch when handing off so the next teammate gets a fresh `.sdlc/RESUME_BRIEF.md`.
+#### Step 5: Shared-Project Hygiene & Teammate Offboarding (Leaver Checklist)
+- **Start of Session:** Run `git pull` on your active branch before `/agentic-sdlc --resume .` so you have the latest `.sdlc/state.json` and `stage-<N>-approved` tags, and confirm `.gitignore` excludes local `.sdlc/otel_traces.jsonl`, `.sdlc/reports/`, and secrets.
+- **Gate Ownership & Separation of Duties:** Check `RACI.md` before approving any gate; only the Accountable (`A`) owner approves, while `R`, `A`, or `C` members can submit `CHANGES_REQUESTED`. Keep the Stage 5 code author distinct from the Stage 6 security approver.
+- **Concurrent Stage 5 Coding:** Work on a **per-developer feature branch** inside your assigned `owned_paths` in `.sdlc/builder_manifest.json` so concurrent teammates do not create merge conflicts on shared `.sdlc/state.json` or `.sdlc/RESUME_BRIEF.md`. Merge code slices via Pull Request, and let the Tech Lead / Coordinator update `.sdlc/state.json` and run `/agentic-sdlc --park` on stage handoff.
+- **Teammate Offboarding (Leaver Checklist):** When a teammate leaves the project, complete all 4 steps within your org's access-revocation SLA (for example, 24 hours):
+  1. Remove the user from the pilot Google Cloud IAM group (and any direct project IAM, Cloud IAP `roles/iap.httpsResourceAccessor`, or `roles/run.invoker` bindings).
+  2. Remove the user from the GitHub repository / organization team.
+  3. Have the Project Lead remove the user from `RACI.md` and `.sdlc/raci.json` and re-assign any Accountable (`A`) gate ownership.
+  4. On the departing workstation, revoke local tokens (`gcloud auth application-default revoke && gcloud auth revoke && gh auth logout`).
 
 ---
 

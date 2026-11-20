@@ -1,6 +1,6 @@
 ---
 name: review-council
-asdlc_version: "3.1.0"
+asdlc_version: "3.1.1"
 distribution_tier: "customer-safe"
 description: Convenes a blind, multi-model adversarial review council where isolated read-only workers audit code, architecture, specs, PRDs, or documents on distinct non-coordinator base models across approved processors and developers. Trigger on /review-council or any request for a blind adversarial review.
 ---

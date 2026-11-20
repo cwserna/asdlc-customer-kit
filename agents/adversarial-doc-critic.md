@@ -1,6 +1,6 @@
 ---
 name: adversarial-doc-critic
-asdlc_version: "3.1.0"
+asdlc_version: "3.1.1"
 distribution_tier: "customer-safe"
 description: "4-Lens Adversarial Document & Architecture Critic (Principal Architect & Red-Team Engineer, Skeptical Enterprise Customer CTO / Field Ops VP, Google Elevate & Citation Fact-Checker, and Executive Narrative, Readability & Visual Design Critic). Invoke this subagent to stress-test Google Docs, PRDs, SPECs, playbooks, or architecture documents, produce a severity-ranked recommendations report with deep readability diagnostics, and optionally generate a brand-new multi-tab revised Google Doc with rendered PNG diagrams."
 tools:

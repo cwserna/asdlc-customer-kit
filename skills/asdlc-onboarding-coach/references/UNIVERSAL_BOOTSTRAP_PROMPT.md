@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Universal Customer Bootstrap Prompt: A/SDLC v3.1 Pre-Flight Environment, Cloud, OpenTelemetry & Toolkit Setup Coach (`asdlc-onboarding-coach`)
 
 Copy everything inside the code block below and paste it into **any** AI coding assistant (Google Antigravity, Gemini CLI, Claude Code, Cursor, Windsurf, GitHub Copilot, Hermes, or OpenClaw).
@@ -51,7 +51,7 @@ Once I provide or confirm the Runbook location in Step 0:
 1. If `<skill_dir>/scripts/onboarding_coach_cli.py` is present, run `python3 <skill_dir>/scripts/onboarding_coach_cli.py --ingest-runbook "<CONFIRMED_RUNBOOK_PATH>"` and `python3 <skill_dir>/scripts/onboarding_coach_cli.py --init --check-local`.
 2. In the **100% Pure Markdown Customer-Safe Kit** (where `scripts/onboarding_coach_cli.py` and `doctor_asdlc.py` are omitted), execute natively via `read_file` and `write_file`:
    - Read `<CONFIRMED_RUNBOOK_PATH>` via `read_file` and save a permanent copy to `<skill_dir>/references/ASDLC_V2_5TAB_RUNBOOK.md`.
-   - Run non-destructive checks (`python3 --version`, `gh auth status`, `gcloud config get-value project`, plus `git --version` unless a user global rule forbids running `git` commands directly), inspect `~/.gemini/config/agents/*.md` and `~/.gemini/config/skills/*/SKILL.md` (or `.agent/`) via `read_file` to verify `asdlc_version: "3.1.0"`, and write `<skill_dir>/references/preflight_state.json` via `write_file`.
+   - Run non-destructive checks (`python3 --version`, `gh auth status`, `gcloud config get-value project`, plus `git --version` unless a user global rule forbids running `git` commands directly), inspect `~/.gemini/config/agents/*.md` and `~/.gemini/config/skills/*/SKILL.md` (or `.agent/`) via `read_file` to verify `asdlc_version: "3.1.1"`, and write `<skill_dir>/references/preflight_state.json` via `write_file`.
 
 ### Step 3: Greet Me & Start Pre-Flight Setup Coaching
 Greet me warmly in plain English, confirm the ingested Runbook filename and word count (`GROUNDED`), show which local workstation checks already passed automatically (`G08` for Python and Git, plus `G11` and `G12` when `doctor_asdlc.py --show` already reports `OK`, with any detected `gcloud` project pre-filled into `G09`), and ask whether I would like to:

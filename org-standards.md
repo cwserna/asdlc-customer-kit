@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Organizational Development Standards & Policies (`org-standards.md`)
 
 > **A/SDLC v3.1 Grounding Contract (`Stages 1 to 8`):** Ingested by `@project-conductor` in **Stage 1 (Project Onboarding, RACI, GitHub Setup, Telemetry Sink, Toolchain Discovery & Asset Intake)**, cited by `@product-owner` in **Stage 2 (`PRD.md`)**, enforced by `@spec-architect` in **Stage 3 (`SPEC.md`)** and `@parallel-builder-orchestrator` in **Stage 4 (`AGENTS.md`)** and **Stage 5 (Parallel Builder Execution)**, audited by `@security-governance-critic` in **Stage 6 (`SECURITY_AUDIT.md`)**, verified by `@eval-telemetry-auditor` in **Stage 7 (`EVAL_REPORT.md`)**, and evolved by `@kaizen-evolution-agent` in **Stage 8 (`KAIZEN_REPORT.md`)**.

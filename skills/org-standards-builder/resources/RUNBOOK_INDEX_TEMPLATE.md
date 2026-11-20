@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Master Organizational Runbooks Catalog (`.okf/runbooks/INDEX.md`)
 
 > **Two-Tier Context-Rot Defense (A/SDLC v3.1):**

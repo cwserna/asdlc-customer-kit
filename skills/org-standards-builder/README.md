@@ -1,16 +1,16 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Enterprise Organizational Standards Builder (`org-standards-builder`)
 
 ## 1. What Problem This Solves (For CEs and Customers)
 
-In **Stage 1 of the Agentic SDLC (A/SDLC v3.0)**, every project needs an **`org-standards.md`** file so the AI agents know the customer's tech stack, security rules, testing gates, and observability standards.
+In **Stage 1 of the Agentic SDLC (A/SDLC v3.1.1)**, every project needs an **`org-standards.md`** file so the AI agents know the customer's tech stack, security rules, testing gates, and observability standards.
 
 In practice, building `org-standards.md` with enterprise customers hits three walls:
 1. **The "300 Intranet Pages" Wall:** Large enterprises have hundreds of standards scattered across SharePoint, Confluence, Backstage, or internal portals. No human architect has all 300 pages memorized, so asking an agent to "interview the user from a blank page" fails.
 2. **The "80% Bureaucratic Noise" Wall:** Most pages on a corporate standards portal cover human committee processes (Change Advisory Board schedules, ServiceNow ticket templates, HR sign-offs, or legacy mainframe policies) that an AI coding agent cannot enforce in code.
 3. **The "Context Rot" Wall:** If a customer dumps 300 pages into `org-standards.md`, it blows up token budgets and drowns out real rules across Stages 2 through 8. Worse, if they copy a sample file that hardcodes a vendor demo stack, the agents enforce the wrong stack.
 
-**`org-standards-builder`** is a **100% standalone skill and copy-paste prompt pack** that CEs and customers can run **before Stage 1** (or anytime) to distill hundreds of messy internal standards into a clean **Two-Tier A/SDLC v3.0 Standards Package**:
+**`org-standards-builder`** is a **100% standalone skill and copy-paste prompt pack** that CEs and customers can run **before Stage 1** (or anytime) to distill hundreds of messy internal standards into a clean **Two-Tier A/SDLC v3.1.1 Standards Package**:
 * **Tier 1 (`./org-standards.md`, strictly `<= 120 lines`):** Pinned in `.okf/manifest.yaml` for a 90% prefix context-cache discount across Stages 1 to 8. Contains only deterministic, code-enforceable rules tailored to the customer's actual stack.
 * **Tier 2 (`./.okf/runbooks/*.md`):** Deep domain reference manuals (`architecture-and-apis.md`, `security-and-iam.md`, `data-and-storage.md`, `testing-and-ci.md`, `observability-and-finops.md`) loaded on demand only when an agent is working on that domain, plus `DISCARDED_PROCESS_LOG.md` so enterprise governance teams can see which non-code process pages were filtered out.
 
@@ -27,7 +27,7 @@ flowchart TD
     M1 --> Triage["3 Bucket Triage Engine Pinned Contract vs Domain Runbook vs Process Noise"]
     M2 --> Triage
     M3 --> Grill
-    Triage --> Grill["Principal Architect Grill at 2 to 3 Questions per Turn on Conflicts Numbers and Tribal Rules"]
+    Triage --> Grill["Deep Consultative Principal Architect Grill One Decision at a Time plus Consolidated Review Gate"]
     Grill --> Output["Two Tier Output org-standards.md Under 120 Lines plus .okf/runbooks Catalog"]
 ```
 
@@ -37,7 +37,7 @@ flowchart TD
    ```text
    /org-standards-builder
    ```
-3. Pick **Mode 1 (Bulk/Harvester Ingest)**, **Mode 2 (Guided Portal Scavenger Hunt)**, or **Mode 3 (Expert Interview)** and answer 2 to 3 questions per turn until `org-standards.md` and `.okf/runbooks/` are generated.
+3. Pick **Mode 1 (Bulk/Harvester Ingest)**, **Mode 2 (Guided Portal Scavenger Hunt)**, or **Mode 3 (Expert Interview)** (with `Discuss details before deciding` always available), walk through each engineering conflict or numeric threshold one decision at a time in `DEEP_CONSULTATIVE` plain chat, and confirm the Consolidated Review Gate before generating `org-standards.md` and `.okf/runbooks/`.
 
 ### Scenario B: The Customer Has Hundreds of Pages on an SSO-Locked Intranet (Two-Step Prompt Flow)
 When the customer's standards live on an internal SharePoint, Confluence, or intranet portal that their local terminal cannot crawl directly:

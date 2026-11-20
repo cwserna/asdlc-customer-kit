@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Project Harness Rules (`AGENTS.md` / `GEMINI.md`)
 
 > **Equation:** `Agent = Model + Harness`

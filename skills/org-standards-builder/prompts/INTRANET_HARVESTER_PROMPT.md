@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Intranet Standards Harvester Prompt (`INTRANET_HARVESTER_PROMPT.md`)
 
 ## When to Use This Prompt

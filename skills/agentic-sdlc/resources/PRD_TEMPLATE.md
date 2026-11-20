@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Product Requirements Document (`PRD.md`)
 
 > **Authored By:** `@product-owner` (Stage 2: Agile Product Discovery & Requirements)

@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # 📦 Stage 1 Onboarding & Background Asset Manifest (`ASSET_MANIFEST.md`): `<Project / Application Title>`
 
 - **Project:** `<Project / Application Title>`

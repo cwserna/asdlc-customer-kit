@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Organizational Development Standards & Policies (`org-standards.md`)
 
 > **A/SDLC v3.1 Grounding Contract (`Stages 1 to 8`):** Ingested in **Stage 1 (`@project-conductor`)**, cited in **Stage 2 (`PRD.md` via `@product-owner`)**, enforced in **Stage 3 (`SPEC.md` via `@spec-architect`)** and **Stage 4 (`AGENTS.md` via `@parallel-builder-orchestrator`)**, audited in **Stage 6 (`@security-governance-critic`)**, and verified in **Stage 7 (`@eval-telemetry-auditor`)**.

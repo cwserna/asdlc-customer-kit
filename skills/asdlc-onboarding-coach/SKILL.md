@@ -1,6 +1,6 @@
 ---
 name: asdlc-onboarding-coach
-asdlc_version: "3.1.0"
+asdlc_version: "3.1.1"
 distribution_tier: "customer-safe"
 description: Portable, harness-agnostic A/SDLC v3.1 Pre-Flight Environment, Cloud, OpenTelemetry, Git/GitHub & Toolkit Setup Coach. Operates 100% natively using standard file and question tools (`read_file`, `write_file`, `edit_file`, `ask_question`, and non-destructive CLI checks) when `scripts/onboarding_coach_cli.py` and `doctor_asdlc.py` are not present (Pure Markdown Customer-Safe Kit), or via optional script shortcuts in the full harness. Ingests the 5-Tab Plain-English Operator & Adopter Runbook (`.docx`, `.md`, or `.txt`) on Step 0 so every session is 100% grounded offline, answers Runbook and OpenTelemetry questions in plain English, verifies Google Cloud project/billing/Gemini Enterprise licensing, required Inner-Loop plus OpenTelemetry & Cloud Outer-Loop GCP APIs (`cloudtrace`, `logging`, `monitoring`, `bigquery`, `run`, `cloudbuild`, `pubsub`, `eventarc`, `cloudscheduler`, `firestore`), least-privilege IAM roles, Python 3.12+, Git identity & GitHub CLI (`gh auth status`) readiness for Stage 1 repository configuration, `gcloud` ADC binding, Antigravity Use business account sign-in, and A/SDLC toolkit installation until all 12 pre-flight gates (`G01..G12`) pass, then hard-stops before Stage 1 (`/agentic-sdlc --new`). Trigger whenever the user invokes /asdlc-onboarding-coach, asks to walk through the A/SDLC runbook, or wants pre-flight setup coaching before starting an A/SDLC project.
 ---
@@ -80,19 +80,19 @@ Always check whether `<skill_dir>/scripts/onboarding_coach_cli.py` exists before
 2. **Initialize the Pre-Flight Checklist & Run the Non-Destructive Local Workstation Probe:**
    - **Native Execution (Default in Pure Markdown Kit):**
      - Run non-destructive local checks (`python3 --version`, `gh auth status`, `gcloud config get-value project`, plus `git --version` and `git config user.email` unless a user global rule forbids running `git` commands directly, in which case ask the user to confirm their Git identity).
-     - Inspect installed A/SDLC definitions in `~/.gemini/config/agents/*.md` and `~/.gemini/config/skills/*/SKILL.md` (or `.agent/`) via `read_file` to check whether the 8 specialist subagents and 5 core skills are already installed with `asdlc_version: "3.1.0"` (`G11` and `G12`).
+     - Inspect installed A/SDLC definitions in `~/.gemini/config/agents/*.md` and `~/.gemini/config/skills/*/SKILL.md` (or `.agent/`) via `read_file` to check whether the 8 specialist subagents and 5 core skills are already installed with `asdlc_version: "3.1.1"` (`G11` and `G12`).
      - Write `<skill_dir>/references/preflight_state.json` via `write_file` recording the 12 gates (`G01..G12`) and marking any verified local gates (`G08`, `G11`, `G12`) as `COMPLETE`.
    - **Optional Script Shortcut (only if `scripts/onboarding_coach_cli.py` exists on disk):**
      ```bash
      python3 <path-to>/scripts/onboarding_coach_cli.py --init --check-local
      ```
-3. Greet the user warmly, show which local workstation checks already passed automatically (`G08` for Python 3.12+ and Git/GitHub CLI readiness, plus `G11` and `G12` when the `v3.1.0` subagents and skills are already installed in `~/.gemini/config/` or `.agent/`, with any detected `gcloud` project pre-filled into `G09`), and ask whether they want to:
+3. Greet the user warmly, show which local workstation checks already passed automatically (`G08` for Python 3.12+ and Git/GitHub CLI readiness, plus `G11` and `G12` when the `v3.1.1` subagents and skills are already installed in `~/.gemini/config/` or `.agent/`, with any detected `gcloud` project pre-filled into `G09`), and ask whether they want to:
    - Walk through the remaining Cloud Console, IAM, Inner-Loop & OpenTelemetry/Outer-Loop GCP APIs, Git/GitHub auth, Antigravity sign-in, and Toolkit installation checks (`Modules A to D`), or
    - Ask plain-English questions about any part of the 5-Tab Operator & Adopter Guide or OpenTelemetry architecture.
 
 ### Turns 2+: Completion-Driven Evidence-Backed Verification Across Modules A to D
-Walk through 2 to 3 checks per turn across the 12 Pre-Flight Environment & Toolkit Gates (`G01..G12`), continuing across as many turns as needed until all gates are verified, and enforce the **Evidence Gate Rule** strictly:
-- **`COMPLETE`:** Assigned only when both a concrete value and verifiable proof (`evidence`, such as a GCP project ID, `gcloud` output, `gh auth status` output, Cloud Console confirmation, or verified `asdlc_version: "3.1.0"` agent/skill files) are supplied.
+*Scope Note (`A/SDLC v3.1.1`):* Factual pre-flight environment checks (`G01` to `G12`) remain outside `questioning_mode`. Walk through 2 to 3 checks per turn across the 12 Pre-Flight Environment & Toolkit Gates (`G01..G12`), continuing across as many turns as needed until all gates are verified, and enforce the **Evidence Gate Rule** strictly:
+- **`COMPLETE`:** Assigned only when both a concrete value and verifiable proof (`evidence`, such as a GCP project ID, `gcloud` output, `gh auth status` output, Cloud Console confirmation, or verified `asdlc_version: "3.1.1"` agent/skill files) are supplied.
 - **`NEEDS EVIDENCE`:** Assigned whenever a P0 gate is updated without concrete proof. Politely provide the exact `gcloud`, `git`/`gh`, or terminal verification command so the user can paste the output.
 
 | Gate ID | Tier | Module | Pre-Flight Requirement | Required Verification Evidence |
@@ -108,7 +108,7 @@ Walk through 2 to 3 checks per turn across the 12 Pre-Flight Environment & Toolk
 | **`G09`** | `P0` | **C. Workstation & Sign-In** | Install `gcloud` CLI and bind ADC + quota project (`gcloud auth login`, `gcloud config set project`, `gcloud auth application-default login`, `gcloud auth application-default set-quota-project`) | `gcloud config get-value project` matches `G01` |
 | **`G10`** | `P0` | **C. Workstation & Sign-In** | Install Google Antigravity (`v2.18.0+` Desktop App, CLI `agy` `v1.2.10+`, or IDE Extension) and sign in via **Use business account** (`2. Use a Google Cloud project` in CLI, never *Continue with Google*) | Verified plan and Project ID under `Settings > General > Account` or `/usage` |
 | **`G11`** | `P0` | **D. Toolkit Install & Doctor** | Install the A/SDLC v3.1 Toolkit (Pure Markdown Kit: copy `agents/*.md` and `skills/*` into `~/.gemini/config/` or `.agent/`; or Full Harness: `install_asdlc.sh --target antigravity`) | `agents/*.md` and `skills/*/SKILL.md` present in `~/.gemini/config/` or `.agent/` |
-| **`G12`** | `P0` | **D. Toolkit Install & Doctor** | Verify A/SDLC v3.1 installation health (Native Check: inspect installed `agents/*.md` and `skills/*/SKILL.md` via `read_file` to confirm `asdlc_version: "3.1.0"` and `read_file`/`write_file`/`edit_file` tools; or run `doctor_asdlc.py --show` if installed) | All 8 subagents and 5 core skills verified at `asdlc_version: "3.1.0"` (or `doctor_asdlc: OK`) |
+| **`G12`** | `P0` | **D. Toolkit Install & Doctor** | Verify A/SDLC v3.1.1 installation health (Native Check: inspect installed `agents/*.md` and `skills/*/SKILL.md` via `read_file` to confirm `asdlc_version: "3.1.1"` and `read_file`/`write_file`/`edit_file` tools; or run `doctor_asdlc.py --show` if installed) | All 8 subagents and 5 core skills verified at `asdlc_version: "3.1.1"` (or `doctor_asdlc: OK`) |
 
 ---
 

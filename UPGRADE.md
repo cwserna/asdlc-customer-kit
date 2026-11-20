@@ -1,5 +1,5 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
-# Simple Upgrade Guide: Moving to A/SDLC v3.1 (Fast-Track Stage 1 Upgrade from v3.0, plus v1 to v3.1)
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
+# Simple Upgrade Guide: Moving to A/SDLC v3.1.1 (30-Second Refresh from v3.1.0, Fast-Track from v3.0, plus v1 to v3.1.1)
 
 > [!CAUTION]
 > **IMPORTANT LEGAL DISCLAIMER (`NO WARRANTY` • `NOT FOR PRODUCTION` • `EXAMPLE CODE ONLY` • `USE AT YOUR OWN RISK`):**
@@ -9,10 +9,10 @@
 > * **Unofficial Reference Material (Not an Official Google Product or Service):** This is an unofficial reference kit and is **not** an official Google LLC or Google Cloud product, service, or supported deliverable.
 > * **Mandatory Human Review & Cloud Billing Responsibility:** Always have qualified human engineers review and test every AI-generated file or command before running or merging it, never enter sensitive PII or secrets into prompts, and manage your own cloud billing budgets and IAM controls. See **[`DISCLAIMER.md`](./DISCLAIMER.md)** for full legal terms.
 
-> * **Current Version:** `v3.1.0` ([`VERSION`](./VERSION) • [`DISCLAIMER.md`](./DISCLAIMER.md))
+> * **Current Version:** `v3.1.1` ([`VERSION`](./VERSION) • [`DISCLAIMER.md`](./DISCLAIMER.md))
 > * **Customer-Safe Pure Markdown Toolkit (Recommended for All Users):** [https://github.com/cwserna/asdlc-customer-kit](https://github.com/cwserna/asdlc-customer-kit) • **[1-Click Download ZIP (No `git clone` Needed)](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)**
-> * **Will This Break My Current Work?** **No.** Every file you already created in Stage 1 (`RACI.md`, `.sdlc/raci.json`, `.sdlc/git_config.json`, `org-standards.md`, `.sdlc/tech_stack.json`, `.okf/intake/`, and any signed Gate 1 approval receipt) stays untouched. Existing `v1` and `v2` project folders upgrade safely too.
-> * **How Long Does It Take?** **~2 minutes** for teams already on `v3.0` in Stage 1, or **2 to 5 minutes** for teams moving from `v1`.
+> * **Will This Break My Current Work?** **No.** Every file you already created in Stage 1 (`RACI.md`, `.sdlc/raci.json`, `.sdlc/git_config.json`, `org-standards.md`, `.sdlc/tech_stack.json`, `.sdlc/telemetry_config.json`, `.sdlc/toolchain_config.json`, `.okf/intake/`, and any signed Gate 1 approval receipt) stays untouched. Existing `v1`, `v2`, `v3.0`, and `v3.1.0` project folders upgrade safely too.
+> * **How Long Does It Take?** **~30 seconds** for teams already on `v3.1.0`, **~2 minutes** for teams moving directly from `v3.0`, or **2 to 5 minutes** for teams moving from `v1`.
 
 ---
 
@@ -20,21 +20,37 @@
 
 | Section | What You Will Find Here |
 | :--- | :--- |
-| **[0. Fast-Track Upgrade: Moving from v3.0 to v3.1 (For Teams in Stage 1)](#0-fast-track-upgrade-moving-from-v30-to-v31-for-teams-in-stage-1)** | **Start here if you are already on v3.0 in Stage 1.** Zero rework, preserves 100% of completed Stage 1 files and Gate 1 receipts, and adds `.sdlc/toolchain_config.json` in one turn. |
+| **[0. Fast-Track Upgrade: Moving from v3.1.0 or v3.0 to v3.1.1](#0-fast-track-upgrade-moving-from-v310-or-v30-to-v311)** | **Start here if you are already on v3.1.0 or v3.0.** Zero rework, preserves 100% of completed Stage 1 files and Gate 1 receipts, explains the new `DEEP_CONSULTATIVE` interview default (and `FAST_BATCH` opt-in), and adds `/.sdlc/discovery_decisions.md` to `.gitignore`. |
 | **[Important First Rule: Two Separate Repos](#important-first-rule-do-not-confuse-the-toolkit-repo-with-your-own-app-repo)** | Why you must keep the downloaded **A/SDLC Toolkit folder** (`~/Downloads`) separate from **your own App Development Git repo**. |
-| **[1. What Changed from v1 to v3.1](#1-what-changed-from-v1-to-v3-in-plain-english)** | Plain-English summary of the 8 steps (`Stages 1 to 8`), team roles (`RACI.md`), automatic GitHub saves, app health logs, and security/monitoring toolchain discovery. |
-| **[2. Choose Your v1 to v3.1 Upgrade Path](#2-choose-your-upgrade-path)** | Compare **Path A (Download ZIP or `git clone` + 2 Quick Prompts)** vs. **Path B (5 Copy-Paste Prompts Directly From This Guide)**. |
-| **[3. Path A: Download the ZIP or `git clone` the v3.1 Toolkit](#3-path-a-download-the-zip-or-git-clone-the-v3-toolkit-and-run-the-upgrade)** | Fastest upgrade (~2 minutes) using the 1-Click ZIP download or `git clone`. |
+| **[1. What Changed from v1 to v3.1.1](#1-what-changed-from-v1-to-v3-in-plain-english)** | Plain-English summary of the 8 steps (`Stages 1 to 8`), `DEEP_CONSULTATIVE` interviews, Universal Discuss Escape Hatch, team roles (`RACI.md`), automatic GitHub saves, app health logs, and security/monitoring toolchain discovery. |
+| **[2. Choose Your v1 to v3.1.1 Upgrade Path](#2-choose-your-upgrade-path)** | Compare **Path A (Download ZIP or `git clone` + 2 Quick Prompts)** vs. **Path B (5 Copy-Paste Prompts Directly From This Guide)**. |
+| **[3. Path A: Download the ZIP or `git clone` the v3.1.1 Toolkit](#3-path-a-download-the-zip-or-git-clone-the-v3-toolkit-and-run-the-upgrade)** | Fastest upgrade (~2 minutes) using the 1-Click ZIP download or `git clone`. |
 | **[4. Path B: 5 Self-Contained Copy-Paste Prompts](#4-path-b-self-contained-5-prompt-upgrade-no-github-download-needed)** | Complete prompts (`Prompts 1 to 5`) to upgrade everything directly in chat without downloading any files. |
-| **[5. Everyday v3.1 Chat Commands](#5-what-commands-can-you-use-after-upgrading-to-v3)** | Quick reference table of chat commands (`/agentic-sdlc --status`, `--resume`, `--new`, `--toolchain-status`, `--outer-loop-init`, `--upgrade`). |
+| **[5. Everyday v3.1.1 Chat Commands](#5-what-commands-can-you-use-after-upgrading-to-v3)** | Quick reference table of chat commands (`/agentic-sdlc --status`, `--resume`, `--new`, `--toolchain-status`, `--outer-loop-init`, `--upgrade`). |
 
 ---
 
-## 0. Fast-Track Upgrade: Moving from v3.0 to v3.1 (For Teams in Stage 1)
+## 0. Fast-Track Upgrade: Moving from v3.1.0 or v3.0 to v3.1.1
 
-If your team is already running **A/SDLC v3.0** and is currently in **Stage 1** (either still working through Stage 1 or already holding an approved Gate 1 receipt), you do **not** need to start over or re-run Stage 1.
+### What Changed in `v3.1.1` (New Default Interview Behavior & Opt-In `FAST_BATCH`)
+1. **Default One-at-a-Time Consultative Interviews (`DEEP_CONSULTATIVE`):** Design and scoping questions across Stage 1, Stage 2, Stage 3, Stage 4, and `org-standards-builder` now run **one atomic decision at a time in plain chat** instead of batched multiple-choice popups. Each question explains options, pros, cons, operational tradeoffs, and a recommended default grounded in `org-standards.md`, holds on the same question through open discussion, and finishes every stage with a **Consolidated Review Gate** (full active Q&A summary plus Cross-Decision Sanity Check) before writing deliverables.
+2. **Local Continuity Ledger (`.sdlc/discovery_decisions.md`):** Locked Stage `N` decisions are recorded in a workstation-local scratchpad (`.sdlc/discovery_decisions.md`) so long workshops survive context compaction. **Manual `.gitignore` Step (Pure Markdown Kit):** Add `/.sdlc/discovery_decisions.md` to your project's `.gitignore` so local continuity notes are never committed to Git. *(In the Full Python Harness, `bootstrap_harness.py` and `--upgrade` add this line automatically, and `verify_sdlc_gates.py` fails closed if it is tracked.)*
+3. **Universal Discuss Escape Hatch (`Discuss details before deciding`):** Every decision-bearing `ask_question` modal now ends with `Discuss details before deciding`, letting you drop into plain chat to ask questions without advancing or running pre-authorization probes on custom scanners, `--delete`, or `--upgrade`.
+4. **How to Switch Back to Batched Modals (`FAST_BATCH`):** Agents never proactively offer to switch questioning modes, keeping onboarding uncluttered. Any team that prefers batched `ask_question` popups can opt into `FAST_BATCH` at any time by:
+   * Saying directly in chat: *"Switch questioning mode to FAST_BATCH"* (works before and after `.sdlc/` exists),
+   * Setting `"questioning_mode": "FAST_BATCH"` in `.sdlc/state.json`, or
+   * Running `python3 scripts/sdlc_hud.py --questioning-mode FAST_BATCH` (Full Python Harness only).
 
-### What `v3.1.0` Adds (In Plain English)
+### Fast-Track Path 1: Moving from `v3.1.0` to `v3.1.1` (~30 Seconds, Zero Rework)
+If your workspace already ran the `v3.1.0` toolchain setup (`stage1_delta_confirmed: true` in `.sdlc/toolchain_config.json`), you do **not** re-run any Stage 1 or toolchain questions:
+1. Update your installed agents and skills in `~/.gemini/config/` (or `.agent/`) to `v3.1.1` (run `/agentic-sdlc --upgrade` or copy `agents/*.md` and `skills/*` from the `v3.1.1` release into `~/.gemini/config/` after backing up).
+2. Open a fresh chat window inside your app folder and run `/agentic-sdlc --upgrade` (or manually update `.sdlc/state.json` `"schema_version": "3.1.1"` with `"questioning_mode": "DEEP_CONSULTATIVE"`, and append `/.sdlc/discovery_decisions.md` to `.gitignore`).
+3. Resume immediately with zero lost work and zero Gate 1 reset.
+
+### Fast-Track Path 2: Moving Directly from `v3.0` to `v3.1.1` (For Teams in Stage 1)
+If your team is already running **A/SDLC v3.0** and is currently in **Stage 1** (either still working through Stage 1 or already holding an approved Gate 1 receipt), you can jump straight from `v3.0` to `v3.1.1` without touching `v3.1.0` first or re-running Stage 1.
+
+### What `v3.1.0` + `v3.1.1` Add Over `v3.0` (In Plain English)
 1. **Customer Security & Monitoring Toolchain Discovery (`.sdlc/toolchain_config.json`):** Stage 1 now auto-probes local CLI tools and CI workflows and lets your team pick your real Stage 6 security scanners (9 built-in presets such as Wiz, GitHub CodeQL, Semgrep, Snyk, SonarQube, Trivy, Gitleaks, CodeMender, and Model Armor, plus unlimited **Custom / Bring Your Own Tool** entries and universal SARIF 2.1.0 report ingestion) and your real Stage 7/8 monitoring backend (8 built-in presets such as Local JSONL, Google Cloud Observability, Datadog, Dynatrace, Grafana LGTM, Splunk, Azure Monitor, and AWS CloudWatch, plus unlimited **Custom** tools).
 2. **Honest Tool Execution Ledgers (`WARN_AND_DEGRADE_LLM_ONLY`):** If any configured scanner or monitoring tool is missing, unauthenticated, or unreachable at runtime, Stage 6 and Stage 7 never fake a result and never deadlock your build. They warn loudly, fall back to `LLM_ONLY` review (or local logs), and write exact proof in the **Tool Execution Ledger** inside `SECURITY_AUDIT.md` and `EVAL_REPORT.md` so your human gate approver (`security_lead` or `sre_finops_lead`) makes the final call.
 3. **Split Write (`ingest`) vs. Read (`query`) Telemetry & Non-AI App Support (`app_uses_llm`):** `.sdlc/telemetry_config.json` now separates where Stage 5 code writes telemetry from where Stage 7 and Stage 8 read it back, and lets deterministic non-AI apps set `app_uses_llm: false` so Stage 7 audits standard HTTP, RPC, and database spans without expecting LLM token attributes.
@@ -53,22 +69,22 @@ If your team is already running **A/SDLC v3.0** and is currently in **Stage 1** 
 1. Or manually download the `v3.1.0` Customer-Safe Toolkit ZIP ([main.zip](https://github.com/cwserna/asdlc-customer-kit/archive/refs/heads/main.zip)) into `~/Downloads` and unzip it (or run `cd ~/Downloads/asdlc-customer-kit && git pull origin main`).
 2. **Prompt 1 of 2 (Paste inside `~/Downloads/asdlc-customer-kit`):**
 ```text
-Read ./UPGRADE.md in this v3.1.0 toolkit folder and refresh my installed ~/.gemini/config/ agents and skills from v3.0 to v3.1.0:
-1. Back up my current ~/.gemini/config/agents/ and ~/.gemini/config/skills/ into ~/.gemini/config/.backups/asdlc-v3.0-backup-<timestamp>/ first.
+Read ./UPGRADE.md in this v3.1.1 toolkit folder and refresh my installed ~/.gemini/config/ agents and skills to v3.1.1:
+1. Back up my current ~/.gemini/config/agents/ and ~/.gemini/config/skills/ into ~/.gemini/config/.backups/asdlc-backup-<timestamp>/ first.
 2. Copy all 8 agents (./agents/*.md), all 5 skills (./skills/*), and all 6 templates (./skills/agentic-sdlc/resources/*.md) into ~/.gemini/config/ (or .agent/ if workspace-scoped).
 3. Do NOT create .sdlc/ or project files inside this Downloads folder.
-4. Confirm all files now report asdlc_version: "3.1.0" and remind me to open a new chat window in my own app folder for Prompt 2.
+4. Confirm all files now report asdlc_version: "3.1.1" and remind me to open a new chat window in my own app folder for Prompt 2.
 ```
 3. **Prompt 2 of 2 (Open a brand-new chat window inside your own Stage 1 app folder and paste):**
 ```text
-Run the zero-rework A/SDLC v3.0 to v3.1.0 Stage 1 delta upgrade on my current project folder:
+Run the zero-rework A/SDLC v3.0 to v3.1.1 Stage 1 delta upgrade on my current project folder:
 1. Preserve 100% of my existing RACI.md, .sdlc/raci.json, .sdlc/git_config.json, org-standards.md, .sdlc/tech_stack.json, .okf/intake/, and any signed Gate 1 approval receipt. Do NOT reset Gate 1 if it is already APPROVED.
-2. Bump schema_version to "3.1.0" in .sdlc/state.json and upgrade .sdlc/telemetry_config.json in place (keeping all existing v3.0 fields while adding split ingest and query blocks plus app_uses_llm).
-3. Auto-probe my local PATH binaries and .github/workflows/ CI files for security scanners and cloud/monitoring CLIs, then ask me 2 to 3 focused questions via ask_question in a single turn to confirm:
+2. Bump schema_version to "3.1.1" and set questioning_mode to "DEEP_CONSULTATIVE" (preserving valid "FAST_BATCH" if set) in .sdlc/state.json, append /.sdlc/discovery_decisions.md to .gitignore if missing, and upgrade .sdlc/telemetry_config.json in place (keeping all existing v3.0 fields while adding split ingest and query blocks plus app_uses_llm).
+3. If .sdlc/toolchain_config.json is missing or stage1_delta_confirmed is false, auto-probe my local PATH binaries and .github/workflows/ CI files strictly as detected candidates, then confirm explicitly against org-standards.md under my active questioning_mode:
    * Which Stage 6 security scanners we use (from the 9 presets or Custom / Bring Your Own Tool) and how Stage 6 accesses them (MCP, CLI, CI_CHECK, HTTP_API, MANUAL_EXPORT, or LLM_ONLY).
    * Which Stage 7/8 monitoring backend we use (from the 8 presets or Custom) and how Stage 7/8 reads telemetry back.
    * Whether this app calls LLM inference (app_uses_llm: true or false).
-4. Write .sdlc/toolchain_config.json with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true, create .sdlc/reports/, add Item #8 to .okf/intake/ASSET_MANIFEST.md, commit the delta cleanly if Gate 1 is already APPROVED (chore(asdlc): apply v3.1.0 Stage 1 toolchain delta) so git status stays clean for CI gates, and show me my ready-to-continue Stage 1 status board.
+4. Write .sdlc/toolchain_config.json with missing_tool_policy: "WARN_AND_DEGRADE_LLM_ONLY" and stage1_delta_confirmed: true, create .sdlc/reports/, add Item #8 to .okf/intake/ASSET_MANIFEST.md, commit the delta cleanly if Gate 1 is already APPROVED (chore(asdlc): apply v3.1.1 Stage 1 upgrade delta) so git status stays clean for CI gates, and show me my ready-to-continue Stage 1 status board.
 ```
 
 ### Fast-Track Option B (Zero Download, Copy-Paste Only in Chat): 2 Prompts Directly in Your App Folder
@@ -111,13 +127,13 @@ Version 1 helped you plan and build software using 7 steps (numbered `Stage 0` t
 1. **8 Clear Steps Instead of 7 (Numbered 1 to 8):**
    In v1, the first step was called `Stage 0`, which felt confusing. Version 3 numbers the 8 steps naturally from **`Stage 1` to `Stage 8`** and separates project setup (`Stage 1`) from product planning (`Stage 2`).
 2. **100% Plain Text AI Helpers (No Hidden Code Required):**
-   Every AI agent and skill is now a simple Markdown text file (`.md`) marked `asdlc_version: "3.1.0"`. Your security team can read and approve every file in minutes without worrying about hidden scripts.
+   Every AI agent and skill is now a simple Markdown text file (`.md`) marked `asdlc_version: "3.1.1"`. Your security team can read and approve every file in minutes without worrying about hidden scripts.
 3. **Keeps Your Custom Rules Safe When Upgrading:**
    If you added your own company rules inside any v1 AI agent file, the v3 upgrade saves a backup first, copies your custom rules into your project's **`org-standards.md`** file, and then installs the clean v3 agents.
 4. **Clear Team Roles and Automatic GitHub Backups (`Stage 1`):**
-   Every project now includes a simple **Team Roles Sheet (`RACI.md`)** so everyone knows which person approves each step. It also connects to **your own app's GitHub repository (`.sdlc/git_config.json`)** so every approved step is saved automatically.
-5. **Gentler AI Interviews (2 to 3 Questions at a Time):**
-   Instead of overwhelming you with a giant wall of questions, your AI helpers ask **2 to 3 simple questions per turn** and keep going until everything is clear.
+   Every project now includes a simple **Team Roles Sheet (`RACI.md`)** so everyone knows which person approves each step. It also connects to **your own app's GitHub repository (`.sdlc/git_config.json`, defaulting to `private`)** so every approved step is saved automatically.
+5. **Deep Consultative AI Interviews (One Decision at a Time + Discuss Escape Hatch):**
+   Instead of rushing through multiple-choice forms, your AI helpers ask **one clear decision at a time in plain chat** with tradeoffs, hold for open discussion, run a Consolidated Review Gate before writing deliverables, and put `Discuss details before deciding` on every decision-bearing modal (with silent opt-in `FAST_BATCH` pacing available anytime).
 6. **Built-In App Health Logs and Privacy Protection (`Stages 7 and 8`):**
    Your app now writes **App Activity Logs** and saves **User Feedback Clicks** so the Testing Agent (`Stage 7`) and Improvement Agent (`Stage 8`) can spot real problems. An **Automatic Privacy Filter** scrubs passwords, secret keys, emails, and phone numbers before any log is saved.
 
@@ -138,7 +154,7 @@ flowchart LR
 | **Upgrading Agents** | Overwrote files and could erase custom edits | **Backs up v1 first and moves your custom rules into `org-standards.md`** |
 | **Team Approvals** | Single owner in state file | **6-Role Team Responsibility Sheet (`RACI.md`)** |
 | **GitHub Saving** | Manual `git` commands | **Checked in Stage 1 (`.sdlc/git_config.json`) and saved to your own app repo at every gate** |
-| **AI Questions** | Fixed number of questions | **2 to 3 questions at a time** until your plan is 100% complete |
+| **AI Questions** | Fixed number of questions | **One decision at a time (`DEEP_CONSULTATIVE`) with Consolidated Review Gate and Discuss Escape Hatch (opt-in `FAST_BATCH` available)** |
 | **App Activity Logs** | Basic text check | **3 simple log modes (`.sdlc/telemetry_config.json`)** with automatic privacy scrubbing |
 
 ### How Your Old v1 Stage Numbers Map to v3

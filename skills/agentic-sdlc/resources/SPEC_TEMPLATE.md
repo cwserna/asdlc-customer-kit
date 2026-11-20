@@ -1,4 +1,4 @@
-<!-- asdlc_version: "3.1.0" | distribution_tier: "customer-safe" -->
+<!-- asdlc_version: "3.1.1" | distribution_tier: "customer-safe" -->
 # Executable Specification (`SPEC.md`: Single Source of Design Truth)
 
 > **Methodology:** Spec-Driven Development (`Stage 3: Technical Design & API Blueprint`, `A/SDLC v3.1`)
